@@ -43,7 +43,7 @@ export const HomeLayout: React.FC = () => {
   //   }
   // }, [DataAttendance]);
   return (
-    <div className="w-full min-h-screen pb-14 mx-auto bg-gradient-to-t from-[#f2f8fd] via-[#f6f9fc] to-[#f6f9fc] relative overflow-y-auto overflow-x-hidden">
+    <div className="max-w-md min-h-screen pb-14 mx-auto bg-gradient-to-t from-[#f2f8fd] via-[#f6f9fc] to-[#f6f9fc] relative overflow-y-auto overflow-x-hidden">
       <Suspense fallback={<LoadingScreen />}>
         <Outlet />
       </Suspense>

@@ -1,6 +1,14 @@
 /* eslint-disable no-restricted-imports */
 /* eslint-disable import/order */
-import { Anchor, Badge, Divider, Group, Loader, RingProgress, Text } from '@mantine/core';
+import {
+  Anchor,
+  Badge,
+  Divider,
+  Group,
+  Loader,
+  RingProgress,
+  Text,
+} from "@mantine/core";
 import {
   IconCalendar,
   IconFileTime,
@@ -14,12 +22,11 @@ import {
   IconUsersGroup,
   IconClock,
   IconFileText,
-} from '@tabler/icons-react';
-import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+} from "@tabler/icons-react";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-import { MenuList } from '@/components/navigation';
-
+import { MenuList } from "@/components/navigation";
 
 type DataAttendanceDivisionType = {
   Hadir: number;
@@ -32,25 +39,32 @@ type DataAttendanceDivisionType = {
 };
 
 export const Home: React.FC = () => {
- 
   return (
     <main>
       <section className="bg-brown w-full rounded-b-3xl px-5 pt-8 pb-20 relative">
         <img
-          src="/images/predictive-analytics.svg"
-          className="absolute w-44 right-3 -top-4 opacity-85"
+          src="../images/making presentations.svg"
+          className="absolute w-32 right-5 top-1 opacity-85"
           alt=""
         />
-        <div className="text-white text-2xl font-bold relative z-10">
-          Pegawai 1
-        </div>
-        <div className="text-sm font-semibold text-white">Pegawai tetap</div>
-
-        <div className="absolute right-5 top-5">
-          <img src="/images/white-logo.png" alt="" className="w-14" />
+        <div className="grid grid-cols-12">
+          <div className="col-span-2">
+            
+          </div>
+          <div className="col-span-10">
+            <div className="text-white text-2xl font-bold relative z-10">
+              Pegawai 1
+            </div>
+            <div className="text-sm font-semibold text-white">
+              Pegawai tetap
+            </div>
+            <div className="absolute right-5 top-5">
+              <img src="/images/white-logo.png" alt="" className="w-14" />
+            </div>
+          </div>
         </div>
       </section>
-
+      
       <section className="mx-auto max-w-xs bg-white  w-full shadow-lg rounded-xl z-50 relative p-2 px-2 text-slate-700 mb-2 -mt-16">
         <div className="flex justify-between text-xs items-center p-2 -mt-1 -mb-1">
           <div>
