@@ -5,7 +5,6 @@ import { HomeLayout, AppLayout } from "@/components/layout";
 // import { useAuth } from "@/features/auth";
 // import { queryClient } from '@/lib/react-query';
 import { lazyImport } from "@/utils/lazyImport";
-import { lazy } from "react";
 
 const { Home } = lazyImport(() => import("@/features/employee"), "Home");
 const { SchedulePage } = lazyImport(
@@ -41,6 +40,10 @@ const { HistoryPage } = lazyImport(
   () => import("@/features/employee/pages/History"),
   "HistoryPage"
 );
+const { NotificationPage } = lazyImport(
+  () => import("@/features/employee/pages/Notification"),
+  "NotificationPage"
+);
 
 export const AppRoutes: React.FC = () => {
   return (
@@ -57,8 +60,11 @@ export const AppRoutes: React.FC = () => {
           <Route path="profile">
             <Route index element={<ProfilePage />} />
           </Route>
-          <Route path="history">  
+          <Route path="history">
             <Route index element={<HistoryPage />} />
+          </Route>
+          <Route path="notification">
+            <Route index element={<NotificationPage />} />
           </Route>
         </Route>
       </Route>
