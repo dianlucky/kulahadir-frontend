@@ -4,6 +4,8 @@ import {
   IconHandStop,
   IconChecklist,
   IconNews,
+  IconBellRinging,
+  IconBellRinging2,
 } from "@tabler/icons-react";
 import { Suspense, useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
@@ -16,10 +18,10 @@ import { NavItem } from "../navigation/BottomNav/NavItem";
 
 const navigationsleft = [
   { title: "Home", href: "/", icon: IconHome },
-  { title: "Berita", href: "/news", icon: IconNews },
+  { title: "Riwayat", href: "/history", icon: IconChecklist },
 ];
 const navigationsright = [
-  { title: "Riwayat", href: "/history", icon: IconChecklist },
+  { title: "Notifikasi", href: "/notification", icon: IconBellRinging },
   { title: "Profil", href: "/profile", icon: IconUser },
 ];
 

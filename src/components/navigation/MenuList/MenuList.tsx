@@ -24,7 +24,12 @@ export const MenuItem: React.FC<Navigation> = ({
         >
           <Icon size={37} />
         </div>
-        <h3 className="text-xs text-gray-700 font-semibold mt-1 text-center px-1">{title}</h3>
+        <h3
+          className="text-dark-700 font-semibold mt-2 text-center px-1"
+          style={{ fontSize: "13px", marginTop: "5px" }}
+        >
+          {title}
+        </h3>
       </div>
     </Link>
   );

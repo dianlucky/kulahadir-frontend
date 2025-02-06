@@ -5,8 +5,38 @@ import { HomeLayout, AppLayout } from "@/components/layout";
 // import { useAuth } from "@/features/auth";
 // import { queryClient } from '@/lib/react-query';
 import { lazyImport } from "@/utils/lazyImport";
-const { Home } = lazyImport(() => import("@/features/misc"), "Home");
+import { lazy } from "react";
 
+const { Home } = lazyImport(() => import("@/features/employee"), "Home");
+const { SchedulePage } = lazyImport(
+  () => import("@/features/employee/pages/schedule/pages"),
+  "SchedulePage"
+);
+const { PaidLeaveRequestPage } = lazyImport(
+  () => import("@/features/employee/pages/PaidLeaveRequest"),
+  "PaidLeaveRequestPage"
+);
+const { SickRequestPage } = lazyImport(
+  () => import("@/features/employee/pages/SickRequest"),
+  "SickRequestPage"
+);
+const { LeaveRequestPage } = lazyImport(
+  () => import("@/features/employee/pages/LeaveRequest"),
+  "LeaveRequestPage"
+);
+const { CashAdvancePage } = lazyImport(
+  () => import("@/features/employee/pages/CashAdvance"),
+  "CashAdvancePage"
+);
+const { SalaryPage } = lazyImport(
+  () => import("@/features/employee/pages/Salary"),
+  "SalaryPage"
+);
+
+const { ProfilePage } = lazyImport(
+  () => import("@/features/employee/pages/Profile"),
+  "ProfilePage"
+);
 
 export const AppRoutes: React.FC = () => {
   return (
@@ -14,6 +44,15 @@ export const AppRoutes: React.FC = () => {
       <Route path="/" element={<AppLayout />}>
         <Route element={<HomeLayout />}>
           <Route index element={<Home />} />
+          <Route path="schedule" element={<SchedulePage />} />
+          <Route path="paid-leave-request" element={<PaidLeaveRequestPage />} />
+          <Route path="sick-request" element={<SickRequestPage />} />
+          <Route path="leave-request" element={<LeaveRequestPage />} />
+          <Route path="cash-advance-request" element={<CashAdvancePage />} />
+          <Route path="salary" element={<SalaryPage />} />
+          <Route path="profile">
+            <Route index element={<ProfilePage />} />
+          </Route>
         </Route>
       </Route>
     </Routes>
