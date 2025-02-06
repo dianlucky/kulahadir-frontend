@@ -61,7 +61,7 @@ export const HomeLayout: React.FC = () => {
         <div className="w-full flex justify-center">
           <div className="absolute bottom-1">
             <Link
-              to={"/attendance"}
+              to={"/check-log"}
               className="bg-brown flex flex-col items-center justify-center text-white w-16 max-w-16  rounded-full min-h-16 h-16 shadow-lg"
             >
               <IconHandStop className="mb-1" color="white" size={37} />

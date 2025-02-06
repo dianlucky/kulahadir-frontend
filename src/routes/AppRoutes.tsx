@@ -44,6 +44,10 @@ const { NotificationPage } = lazyImport(
   () => import("@/features/employee/pages/Notification"),
   "NotificationPage"
 );
+const { CheckLogPage } = lazyImport(
+  () => import("@/features/employee/pages/CheckLog"),
+  "CheckLogPage"
+);
 
 export const AppRoutes: React.FC = () => {
   return (
@@ -65,6 +69,9 @@ export const AppRoutes: React.FC = () => {
           </Route>
           <Route path="notification">
             <Route index element={<NotificationPage />} />
+          </Route>
+          <Route path="check-log">
+            <Route index element={<CheckLogPage />} />
           </Route>
         </Route>
       </Route>
