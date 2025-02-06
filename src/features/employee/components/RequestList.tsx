@@ -11,6 +11,7 @@ export const RequestList: React.FC = () => {
         //     state: { dataPaidLeave: paidLeave[index] },
         //   })
         // }
+        onClick={() => navigate("/paid-leave-request/detail")}
         className="bg-white max-w-xs w-full shadow-lg rounded-xl z-50 relative p-2 px-2 text-slate-700 mb-2"
       >
         <div className="w-full grid grid-cols-12 pb-2 pt-2 p-4">
@@ -22,7 +23,7 @@ export const RequestList: React.FC = () => {
               Hari
             </Text>
           </div>
-            <Divider className="col-span-1" orientation="vertical" />
+          <Divider className="col-span-1" orientation="vertical" />
           <div className="col-span-9 -ml-10">
             <div className="my-auto text-right -mt-3 -me-3">
               <Badge
@@ -56,7 +57,7 @@ export const RequestList: React.FC = () => {
             </div>
           </div>
         </div>
-        <Divider className="mx-auto" style={{width: '305px'}} />
+        <Divider className="mx-auto" style={{ width: "305px" }} />
         <div className="text-left my-1">
           <Text
             style={{ marginLeft: "0px", padding: "8px" }}

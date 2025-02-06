@@ -15,6 +15,10 @@ const { PaidLeaveRequestPage } = lazyImport(
   () => import("@/features/employee/pages/PaidLeaveRequest"),
   "PaidLeaveRequestPage"
 );
+const { DetailPaidLeaveRequest } = lazyImport(
+  () => import("@/features/employee/pages/PaidLeaveRequest"),
+  "DetailPaidLeaveRequest"
+);
 const { SickRequestPage } = lazyImport(
   () => import("@/features/employee/pages/SickRequest"),
   "SickRequestPage"
@@ -56,7 +60,10 @@ export const AppRoutes: React.FC = () => {
         <Route element={<HomeLayout />}>
           <Route index element={<Home />} />
           <Route path="schedule" element={<SchedulePage />} />
-          <Route path="paid-leave-request" element={<PaidLeaveRequestPage />} />
+          <Route path="paid-leave-request">
+            <Route index element={<PaidLeaveRequestPage />} />
+            <Route path="detail" element={<DetailPaidLeaveRequest/>} />
+          </Route>
           <Route path="sick-request" element={<SickRequestPage />} />
           <Route path="leave-request" element={<LeaveRequestPage />} />
           <Route path="cash-advance-request" element={<CashAdvancePage />} />
