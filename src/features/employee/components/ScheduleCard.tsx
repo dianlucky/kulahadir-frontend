@@ -1,7 +1,7 @@
 import { Badge, Divider, Text } from "@mantine/core";
 import { IconClockHour8 } from "@tabler/icons-react";
 
-export const ScheduleBox: React.FC = () => {
+export const ScheduleCard: React.FC = () => {
   return (
     <section className="mx-auto max-w-xs bg-white  w-full shadow-lg rounded-xl z-50 relative p-2 px-2 text-slate-700 mb-2 -mt-16">
       <div className="flex justify-between text-xs items-center p-2 -mt-1 -mb-1">
@@ -27,7 +27,7 @@ export const ScheduleBox: React.FC = () => {
       </div>
       <Divider size={"sm"} />
       <div className="divide-y divide-gray-500">
-        <div className="w-full grid grid-cols-12 divide-x divide-gray-300 p-1 -mb-2">
+        <div className="w-full grid grid-cols-12 p-1 -mb-2">
           <div className="col-span-3 text-center m-auto p-1">
             <Text size="28px" fw={700}>
               S2
@@ -36,7 +36,12 @@ export const ScheduleBox: React.FC = () => {
               Malam
             </Text>
           </div>
-          <div className="col-span-9 ms-2 text-left">
+          <Divider
+            orientation="vertical"
+            className="col-span-1 ml-2 mb-2"
+            style={{ height: "95px" }}
+          />
+          <div className="col-span-8 ms-2 -ml-2 text-left">
             <div className="ms-2 -mb-2">
               <Text size="xs">Hari & tanggal : </Text>
               <Text size="sm" fw={700}>
@@ -55,7 +60,8 @@ export const ScheduleBox: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-2 text-xs divide-x divide-gray-300 p-2">
+        <Divider size={"sm"} />
+        <div className="grid grid-cols-2 text-xs p-2">
           <div className="flex gap-2">
             <IconClockHour8 size={15} className="text-green-400" /> Check-in :
             '--'

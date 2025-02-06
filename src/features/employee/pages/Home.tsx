@@ -29,7 +29,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { MenuList } from "@/components/navigation";
-import { ScheduleBox } from "../components";
+import { ScheduleCard } from "../components";
 
 type DataAttendanceDivisionType = {
   Hadir: number;
@@ -66,7 +66,7 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      <ScheduleBox />
+      <ScheduleCard />
       {/* Menu List => Berisi daftar menu pada sistem */}
 
       <section className="px-7 mt-5" style={{ marginBottom: "-110px" }}>
