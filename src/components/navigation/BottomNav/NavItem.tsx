@@ -13,11 +13,11 @@ export const NavItem: React.FC<Navigation> = ({ title, href, icon, currentPath }
       to={href}
       className={clsx(
         'flex flex-col items-center justify-center w-full',
-        isActive ? 'text-blue-600' : 'text-dark-100'
+        isActive ? 'text-brown-600' : 'text-slate-100'
       )}
     >
-      <Icon className="w-5 h-5 mb-1"/>
-      <div className="text-sm font-medium">{title}</div>
+      <Icon className="w-5 h-5 mb-1" color='grey'/>
+      <div className="text-sm font-medium text-slate-500">{title}</div>
     </Link>
   );
 };

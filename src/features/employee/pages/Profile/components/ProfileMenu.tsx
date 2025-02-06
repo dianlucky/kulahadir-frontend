@@ -24,7 +24,7 @@ export const ProfileMenu: React.FC = () => {
         // onClick={() => logout()}
         className="bg-transparent text-left flex w-full items-center py-3 hover:bg-slate-100 ps-2"
       >
-        <div className="bg-red-600 text-white rounded-lg p-2">
+        <div className="bg-red-400 text-white rounded-lg p-2">
           <IconLogout size={25} />
         </div>
         <div className="font-semibold px-4 flex-grow text-sm">Logout</div>

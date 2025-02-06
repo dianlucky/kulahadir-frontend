@@ -37,6 +37,10 @@ const { ProfilePage } = lazyImport(
   () => import("@/features/employee/pages/Profile"),
   "ProfilePage"
 );
+const { HistoryPage } = lazyImport(
+  () => import("@/features/employee/pages/History"),
+  "HistoryPage"
+);
 
 export const AppRoutes: React.FC = () => {
   return (
@@ -52,6 +56,9 @@ export const AppRoutes: React.FC = () => {
           <Route path="salary" element={<SalaryPage />} />
           <Route path="profile">
             <Route index element={<ProfilePage />} />
+          </Route>
+          <Route path="history">  
+            <Route index element={<HistoryPage />} />
           </Route>
         </Route>
       </Route>

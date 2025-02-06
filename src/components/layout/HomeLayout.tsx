@@ -66,7 +66,7 @@ export const HomeLayout: React.FC = () => {
             >
               <IconHandStop className="mb-1" color="white" size={37} />
             </Link>
-            <div className="text-sm font-medium mb-1 mt-1 text-dark w-full text-center">
+            <div className="text-sm font-medium mb-1 mt-1 text-slate-500 w-full text-center">
               Check-in
             </div>
           </div>
