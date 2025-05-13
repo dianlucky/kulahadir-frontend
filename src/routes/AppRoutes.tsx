@@ -1,10 +1,29 @@
 // import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 
-import { HomeLayout, AppLayout } from "@/components/layout";
+import { HomeLayout, AppLayout, AdminLayout } from "@/components/layout";
 // import { useAuth } from "@/features/auth";
 // import { queryClient } from '@/lib/react-query';
 import { lazyImport } from "@/utils/lazyImport";
+
+const { Development } = lazyImport(
+  () => import("@/features/employee"),
+  "Development"
+);
+const { NotFoundLayout } = lazyImport(
+  () => import("@/components/layout"),
+  "NotFoundLayout"
+);
+const { Login } = lazyImport(() => import("@/features/auth"), "Login");
+
+const { DashboardAdmin } = lazyImport(
+  () => import("@/features/admin/pages"),
+  "DashboardAdmin"
+);
+const { DailyTaskPage } = lazyImport(
+  () => import("@/features/admin/pages/DataMaster/DailyTask"),
+  "DailyTaskPage"
+);
 
 const { Home } = lazyImport(() => import("@/features/employee"), "Home");
 const { SchedulePage } = lazyImport(
@@ -53,34 +72,62 @@ const { CheckLogPage } = lazyImport(
   "CheckLogPage"
 );
 
+const { DataMasterPage } = lazyImport(
+  () => import("@/features/admin/pages/DataMaster"),
+  "DataMasterPage"
+);
+
 export const AppRoutes: React.FC = () => {
+  const role: string = "admin";
   return (
     <Routes>
       <Route path="/" element={<AppLayout />}>
-        <Route element={<HomeLayout />}>
-          <Route index element={<Home />} />
-          <Route path="schedule" element={<SchedulePage />} />
-          <Route path="paid-leave-request">
-            <Route index element={<PaidLeaveRequestPage />} />
-            <Route path="detail" element={<DetailPaidLeaveRequest/>} />
+        {role === "employee" || role === "owner" ? (
+          <Route element={<HomeLayout />}>
+            <Route index element={<Home />} />
+            <Route path="schedule" element={<SchedulePage />} />
+            <Route path="paid-leave-request">
+              <Route index element={<PaidLeaveRequestPage />} />
+              <Route path="detail" element={<DetailPaidLeaveRequest />} />
+            </Route>
+            <Route path="sick-request" element={<SickRequestPage />} />
+            <Route path="leave-request" element={<LeaveRequestPage />} />
+            <Route path="cash-advance-request" element={<CashAdvancePage />} />
+            <Route path="salary" element={<SalaryPage />} />
+            <Route path="profile">
+              <Route index element={<ProfilePage />} />
+            </Route>
+            <Route path="history">
+              <Route index element={<HistoryPage />} />
+            </Route>
+            <Route path="notification">
+              <Route index element={<NotificationPage />} />
+            </Route>
+            <Route path="check-log">
+              <Route index element={<CheckLogPage />} />
+            </Route>
+            <Route path="*" element={<NotFoundLayout />} />
           </Route>
-          <Route path="sick-request" element={<SickRequestPage />} />
-          <Route path="leave-request" element={<LeaveRequestPage />} />
-          <Route path="cash-advance-request" element={<CashAdvancePage />} />
-          <Route path="salary" element={<SalaryPage />} />
-          <Route path="profile">
-            <Route index element={<ProfilePage />} />
+        ) : (
+          <Route path="development" element={<Development />} />
+        )}
+
+        {role === "admin" ? (
+          <Route element={<AdminLayout />}>
+            <Route index path="/" element={<DashboardAdmin />} />
+            <Route path="/data-master">
+              <Route index element={<DataMasterPage />} />
+            </Route>
+            <Route path="/daily-task">
+              <Route index element={<DailyTaskPage />} />
+            </Route>
           </Route>
-          <Route path="history">
-            <Route index element={<HistoryPage />} />
-          </Route>
-          <Route path="notification">
-            <Route index element={<NotificationPage />} />
-          </Route>
-          <Route path="check-log">
-            <Route index element={<CheckLogPage />} />
-          </Route>
-        </Route>
+        ) : (
+          <Route path="development" element={<Development />} />
+        )}
+
+        {/* Route For Development */}
+        <Route path="development" element={<Development />} />
       </Route>
     </Routes>
   );

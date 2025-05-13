@@ -51,6 +51,10 @@
     background: #3b82f6;
     border-radius: 10px;
   }
+  
+  .leaflet-container {
+    height: 100vh;
+  }
 
   body {
     @apply min-h-screen;

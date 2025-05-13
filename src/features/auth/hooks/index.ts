@@ -9,12 +9,12 @@ export const useAuth = () => {
     switch (context.creds?.role) {
       case 'employee':
         return 'employee';
-      case 'superadmin':
-        return 'superadmin';
+      // case 'superadmin':
+      //   return 'superadmin';
       case 'admin':
         return 'admin';
-      case 'supervisor':
-        return 'supervisor';
+      case 'owner':
+        return 'owner';
       default:
         return 'employee';
     }

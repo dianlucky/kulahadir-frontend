@@ -18,10 +18,10 @@ import { NavItem } from "../navigation/BottomNav/NavItem";
 
 const navigationsleft = [
   { title: "Home", href: "/", icon: IconHome },
-  { title: "Riwayat", href: "/history", icon: IconChecklist },
+  { title: "Notifikasi", href: "/notification", icon: IconBellRinging },
 ];
 const navigationsright = [
-  { title: "Notifikasi", href: "/notification", icon: IconBellRinging },
+  { title: "Riwayat", href: "/history", icon: IconChecklist },
   { title: "Profil", href: "/profile", icon: IconUser },
 ];
 

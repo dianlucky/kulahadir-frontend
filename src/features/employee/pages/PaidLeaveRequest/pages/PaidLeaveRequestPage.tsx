@@ -1,9 +1,9 @@
 import { RequestList } from "@/features/employee/components";
-import { IconChevronLeft } from "@tabler/icons-react";
+import { IconChevronLeft, IconPlus } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 
 export const PaidLeaveRequestPage: React.FC = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   return (
     <main>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
@@ -19,14 +19,23 @@ export const PaidLeaveRequestPage: React.FC = () => {
               className="font-bold rounded-md"
             />
           </div>
-          <div className="col-span-11 text-center -ml-4 font-semibold text-brown">
+          <div className="col-span-10 text-center -ml-4 font-semibold text-brown">
             <h2 className="font-semibold">Pengajuan cuti</h2>
+          </div>
+          <div className="col-span-1">
+            <IconPlus
+              onClick={() => {
+                navigate('/paid-leave-request/add')
+              }}
+              size={21}
+              className="font-bold rounded-md"
+            />
           </div>
           {/* </div> */}
         </div>
       </section>
 
-      <RequestList/>
+      <RequestList />
     </main>
   );
 };
