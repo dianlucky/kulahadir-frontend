@@ -25,6 +25,24 @@ const { DailyTaskPage } = lazyImport(
   "DailyTaskPage"
 );
 
+const { AccountPage } = lazyImport(
+  () => import("@/features/admin/pages/DataMaster/Account"),
+  "AccountPage"
+);
+
+const { EmployeePage } = lazyImport(
+  () => import("@/features/admin/pages/DataMaster/Employee"),
+  "EmployeePage"
+);
+
+const { SchedulePageAdmin } = lazyImport(
+  () => import("@/features/admin/pages/Schedule"),
+  "SchedulePageAdmin"
+);
+
+
+// EMPLOYEE && OWNER
+
 const { Home } = lazyImport(() => import("@/features/employee"), "Home");
 const { SchedulePage } = lazyImport(
   () => import("@/features/employee/pages/schedule/pages"),
@@ -120,6 +138,11 @@ export const AppRoutes: React.FC = () => {
             </Route>
             <Route path="/daily-task">
               <Route index element={<DailyTaskPage />} />
+            </Route>
+            <Route path="/account" element={<AccountPage />} />
+            <Route path="/employee" element={<EmployeePage />} />
+            <Route path="/schedule">
+              <Route index element={<SchedulePageAdmin />} />
             </Route>
           </Route>
         ) : (

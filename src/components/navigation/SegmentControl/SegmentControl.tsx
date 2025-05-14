@@ -32,22 +32,22 @@ export const SegmentControl: React.FC = () => {
           <Menu.Item onClick={() => navigate("/daily-task")}>Tugas harian</Menu.Item>
         </Menu.Dropdown>
       </Menu>
-      <UnstyledButton onClick={() => navigate("/")}>
+      <UnstyledButton onClick={() => navigate("/schedule")}>
         <span className="text-slate-400 font-semibold cursor-pointer text-sm">
           Jadwal
         </span>
       </UnstyledButton>
-      <UnstyledButton onClick={() => navigate("/")}>
+      <UnstyledButton onClick={() => navigate("/request")}>
         <span className="text-slate-400 font-semibold cursor-pointer text-sm">
           Pengajuan
         </span>
       </UnstyledButton>
-      <UnstyledButton onClick={() => navigate("/")}>
+      <UnstyledButton onClick={() => navigate("/salary")}>
         <span className="text-slate-400 font-semibold cursor-pointer text-sm">
           Gaji
         </span>
       </UnstyledButton>
-      <UnstyledButton onClick={() => navigate("/")}>
+      <UnstyledButton onClick={() => navigate("/report")}>
         <span className="text-slate-400 font-semibold cursor-pointer text-sm">
           Laporan
         </span>
