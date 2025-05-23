@@ -1,8 +1,10 @@
 import { IconChevronLeft } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
+import { MonthPickerSection } from "../../CashAdvance";
+import { SalarySection } from "../components";
 
 export const SalaryPage: React.FC = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   return (
     <main>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
@@ -24,6 +26,13 @@ export const SalaryPage: React.FC = () => {
           {/* </div> */}
         </div>
       </section>
+
+      <div className="mt-2 mx-6">
+        <MonthPickerSection />
+      </div>
+      <div className="mt-2 mx-6 mb-20">
+        <SalarySection />
+      </div>
     </main>
   );
 };

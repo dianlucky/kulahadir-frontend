@@ -6,18 +6,13 @@ export const RequestList: React.FC = () => {
   return (
     <div className="flex justify-center">
       <button
-        // onClick={() =>
-        //   navigate("/history/data-paid-leave/detail", {
-        //     state: { dataPaidLeave: paidLeave[index] },
-        //   })
-        // }
-        onClick={() => navigate("/paid-leave-request/detail")}
-        className="bg-white max-w-xs w-full shadow-lg rounded-xl z-50 relative p-2 px-2 text-slate-700 mb-2"
+        onClick={() => navigate("/leave-request/detail")}
+        className="bg-white max-w-xs w-full shadow-lg rounded-xl z-50 relative text-slate-700 mb-2 "
       >
-        <div className="w-full grid grid-cols-12 pb-2 pt-2 p-4">
-          <div className="col-span-2 text-center -ms-3 mt-2">
-            <Text size="26px" fw={700}>
-              2
+        <div className="w-full grid grid-cols-12 p-5 -mt-2">
+          <div className="col-span-2 text-center -ms-3 -mb-2 mt-3">
+            <Text size="28px" fw={700}>
+              12
             </Text>
             <Text style={{ marginTop: "-5px" }} size="xs">
               Hari
@@ -50,7 +45,7 @@ export const RequestList: React.FC = () => {
               </Badge>
             </div>
 
-            <div className="my-auto text-center ms-2 mt-1">
+            <div className="my-auto text-center ms-2 mt-1 -py-2 -mb-7">
               <Text size={"md"} fw={700}>
                 Kamis, 17 April 2025
               </Text>

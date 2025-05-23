@@ -222,7 +222,7 @@ export const AccountPage: React.FC = () => {
   return (
     <>
       <div className="grid lg:grid-cols-12 gap-6">
-        <div className="col-span-8">
+        <div className="col-span-9">
           <section className="bg-white shadow-lg p-6 rounded-lg">
             <div className="flex">
               <div>
@@ -232,7 +232,13 @@ export const AccountPage: React.FC = () => {
               </div>
             </div>
             <div className="mt-3">
-              <Table className="text-dark font-semibold cursor-pointer text-sm">
+              <Table
+                striped
+                highlightOnHover
+                withTableBorder
+                withColumnBorders
+                className="text-dark font-semibold cursor-pointer text-sm"
+              >
                 <Table.Thead>
                   <Table.Tr>
                     <Table.Th className="font-semibold">No</Table.Th>
@@ -248,7 +254,7 @@ export const AccountPage: React.FC = () => {
             </div>
           </section>
         </div>
-        <div className="col-span-4">
+        <div className="col-span-3">
           <section className="col-span-4 bg-white shadow-lg p-6 rounded-lg">
             <div>
               <div className="grid grid-cols-12 gap-2">

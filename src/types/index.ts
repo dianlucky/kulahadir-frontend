@@ -34,3 +34,11 @@ export type LevelType = {
   id: number;
   name: string;
 };
+
+export type RequestType = {
+  id: number;
+  reason: string;
+  status: string;
+  schedule_id: number;
+  schedule: ScheduleType;
+}

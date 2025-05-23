@@ -118,7 +118,13 @@ export const DailyTaskPage: React.FC = () => {
               </div>
             </div>
             <div className="mt-3">
-              <Table className="text-dark font-semibold cursor-pointer text-sm">
+              <Table
+                striped
+                highlightOnHover
+                withTableBorder
+                withColumnBorders
+                className="text-dark font-semibold cursor-pointer text-sm"
+              >
                 <Table.Thead>
                   <Table.Tr>
                     <Table.Th className="font-semibold">No</Table.Th>

@@ -89,13 +89,14 @@ export const EmployeePage: React.FC = () => {
     <Table.Tr key={index}>
       <Table.Td>{index + 1}</Table.Td>
       <Table.Td>{employee.name}</Table.Td>
-      <Table.Td>
+      {/* <Table.Td>
         {" "}
         {format(new Date(employee.birth_date), "d MMMM yyyy", {
           locale: id,
         })}{" "}
-      </Table.Td>
+      </Table.Td> */}
       <Table.Td>{employee.phone}</Table.Td>
+      <Table.Td>Pegawai tetap</Table.Td>
       <Table.Td>{employee.account.level.name}</Table.Td>
       <Table.Td className="w-40 ">
         <div className="flex gap-1 justify-center">
@@ -257,7 +258,7 @@ export const EmployeePage: React.FC = () => {
   return (
     <>
       <div className="grid lg:grid-cols-12 gap-6">
-        <div className="col-span-8">
+        <div className="col-span-9">
           <section className="bg-white shadow-lg p-6 rounded-lg">
             <div className="flex">
               <div>
@@ -267,13 +268,19 @@ export const EmployeePage: React.FC = () => {
               </div>
             </div>
             <div className="mt-3">
-              <Table className="text-dark font-semibold cursor-pointer text-sm">
+              <Table
+                striped
+                highlightOnHover
+                withTableBorder
+                withColumnBorders
+                className="text-dark font-semibold cursor-pointer text-sm"
+              >
                 <Table.Thead>
                   <Table.Tr>
                     <Table.Th className="font-semibold">No</Table.Th>
                     <Table.Th className="font-semibold">Nama</Table.Th>
-                    <Table.Th className="font-semibold">Tanggal lahir</Table.Th>
-                    <Table.Th className="font-semibold">No.WA</Table.Th>
+                    <Table.Th className="font-semibold">No. Whatsapp</Table.Th>
+                    <Table.Th className="font-semibold">Status</Table.Th>
                     <Table.Th className="font-semibold">Role</Table.Th>
                     <Table.Th className="font-semibold flex justify-center">
                       Aksi
@@ -285,7 +292,7 @@ export const EmployeePage: React.FC = () => {
             </div>
           </section>
         </div>
-        <div className="col-span-4">
+        <div className="col-span-3">
           <section className="col-span-4 bg-white shadow-lg p-6 rounded-lg">
             <div>
               <div className="grid grid-cols-12 gap-2">
@@ -423,6 +430,7 @@ export const EmployeePage: React.FC = () => {
                       withAsterisk
                       label="Akun yang digunakan"
                       placeholder="Akun"
+                      searchable
                       data={selectAccounts}
                       {...formUpdate.getInputProps("account_id")}
                     />
@@ -437,87 +445,84 @@ export const EmployeePage: React.FC = () => {
             </section>
           ) : isDetail ? (
             <section className="col-span-4 bg-white shadow-lg p-6 rounded-lg mt-2">
-              <div>
+              <div className="grid grid-cols-12">
+                <div className="col-span-10 text-dark font-semibold cursor-pointer text-lg mb-2">
+                  Detail pegawai
+                </div>
+                <div className="col-span-1"></div>
+                <div className="col-span-1">
+                  <CloseButton onClick={() => setDetail(false)}></CloseButton>
+                </div>
+              </div>
+              <Divider />
+              <div className="mt-4">
                 <div className="grid grid-cols-12">
-                  <div className="col-span-10 text-dark font-semibold cursor-pointer text-lg mb-2">
-                    Detail pegawai
+                  <div className="col-span-6 flex justify-center -ml-5">
+                    <Image
+                      radius="200"
+                      src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-7.png"
+                      style={{
+                        width: "100px",
+                        height: "100px",
+                        objectFit: "cover",
+                      }}
+                    />
                   </div>
-                  <div className="col-span-1"></div>
-                  <div className="col-span-1">
-                    <CloseButton onClick={() => setDetail(false)}></CloseButton>
+                  <div className="col-span-6">
+                    <div className="mt-5">
+                      <Text fw={"bold"} size="lg" truncate="end">
+                        {employee?.name}
+                      </Text>
+                    </div>
+                    <div className="-mt-2">
+                      <Text>{employee?.account.level.name}</Text>
+                    </div>
                   </div>
                 </div>
-                <Divider />
-                <div className="mt-4">
-                  <div className="grid grid-cols-12">
-                    <div className="col-span-6 flex justify-center -ml-5">
-                      <Image
-                        radius="200"
-                        src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-7.png"
-                        style={{
-                          width: "100px",
-                          height: "100px",
-                          objectFit: "cover",
-                        }}
-                      />
-                    </div>
-                    <div className="col-span-6">
-                      <div className="mt-5">
-                        <Text fw={"bold"} size="lg" truncate="end">
-                          {employee?.name}
-                        </Text>
-                      </div>
-                      <div className="-mt-2">
-                        <Text>{employee?.account.level.name}</Text>
-                      </div>
+                <div className="grid grid-cols-12 px-2">
+                  <div className="col-span-6">
+                    <div className="mt-5">
+                      <Text>Username:</Text>
+                      <Text fw={"bold"}>{employee?.account.username}</Text>
                     </div>
                   </div>
-                  <div className="grid grid-cols-12 px-2">
-                    <div className="col-span-6">
-                      <div className="mt-5">
-                        <Text>Username:</Text>
-                        <Text fw={"bold"}>{employee?.account.username}</Text>
-                      </div>
+                  <div className="col-span-6">
+                    <div className="mt-5">
+                      <Text>Role:</Text>
+                      <Text fw={"bold"}>{employee?.account.level.name}</Text>
                     </div>
-                    <div className="col-span-6">
-                      <div className="mt-5">
-                        <Text>Role:</Text>
-                        <Text fw={"bold"}>{employee?.account.level.name}</Text>
-                      </div>
+                  </div>
+                  <div className="col-span-6">
+                    <div className="mt-5">
+                      <Text>Nama lengkap:</Text>
+                      <Text fw={"bold"}>{employee?.name}</Text>
                     </div>
-                    <div className="col-span-6">
-                      <div className="mt-5">
-                        <Text>Nama lengkap:</Text>
-                        <Text fw={"bold"}>{employee?.name}</Text>
-                      </div>
+                  </div>
+                  <div className="col-span-6">
+                    <div className="mt-5">
+                      <Text>No Whatsapp:</Text>
+                      <Text fw={"bold"}>{employee?.phone}</Text>
                     </div>
-                    <div className="col-span-6">
-                      <div className="mt-5">
-                        <Text>No Whatsapp:</Text>
-                        <Text fw={"bold"}>{employee?.phone}</Text>
-                      </div>
+                  </div>
+                  <div className="col-span-12">
+                    <div className="mt-5">
+                      <Text>Tanggal lahir:</Text>
+                      <Text fw={"bold"}>
+                        {employee?.birth_date &&
+                          format(
+                            new Date(employee.birth_date),
+                            "EEEE, dd MMMM yyyy",
+                            { locale: id }
+                          )}
+                      </Text>
                     </div>
-                    <div className="col-span-6">
-                      <div className="mt-5">
-                        <Text>Tanggal lahir:</Text>
-                        <Text fw={"bold"}>
-                          {employee?.birth_date
-                            ? format(
-                                new Date(employee.birth_date),
-                                "EEEE, dd MMMM yyyy",
-                                { locale: id }
-                              )
-                            : ""}
-                        </Text>
-                      </div>
-                    </div>
-                    {/* <div className="col-span-6">
+                  </div>
+                  {/* <div className="col-span-6">
                       <div className="mt-5">
                         <Text>Username:</Text>
                         <Text fw={"bold"}>{employee?.account.username}</Text>
                       </div>
                     </div> */}
-                  </div>
                 </div>
               </div>
             </section>
