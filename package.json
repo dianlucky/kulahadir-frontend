@@ -40,6 +40,8 @@
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "embla-carousel-react": "^7.1.0",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.1",
     "leaflet": "^1.9.4",
     "react": "^19.0.0-rc.1",
     "react-data-table-component": "^7.7.0",

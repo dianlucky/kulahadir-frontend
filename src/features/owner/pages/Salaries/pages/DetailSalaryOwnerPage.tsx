@@ -1,7 +1,12 @@
 import { IconChevronLeft } from "@tabler/icons-react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { DetailEmployeeSection, PayslipSection } from "../components";
+import {
+  CreateSalarySection,
+  DetailEmployeeSection,
+  PayslipSection,
+} from "../components";
+import { Button } from "@mantine/core";
 
 export const DetailSalaryOwnerPage: React.FC = () => {
   const navigate = useNavigate();
@@ -32,6 +37,9 @@ export const DetailSalaryOwnerPage: React.FC = () => {
         </div>
         <div className="mt-2 mx-6">
           <PayslipSection />
+        </div>
+        <div className="mt-2 mx-6">
+          <CreateSalarySection />
         </div>
       </div>
     </main>

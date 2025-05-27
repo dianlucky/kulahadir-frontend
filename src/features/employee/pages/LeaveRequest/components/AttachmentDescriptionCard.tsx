@@ -1,7 +1,14 @@
+import { LeaveRequestType } from "@/types";
 import { Divider, Image, Text } from "@mantine/core";
 import { IconClipboardText } from "@tabler/icons-react";
 
-export const AttachmentDescriptionCard: React.FC = () => {
+interface AttachmentDescriptionCardProps {
+  leaveRequestData: LeaveRequestType;
+}
+
+export const AttachmentDescriptionCard: React.FC<
+  AttachmentDescriptionCardProps
+> = ({ leaveRequestData }) => {
   return (
     <section className="bg-white mx-auto max-w-xs w-full mt-1 shadow-lg rounded-xl z-50 relative p-2 px-2 text-slate-700">
       <div className="flex justify-between text-xs items-center mt-1 -mb-1 px-2">
@@ -31,7 +38,7 @@ export const AttachmentDescriptionCard: React.FC = () => {
         </div>
         <div className="gap-2 -mt-2 mb-5">
           <Text size="sm" fw={700}>
-            Keterangan :{" "}
+            Keterangan : {leaveRequestData.reason}
           </Text>
           <Text size="sm"></Text>
         </div>

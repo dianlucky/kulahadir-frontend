@@ -1,10 +1,33 @@
 import { IconChevronLeft } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import { MonthPickerSection } from "../../CashAdvance";
-import { SalarySection } from "../components";
+import { SalaryNotFound, SalarySection } from "../components";
+import { useEffect, useState } from "react";
+import { id } from "date-fns/locale";
+import { format } from "date-fns";
+import { SalaryType } from "@/types";
+import { useGetSalaryByMonthEmployeeId } from "../api";
 
 export const SalaryPage: React.FC = () => {
   const navigate = useNavigate();
+  const [selectedMonth, setSelectedMonth] = useState<string | undefined>(
+    format(new Date(), "yyyy-MM", { locale: id })
+  );
+  const [salary, setSalary] = useState<SalaryType>();
+  const {
+    data: DataSalary,
+    refetch: RefetchSalary,
+    isLoading: LoadingSalary,
+  } = useGetSalaryByMonthEmployeeId(selectedMonth, 1);
+  useEffect(() => {
+    if (DataSalary) {
+      setSalary(DataSalary[0]);
+    }
+  }, [DataSalary]);
+  useEffect(() => {
+    RefetchSalary();
+  }, [selectedMonth]);
+  // console.log(salaries);
   return (
     <main>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
@@ -28,10 +51,14 @@ export const SalaryPage: React.FC = () => {
       </section>
 
       <div className="mt-2 mx-6">
-        <MonthPickerSection />
+        <MonthPickerSection setSelectedMonth={setSelectedMonth} />
       </div>
       <div className="mt-2 mx-6 mb-20">
-        <SalarySection />
+        {salary != undefined && !LoadingSalary ? (
+          <SalarySection salary={salary} />
+        ) : (
+          <SalaryNotFound />
+        )}
       </div>
     </main>
   );

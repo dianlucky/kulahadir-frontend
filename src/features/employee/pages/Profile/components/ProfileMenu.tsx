@@ -1,14 +1,19 @@
+import { EmployeeType } from "@/types";
 import { Divider } from "@mantine/core";
 import { IconChevronRight, IconLogout, IconUser } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 
-export const ProfileMenu: React.FC = () => {
-    const navigate = useNavigate();
+interface ProfileMenuProps {
+  employee?: EmployeeType;
+}
+
+export const ProfileMenu: React.FC<ProfileMenuProps> = ({ employee }) => {
+  const navigate = useNavigate();
   return (
     <section className="w-full mt-8 px-7 flex flex-col divide-y divide-gray-300">
       {/* Data Diri */}
       <button
-        onClick={() => navigate("/profile/biodata")}
+        onClick={() => navigate("/profile/biodata", { state: employee })}
         className="bg-transparent text-left flex w-full items-center py-3 hover:bg-slate-100 ps-2"
       >
         <div className="bg-brown text-white rounded-lg p-2">
@@ -18,7 +23,7 @@ export const ProfileMenu: React.FC = () => {
         <IconChevronRight size={25} />
       </button>
 
-      <Divider my={'md'}></Divider>
+      <Divider my={"md"}></Divider>
 
       <button
         // onClick={() => logout()}

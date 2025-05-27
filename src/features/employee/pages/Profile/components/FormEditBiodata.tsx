@@ -8,12 +8,28 @@ import {
   TextInput,
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
+import { useForm } from "@mantine/form";
 import { IconUser } from "@tabler/icons-react";
 import { useState } from "react";
+import { useUpdateAccountById } from "../api";
+import { AccountType, EmployeeType } from "@/types";
+import { useNavigate } from "react-router-dom";
 const DEFAULT_IMAGE =
   "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-7.png";
 
-export const FormEditBiodata: React.FC = () => {
+interface FormEditBiodataProps {
+  employee: EmployeeType;
+}
+
+type UpdateAccountRequest = {
+  username?: string;
+  password?: string;
+};
+
+export const FormEditBiodata: React.FC<FormEditBiodataProps> = ({
+  employee,
+}) => {
+  const navigate = useNavigate();
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string>(DEFAULT_IMAGE);
 
@@ -34,7 +50,46 @@ export const FormEditBiodata: React.FC = () => {
     setPreview(DEFAULT_IMAGE);
   };
 
-  console.log(file);
+  // UPDATE ACCOUNT
+  const formUpdate = useForm({
+    validateInputOnChange: true,
+    initialValues: {
+      username: employee?.account?.username || "",
+      password: "",
+    },
+    validate: {
+      username: (value) => (value.length < 5 ? "Minimal 10 karakter" : null),
+    },
+  });
+
+  const mutationUpdateAccount = useUpdateAccountById(employee?.account.id);
+  const handleUpdateAccount = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault();
+    // if (!form.isValid()) return;
+
+    const updateAccountData: UpdateAccountRequest = {
+      username: formUpdate.values.username,
+      password: formUpdate.values.password,
+    };
+
+    if ((formUpdate.values.password ?? "").trim() !== "") {
+      updateAccountData.password = formUpdate.values.password;
+    }
+
+    await mutationUpdateAccount.mutateAsync(updateAccountData, {
+      onSuccess: (data: AccountType) => {
+        console.log("Success:", data);
+        formUpdate.reset();
+        navigate(-1);
+        close();
+      },
+    });
+  };
+  // END OF UPDATE ACCOUNT
+
+  // console.log(file);
   return (
     <>
       <section className="bg-white shadow-sm rounded-lg">
@@ -51,19 +106,32 @@ export const FormEditBiodata: React.FC = () => {
         <div className="px-5">
           <Divider />
         </div>
-        <div className="px-5 pb-5">
-          <div>
-            <TextInput label="username" size="sm" />
+        <form onSubmit={handleUpdateAccount}>
+          <div className="px-5 pb-5">
+            <div>
+              <TextInput
+                label="username"
+                size="sm"
+                key={formUpdate.key("username")}
+                {...formUpdate.getInputProps("username")}
+              />
+            </div>
+            <div>
+              <TextInput
+                label="password"
+                size="sm"
+                placeholder="optional"
+                key={formUpdate.key("password")}
+                {...formUpdate.getInputProps("password")}
+              />
+            </div>
+            <div className="w-full mt-4">
+              <Button fullWidth size="sm" type="submit">
+                Simpan perubahan akun
+              </Button>
+            </div>
           </div>
-          <div>
-            <TextInput label="password" size="sm" placeholder="optional" />
-          </div>
-          <div className="w-full mt-4">
-            <Button fullWidth size="sm">
-              Simpan
-            </Button>
-          </div>
-        </div>
+        </form>
       </section>
       <section className="bg-white shadow-sm rounded-lg mt-4 mb-20">
         <div className="flex justify-between py-2 px-5">
@@ -129,7 +197,7 @@ export const FormEditBiodata: React.FC = () => {
           </div>
           <div className="w-full mt-4">
             <Button fullWidth size="sm">
-              Simpan
+              Simpan perubahan biodata
             </Button>
           </div>
         </div>

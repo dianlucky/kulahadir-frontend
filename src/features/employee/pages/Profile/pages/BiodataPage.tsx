@@ -1,10 +1,19 @@
 import { IconChevronLeft } from "@tabler/icons-react";
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { BiodataSection } from "../components";
+import { EmployeeType } from "@/types";
+import { usegetEmployeeByAccountId } from "../api";
 
 export const BiodataPage: React.FC = () => {
   const navigate = useNavigate();
+  const [employee, setEmployee] = useState<EmployeeType>();
+  const { data: DataEmployee } = usegetEmployeeByAccountId(1);
+  useEffect(() => {
+    if (DataEmployee) {
+      setEmployee(DataEmployee);
+    }
+  }, [DataEmployee]);
   return (
     <main>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
@@ -28,7 +37,7 @@ export const BiodataPage: React.FC = () => {
       </section>
 
       <div className="mt-2 mx-6">
-        <BiodataSection />
+        <BiodataSection employee={employee} />
       </div>
     </main>
   );

@@ -1,0 +1,35 @@
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+
+const BaseURL = import.meta.env.VITE_API_URL;
+const token = import.meta.env.VITE_TOKEN;
+
+type TaskEmployeePost = {
+  day: string;
+  task_id: number;
+  employee_id: number;
+};
+
+export const postTaskEmployee = async (taskEmployee: TaskEmployeePost) => {
+  console.log("Data yang dikirim : ", taskEmployee);
+  const response = await axios.post(
+    `${BaseURL}/task-employees/`,
+    taskEmployee,
+    {
+      headers: {
+        Authorization: token,
+      },
+    }
+  );
+  return response.data;
+};
+
+export const useCreateTaskEmployee = () => {
+  return useMutation({
+    mutationFn: postTaskEmployee,
+    onMutate: async (taskEmployee: TaskEmployeePost) => {},
+    onError: (error) => {
+      console.log("Error :", error);
+    },
+  });
+};

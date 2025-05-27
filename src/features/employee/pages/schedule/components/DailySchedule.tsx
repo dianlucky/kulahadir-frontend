@@ -1,7 +1,40 @@
+import { AttendanceType, ScheduleType } from "@/types";
 import { Badge, Divider, Text } from "@mantine/core";
 import { IconClockHour8 } from "@tabler/icons-react";
+import { useEffect, useState } from "react";
+import { useGetScheduleByDateEmployeeId } from "../api";
+import { id, se } from "date-fns/locale";
+import { format } from "date-fns";
+import { useGetAttendanceByScheduleId } from "../../History";
 
-export const DailySchedule: React.FC = () => {
+type DailyScheduleProps = {
+  date: string | undefined;
+};
+
+export const DailySchedule: React.FC<DailyScheduleProps> = ({ date }) => {
+  const [selectedSchedule, setSelectedSchedule] = useState<ScheduleType>();
+  const { data: DataSelectedSchedule, refetch: RefetchSchedule } =
+    useGetScheduleByDateEmployeeId(1, date);
+  useEffect(() => {
+    if (DataSelectedSchedule) {
+      setSelectedSchedule(DataSelectedSchedule);
+    }
+  }, [DataSelectedSchedule, date]);
+
+  const [attendance, setAttendance] = useState<AttendanceType>();
+  const { data: DataAttendance, refetch: RefetchAttendance } =
+    useGetAttendanceByScheduleId(selectedSchedule?.id);
+  useEffect(() => {
+    if (DataAttendance) {
+      setAttendance(DataAttendance);
+    }
+  }, [DataAttendance]);
+
+  useEffect(() => {
+    RefetchSchedule();
+    RefetchAttendance();
+  }, [date]);
+
   return (
     <section className="mx-auto max-w-xs bg-white  w-full shadow-lg rounded-xl z-50 relative p-2 px-2 text-slate-700 mb-4">
       <div className="flex justify-between text-xs items-center p-2 -mt-1 -mb-1">
@@ -19,9 +52,9 @@ export const DailySchedule: React.FC = () => {
               marginLeft: "4px",
               borderRadius: "2px",
             }}
-            color={"green"}
+            color={selectedSchedule?.status == "on" ? "green" : "red"}
           >
-            on
+            {selectedSchedule?.status}
           </Badge>
         </div>
       </div>
@@ -30,17 +63,21 @@ export const DailySchedule: React.FC = () => {
         <div className="w-full grid grid-cols-12 divide-x divide-gray-300 p-1 -mb-2">
           <div className="col-span-3 text-center m-auto p-1">
             <Text size="28px" fw={700}>
-              SF2
+              {selectedSchedule?.shift_code}
             </Text>
             <Text style={{ marginTop: "-5px" }} size="sm">
-             Malam
+              Malam
             </Text>
           </div>
           <div className="col-span-9 ms-2 text-left">
             <div className="ms-2 -mb-2">
               <Text size="xs">Hari & tanggal : </Text>
               <Text size="sm" fw={700}>
-               Kamis, 17 April 2025
+                {selectedSchedule?.date
+                  ? format(selectedSchedule.date, "EEEE, dd MMM yyyy", {
+                      locale: id,
+                    })
+                  : ""}
               </Text>
             </div>
             <Divider my="sm" />
@@ -48,21 +85,29 @@ export const DailySchedule: React.FC = () => {
               <div className="col-span-6 text-left mt-1 ms-2">
                 <Text size="xs">Jam kerja</Text>
                 <Text size="sm" fw={700}>
-                  16.00 - 01.00
+                  {selectedSchedule?.start_time} - {selectedSchedule?.end_time}
                 </Text>
               </div>
               <div className="col-span-6 text-right -mt-1"></div>
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-2 text-xs divide-x divide-gray-300 p-2">
+        <Divider />
+        <div className="flex justify-between text-xs p-2">
           <div className="flex gap-2">
             <IconClockHour8 size={15} className="text-green-400" /> Masuk :{" "}
-            -- : --
+            {attendance?.check_in
+              ? format(new Date(attendance.check_in), "HH:mm", { locale: id })
+              : "--:--"}
+          </div>
+          <div>
+            <div className="w-px h-full bg-gray-300 mx-4" />
           </div>
           <div className="ps-3 flex gap-2">
             <IconClockHour8 size={15} className="text-rose-400" /> Keluar :{" "}
-            -- : --
+            {attendance?.check_out
+              ? format(new Date(attendance.check_out), "HH:mm", { locale: id })
+              : "--:--"}
           </div>
         </div>
       </div>

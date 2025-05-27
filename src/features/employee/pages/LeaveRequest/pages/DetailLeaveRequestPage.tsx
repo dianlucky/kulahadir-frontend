@@ -1,9 +1,13 @@
 import { IconChevronLeft } from "@tabler/icons-react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AttachmentDescriptionCard, DateDetailCard } from "../components";
+import { LeaveRequestType } from "@/types";
 
 export const DetailLeaveRequestPage: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const leaveRequestData = location.state.data as LeaveRequestType;
+  console.log("data izin :", leaveRequestData);
   return (
     <main>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
@@ -20,15 +24,15 @@ export const DetailLeaveRequestPage: React.FC = () => {
             />
           </div>
           <div className="col-span-11 text-center -ml-4 font-semibold text-brown">
-            <h2 className="font-semibold">Detail izin / cuti</h2>
+            <h2 className="font-semibold">Detail {leaveRequestData?.type}</h2>
           </div>
           {/* </div> */}
         </div>
       </section>
 
-      <DateDetailCard />
+      <DateDetailCard leaveRequestData={leaveRequestData} />
 
-      <AttachmentDescriptionCard />
+      <AttachmentDescriptionCard leaveRequestData={leaveRequestData} />
     </main>
   );
 };

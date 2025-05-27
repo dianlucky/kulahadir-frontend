@@ -1,10 +1,21 @@
 import { RequestList } from "@/features/employee/components";
+import { LeaveRequestType } from "@/types";
 import { UnstyledButton } from "@mantine/core";
 import { IconChevronLeft, IconPlus } from "@tabler/icons-react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useGetLeaveRequestByEmployeeId } from "../api";
 
 export const LeaveRequestPage: React.FC = () => {
   const navigate = useNavigate();
+  const [leaveRequests, setLeaveRequests] = useState<LeaveRequestType[]>([]);
+  const { data: DataLeaveRequest } = useGetLeaveRequestByEmployeeId(1);
+  useEffect(() => {
+    if (DataLeaveRequest) {
+      setLeaveRequests(DataLeaveRequest);
+    }
+  }, [DataLeaveRequest]);
+  console.log("data leave request : ", leaveRequests);
   return (
     <main>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
@@ -34,8 +45,8 @@ export const LeaveRequestPage: React.FC = () => {
           </div>
         </div>
       </section>
-      <div className="mt-2">
-        <RequestList />
+      <div className="mt-3">
+        <RequestList leaveRequests={leaveRequests} />
       </div>
     </main>
   );

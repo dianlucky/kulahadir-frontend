@@ -8,7 +8,8 @@ const token = import.meta.env.VITE_TOKEN;
 type UpdateAccountRequest = {
   username?: string;
   password?: string;
-  level_id?: number;
+  level?: string;
+  status?: string;
 };
 
 async function updateAccountById(

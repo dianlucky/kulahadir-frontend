@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import {
   DetailAttendanceSection,
   LocationCardSection,
+  PhotoSection,
   TaskEmployeeSection,
 } from "../components";
 import { Image, Text } from "@mantine/core";
@@ -56,6 +57,9 @@ export const DetailAttendancesOwnerPage: React.FC = () => {
         </div>
         <div className="mt-2 mx-6">
           <LocationCardSection />
+        </div>
+        <div className="mt-2 mx-6">
+          <PhotoSection />
         </div>
         <div className="mt-2 mx-9">
           <DetailAttendanceSection />

@@ -84,6 +84,7 @@ export const SchedulePageAdmin: React.FC = () => {
         setSuccessAdd(true);
         setNotificationMessage("Jadwal berhasil dibuat");
         RefetchWorker();
+        closeSchedules();
         close();
 
         setTimeout(() => {
@@ -271,7 +272,7 @@ export const SchedulePageAdmin: React.FC = () => {
                 loading={loading}
                 fullWidth
                 onClick={() => {
-                  handleCreateSchedules(), toggle;
+                  handleCreateSchedules();
                 }}
               >
                 Ya! Buat jadwal!
@@ -288,10 +289,10 @@ export const SchedulePageAdmin: React.FC = () => {
             <Divider />
             <div className="grid grid-cols-12 w-full gap-2 mt-2">
               {workingEmployee.length != 0 &&
-                workingEmployee.map((employee, index) => (
+                workingEmployee.map((data, index) => (
                   <div className="col-span-6 " key={index}>
                     <Indicator
-                      color={employee.status == "on" ? `green` : `red`}
+                      color={data.status == "on" ? `green` : `red`}
                       inline
                       size={10}
                       position="top-start"
@@ -311,10 +312,12 @@ export const SchedulePageAdmin: React.FC = () => {
                             />
                           </div>
                           <div className="col-span-6">
-                            <Text fw={"bold"} size="sm" truncate="end">
-                              {employee.employee.name}
+                            <Text fw={"bold"} size="sm" truncate="end" mb={-2}>
+                              {data.employee.name}
                             </Text>
-                            <Text size="xs">{employee.employee.name}</Text>
+                            <Text size="xs" mt={-2}>
+                              {data.employee.account.status}
+                            </Text>
                           </div>
                           <div className="col-span-4">
                             <div className="grid grid-cols-2 gap-1">
@@ -345,7 +348,7 @@ export const SchedulePageAdmin: React.FC = () => {
                                     size="xs"
                                     color="yellow"
                                     onClick={() => {
-                                      openWorkerDelete(), setWorker(employee);
+                                      openWorkerDelete(), setWorker(data);
                                     }}
                                   >
                                     <IconPencil size={18} color="white" />

@@ -1,9 +1,13 @@
 import { IconChevronLeft } from "@tabler/icons-react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FormEditBiodata } from "../components";
+import { EmployeeType } from "@/types";
 
 export const BiodataEditPage: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const employee = location.state.employee as EmployeeType;
+  console.log("Employee : ", employee);
   return (
     <main>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
@@ -27,7 +31,7 @@ export const BiodataEditPage: React.FC = () => {
       </section>
 
       <div className="mt-2 mx-6">
-        <FormEditBiodata />
+        <FormEditBiodata employee={employee} />
       </div>
     </main>
   );

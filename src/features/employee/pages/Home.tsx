@@ -69,9 +69,7 @@ export const Home: React.FC = () => {
             <div className="text-white text-lg font-bold relative z-10">
               Dian Lucky Prayogi
             </div>
-            <div className="text-sm text-white -mt-2">
-              Pegawai tetap
-            </div>
+            <div className="text-sm text-white -mt-2">Pegawai tetap</div>
             <div className="absolute right-5 top-5">
               <img src="/images/white-logo.png" alt="" className="w-14" />
             </div>
@@ -79,12 +77,12 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* <ScheduleCard /> */}
-      <RecapAttendanceCard />
+      <ScheduleCard />  
+      {/* <RecapAttendanceCard /> */}
       {/* Menu List => Berisi daftar menu pada sistem */}
 
       <section className="px-7 mt-5" style={{ marginBottom: "-110px" }}>
-        {/* <MenuList
+        <MenuList
           navigations={[
             {
               title: "Jadwal bulanan",
@@ -111,8 +109,8 @@ export const Home: React.FC = () => {
               color: "bg-brown",
             },
           ]}
-        /> */}
-        <MenuList
+        />
+        {/* <MenuList
           navigations={[
             {
               title: "Data pegawai",
@@ -157,7 +155,7 @@ export const Home: React.FC = () => {
               color: "bg-brown",
             },
           ]}
-        />
+        /> */}
       </section>
     </main>
   );

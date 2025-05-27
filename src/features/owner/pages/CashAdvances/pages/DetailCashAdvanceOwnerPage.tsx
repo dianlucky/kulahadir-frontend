@@ -1,5 +1,6 @@
 import { IconChevronLeft } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
+import { DetailCashAdvanceSection } from "../components";
 
 export const DetailCashAdvanceOwnerPage: React.FC = () => {
     const navigate = useNavigate();
@@ -26,6 +27,7 @@ export const DetailCashAdvanceOwnerPage: React.FC = () => {
         </section>
         <div>
           <div className="mt-2 mx-6">
+            <DetailCashAdvanceSection />
           </div>
         </div>
       </main>

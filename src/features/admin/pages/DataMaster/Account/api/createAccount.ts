@@ -7,7 +7,8 @@ const token = import.meta.env.VITE_TOKEN;
 type AccountPost = {
   username: string;
   password: string;
-  level_id: number | null | string;
+  level: string;
+  status: string;
 };
 
 export const postAccount = async (data: AccountPost) => {

@@ -1,20 +1,16 @@
 import { IconChevronLeft } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import { DailyCalendar, DailySchedule } from "../components";
-import { useEffect, useState } from "react";
-import { ScheduleType } from "@/types";
-import { useGetSchedule } from "../api";
+import { useState } from "react";
+import { format } from "date-fns";
 
 export const SchedulePage: React.FC = () => {
   const navigate = useNavigate();
-  const [schedule, setSchedule] = useState<ScheduleType>();
-  const { data: DataOff } = useGetSchedule(1);
-  useEffect(() => {
-    if (DataOff) {
-      setSchedule(DataOff);
-    }
-  }, [DataOff]);
-  console.log(schedule?.date);
+
+  const [date, setDate] = useState<string | undefined>(
+    format(new Date(), "yyyy-MM-dd")
+  );
+  console.log("selected date: ", date);
   return (
     <main>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
@@ -37,9 +33,9 @@ export const SchedulePage: React.FC = () => {
         </div>
       </section>
 
-      <DailyCalendar />
+      <DailyCalendar setDate={setDate} />
 
-      <DailySchedule />
+      <DailySchedule date={date} />
     </main>
   );
 };

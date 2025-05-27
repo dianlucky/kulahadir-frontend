@@ -52,11 +52,6 @@ const { ReportPageAdmin } = lazyImport(
   "ReportPageAdmin"
 );
 
-const { DataMasterPage } = lazyImport(
-  () => import("@/features/admin/pages/DataMaster"),
-  "DataMasterPage"
-);
-
 // EMPLOYEE && OWNER
 
 const { Home } = lazyImport(() => import("@/features/employee"), "Home");
@@ -80,6 +75,10 @@ const { CreateLeaveRequestPage } = lazyImport(
 const { CashAdvancePage } = lazyImport(
   () => import("@/features/employee/pages/CashAdvance"),
   "CashAdvancePage"
+);
+const { DetailCashAdvancePage } = lazyImport(
+  () => import("@/features/employee/pages/CashAdvance"),
+  "DetailCashAdvancePage"
 );
 
 const { CreateCashAdvanceRequestPage } = lazyImport(
@@ -182,7 +181,7 @@ const { DetailSalaryOwnerPage } = lazyImport(
 );
 
 export const AppRoutes: React.FC = () => {
-  const role: string = "owner";
+  const role: string = "employee";
   return (
     <Routes>
       <Route path="/" element={<AppLayout />}>
@@ -198,6 +197,7 @@ export const AppRoutes: React.FC = () => {
             <Route path="cash-advance-request">
               <Route index element={<CashAdvancePage />} />
               <Route path="add" element={<CreateCashAdvanceRequestPage />} />
+              <Route path="detail" element={<DetailCashAdvancePage />} />
             </Route>
             <Route path="salary" element={<SalaryPage />} />
             <Route path="profile">
@@ -253,9 +253,7 @@ export const AppRoutes: React.FC = () => {
         {role === "admin" ? (
           <Route element={<AdminLayout />}>
             <Route index path="/" element={<DashboardAdmin />} />
-            <Route path="/data-master">
-              <Route index element={<DataMasterPage />} />
-            </Route>
+
             <Route path="/daily-task">
               <Route index element={<DailyTaskPage />} />
             </Route>

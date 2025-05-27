@@ -7,14 +7,25 @@ import {
   UnstyledButton,
 } from "@mantine/core";
 import { IconAdjustments, IconChevronLeft } from "@tabler/icons-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HistoryCashAdvanceList } from "../components";
 import { MonthPickerInput } from "@mantine/dates";
+import { CashAdvanceType } from "@/types";
+import { useGetCashAdvanceByEmployeeId } from "@/features/employee/pages/CashAdvance";
 
 export const HistoryCashAdvancePage: React.FC = () => {
   const navigate = useNavigate();
   const [opened, setOpened] = useState<boolean>(false);
+  const [cashAdvances, setCashAdvances] = useState<CashAdvanceType[]>([]);
+  const { data: DataCashAdvances } = useGetCashAdvanceByEmployeeId(1);
+  useEffect(() => {
+    if (DataCashAdvances) {
+      setCashAdvances(DataCashAdvances);
+    }
+  }, [DataCashAdvances]);
+
+  console.log("DATA :", cashAdvances);
 
   return (
     <main>
@@ -91,7 +102,7 @@ export const HistoryCashAdvancePage: React.FC = () => {
         </div>
       </section>
       <div className="mt-2 mx-6">
-        <HistoryCashAdvanceList />
+        <HistoryCashAdvanceList cashAdvances={cashAdvances} />
       </div>
     </main>
   );

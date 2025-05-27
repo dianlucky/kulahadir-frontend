@@ -25,7 +25,8 @@ import { useDisclosure } from "@mantine/hooks";
 type UpdateAccountRequest = {
   username?: string;
   password?: string;
-  level_id?: number;
+  level?: string;
+  status?: string;
 };
 
 export const AccountPage: React.FC = () => {
@@ -35,19 +36,8 @@ export const AccountPage: React.FC = () => {
   const [successUpdate, setSuccessUpdate] = useState(false);
   const [isDelete, setDelete] = useState(false);
   const [isEdit, setEdit] = useState(false);
-  const [isDetail, setDetail] = useState(false);
   const [account, setAccount] = useState<AccountType>();
   console.log("Account yang dipilih : ", account);
-
-  useEffect(() => {
-    if (account) {
-      formUpdate.setValues({
-        username: account.username ?? "",
-        password: account.password ?? "",
-        level_id: account.level_id?.toString() ?? "",
-      });
-    }
-  }, [account]);
 
   // GET ACCOUNT
   const [accounts, setAccounts] = useState<AccountType[]>([]);
@@ -61,33 +51,21 @@ export const AccountPage: React.FC = () => {
       setAccounts(DataAccounts);
     }
   }, [DataAccounts]);
-  //   console.log("Data akun:", accounts);
+  console.log("Data akun:", accounts);
 
   const rows = accounts.map((account, index) => (
     <Table.Tr key={index}>
       <Table.Td>{index + 1}</Table.Td>
       <Table.Td>{account.username}</Table.Td>
-      <Table.Td>{account.level.name}</Table.Td>
+      <Table.Td>{account.level}</Table.Td>
+      <Table.Td>{account.status}</Table.Td>
       <Table.Td className="w-40 ">
         <div className="flex gap-1 justify-center">
-          <Button
-            size="xs"
-            color="indigo"
-            onClick={() => {
-              setDetail(true);
-              setEdit(false);
-              setDelete(false);
-              setAccount(account);
-            }}
-          >
-            <IconInfoCircle />
-          </Button>
           <Button
             size="xs"
             color="yellow"
             onClick={() => {
               setEdit(true);
-              setDetail(false);
               setDelete(false);
               setAccount(account);
             }}
@@ -100,7 +78,6 @@ export const AccountPage: React.FC = () => {
             onClick={() => {
               setDelete(true);
               setEdit(false);
-              setDetail(false);
               setAccount(account);
             }}
           >
@@ -119,7 +96,8 @@ export const AccountPage: React.FC = () => {
     initialValues: {
       username: "",
       password: "",
-      level_id: "",
+      level: "",
+      status: "",
     },
     validate: {
       username: (value) => (value.length < 5 ? "Minimal 10 karakter" : null),
@@ -134,7 +112,8 @@ export const AccountPage: React.FC = () => {
     const accountData = {
       username: form.values.username,
       password: form.values.password,
-      level_id: parseInt(form.values.level_id),
+      level: form.values.level,
+      status: form.values.status,
     };
 
     await mutationCreateAccount.mutateAsync(accountData, {
@@ -159,12 +138,25 @@ export const AccountPage: React.FC = () => {
     initialValues: account ?? {
       username: "",
       password: "",
-      level_id: "",
+      level: "",
+      status: "",
     },
     validate: {
       username: (value) => (value.length < 5 ? "Minimal 10 karakter" : null),
     },
   });
+
+  useEffect(() => {
+    if (account) {
+      formUpdate.setValues({
+        username: account.username ?? "",
+        password: account.password ?? "",
+        level: account.level ?? "",
+        status: account.status ?? "",
+      });
+    }
+  }, [account]);
+
   const mutationUpdateAccount = useUpdateAccountById(account?.id);
   const handleUpdateAccount = async (
     event: React.FormEvent<HTMLFormElement>
@@ -174,7 +166,8 @@ export const AccountPage: React.FC = () => {
 
     const updateAccountData: UpdateAccountRequest = {
       username: formUpdate.values.username,
-      level_id: parseInt(formUpdate.values.level_id.toString()),
+      level: formUpdate.values.level,
+      status: formUpdate.values.status,
     };
 
     if ((formUpdate.values.password ?? "").trim() !== "") {
@@ -244,6 +237,7 @@ export const AccountPage: React.FC = () => {
                     <Table.Th className="font-semibold">No</Table.Th>
                     <Table.Th className="font-semibold">Username</Table.Th>
                     <Table.Th className="font-semibold">Role</Table.Th>
+                    <Table.Th className="font-semibold">Status</Table.Th>
                     <Table.Th className="font-semibold flex justify-center">
                       Aksi
                     </Table.Th>
@@ -297,11 +291,23 @@ export const AccountPage: React.FC = () => {
                       label="Role"
                       placeholder="role"
                       data={[
-                        { value: "1", label: "Admin" },
-                        { value: "2", label: "Owner" },
-                        { value: "3", label: "Pegawai" },
+                        { value: "Admin", label: "Admin" },
+                        { value: "Owner", label: "Owner" },
+                        { value: "Pegawai", label: "Pegawai" },
                       ]}
-                      {...form.getInputProps("level_id")}
+                      {...form.getInputProps("level")}
+                    />
+                    <Select
+                      withAsterisk
+                      label="Status"
+                      placeholder="status"
+                      mt={8}
+                      data={[
+                        { value: "Pegawai tetap", label: "Pegawai tetap" },
+                        { value: "Part time", label: "Part time" },
+                        { value: "Lain lain", label: "Lain lain" },
+                      ]}
+                      {...form.getInputProps("status")}
                     />
                     <div className="flex justify-center mt-5">
                       <Button fullWidth type="submit">
@@ -376,14 +382,27 @@ export const AccountPage: React.FC = () => {
                       {...formUpdate.getInputProps("password")}
                     />
                     <Select
+                      withAsterisk
                       label="Role"
                       placeholder="role"
                       data={[
-                        { value: "1", label: "Admin" },
-                        { value: "2", label: "Owner" },
-                        { value: "3", label: "Pegawai" },
+                        { value: "Admin", label: "Admin" },
+                        { value: "Owner", label: "Owner" },
+                        { value: "Pegawai", label: "Pegawai" },
                       ]}
-                      {...formUpdate.getInputProps("level_id")}
+                      {...formUpdate.getInputProps("level")}
+                    />
+                    <Select
+                      withAsterisk
+                      label="Status"
+                      placeholder="status"
+                      mt={8}
+                      data={[
+                        { value: "Pegawai tetap", label: "Pegawai tetap" },
+                        { value: "Part time", label: "Part time" },
+                        { value: "Lain lain", label: "Lain lain" },
+                      ]}
+                      {...formUpdate.getInputProps("status")}
                     />
                     <div className="flex justify-center mt-5">
                       <Button fullWidth type="submit">
@@ -391,38 +410,6 @@ export const AccountPage: React.FC = () => {
                       </Button>
                     </div>
                   </form>
-                </div>
-              </div>
-            </section>
-          ) : isDetail ? (
-            <section className="col-span-4 bg-white shadow-lg p-6 rounded-lg mt-2">
-              <div>
-                <div className="grid grid-cols-12">
-                  <div className="col-span-10 text-dark font-semibold cursor-pointer text-lg mb-2">
-                    Hapus tugas
-                  </div>
-                  <div className="col-span-1"></div>
-                  <div className="col-span-1">
-                    <CloseButton onClick={() => setDetail(false)}></CloseButton>
-                  </div>
-                </div>
-                <Divider />
-                <div className="mt-4 text-center">
-                  <Text size="md" fw={500}>
-                    Apakah anda yakin ingin menghapus data account ?
-                  </Text>
-                  <Text size="md" c={"red"} fw={600}>
-                    "{account?.username}"
-                  </Text>
-                </div>
-                <div className="flex justify-center mt-2">
-                  <Button
-                    onClick={() => deleteAccount(account?.id)}
-                    type="submit"
-                    color="red"
-                  >
-                    Ya!
-                  </Button>
                 </div>
               </div>
             </section>

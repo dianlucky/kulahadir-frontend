@@ -1,68 +1,87 @@
+import { LeaveRequestType } from "@/types";
 import { Badge, Divider, Text } from "@mantine/core";
+import { format } from "date-fns";
+import { id } from "date-fns/locale";
 import { useNavigate } from "react-router-dom";
 
-export const RequestList: React.FC = () => {
-  const navigate = useNavigate();
-  return (
-    <div className="flex justify-center">
-      <button
-        onClick={() => navigate("/leave-request/detail")}
-        className="bg-white max-w-xs w-full shadow-lg rounded-xl z-50 relative text-slate-700 mb-2 "
-      >
-        <div className="w-full grid grid-cols-12 p-5 -mt-2">
-          <div className="col-span-2 text-center -ms-3 -mb-2 mt-3">
-            <Text size="28px" fw={700}>
-              12
-            </Text>
-            <Text style={{ marginTop: "-5px" }} size="xs">
-              Hari
-            </Text>
-          </div>
-          <Divider className="col-span-1" orientation="vertical" />
-          <div className="col-span-9 -ml-10">
-            <div className="my-auto text-right -mt-3 -me-3">
-              <Badge
-                size="xs"
-                style={{
-                  marginTop: "10px",
-                  marginLeft: "4px",
-                  borderRadius: "2px",
-                }}
-                color="blue"
-              >
-                Izin
-              </Badge>
-              <Badge
-                size="xs"
-                style={{
-                  marginTop: "7px",
-                  marginLeft: "7px",
-                  borderRadius: "2px",
-                }}
-                color="red"
-              >
-                Belum disetujui
-              </Badge>
-            </div>
+interface RequestListProps {
+  leaveRequests?: LeaveRequestType[];
+}
 
-            <div className="my-auto text-center ms-2 mt-1 -py-2 -mb-7">
-              <Text size={"md"} fw={700}>
-                Kamis, 17 April 2025
+export const RequestList: React.FC<RequestListProps> = ({ leaveRequests }) => {
+  const navigate = useNavigate();
+
+  return (
+    <div className="flex flex-col items-center">
+      {leaveRequests && leaveRequests.length > 0 ? (
+        leaveRequests.map((data, index) => (
+          <button
+            key={index}
+            onClick={() =>
+              navigate("/leave-request/detail", { state: { data } })
+            }
+            className="bg-white max-w-xs w-full shadow-md rounded-2xl z-50 text-slate-700 mb-4"
+          >
+            <div className="grid grid-cols-12 p-3">
+              <div className="col-span-2 text-center -mb-2">
+                <Text size="35px" fw={700}>
+                  1
+                </Text>
+                <Text size="xs" mt={-6}>
+                  Hari
+                </Text>
+              </div>
+              <Divider className="col-span-1" orientation="vertical" />
+              <div className="col-span-9">
+                <div className="flex justify-end mb-1">
+                  <Badge
+                    size="xs"
+                    color={data?.type == "sakit" ? "yellow" : "blue"}
+                    style={{ borderRadius: "2px", marginRight: "4px" }}
+                  >
+                    {data?.type}
+                  </Badge>
+                  <Badge
+                    size="xs"
+                    color={
+                      data?.status == "pending"
+                        ? "grey"
+                        : data?.status == "accepted"
+                        ? "green"
+                        : "red"
+                    }
+                    style={{ borderRadius: "2px" }}
+                  >
+                    {data?.status}
+                  </Badge>
+                </div>
+                <div className="text-center my-auto">
+                  <Text size="md" fw={700}>
+                    {data?.date
+                      ? format(data?.date, "EEEE, dd MMM yyyy", { locale: id })
+                      : "-"}
+                  </Text>
+                </div>
+              </div>
+            </div>
+            <Divider />
+            <div className="text-left p-2">
+              <Text size="xs" fw={500}>
+                Tanggal pengajuan:{" "}
+                {data?.created_at
+                  ? format(data?.created_at, "EEEE, dd MMM yyyy", {
+                      locale: id,
+                    })
+                  : "-"}
               </Text>
             </div>
-          </div>
-        </div>
-        <Divider className="mx-auto" style={{ width: "305px" }} />
-        <div className="text-left my-1">
-          <Text
-            style={{ marginLeft: "0px", padding: "8px" }}
-            size="11px"
-            fw={500}
-          >
-            Tanggal pengajuan : Kamis, 17 April 2025
-          </Text>
-        </div>
-      </button>
+          </button>
+        ))
+      ) : (
+        <Text size="sm" color="dimmed">
+          Tidak ada permintaan cuti.
+        </Text>
+      )}
     </div>
   );
 };

@@ -1,10 +1,8 @@
 import {
+  IconCalendarCheck,
   IconCashRegister,
-  IconChartCandle,
   IconChevronRight,
   IconClipboardHeart,
-  IconClipboardText,
-  IconLuggage,
 } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 
@@ -24,7 +22,7 @@ export const HistoryMenu: React.FC = () => {
         className="bg-white rounded-lg shadow-lg p-4 flex items-center justify-between text-sm"
       >
         <div className="flex gap-3 items-center">
-          <IconChartCandle size={25} className="text-brown" />
+          <IconCalendarCheck size={25} className="text-brown" />
           <div>
             <span className="font-semibold">Riwayat Absensi</span>
             <p className="text-xs text-slate-400">Riwayat Absensi</p>

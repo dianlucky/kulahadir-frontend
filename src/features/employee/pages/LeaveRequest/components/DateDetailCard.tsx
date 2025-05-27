@@ -1,14 +1,22 @@
+import { LeaveRequestType } from "@/types";
 import { Badge, Divider, Text } from "@mantine/core";
+import { format } from "date-fns";
+import { id } from "date-fns/locale";
 
-export const DateDetailCard: React.FC = () => {
+interface DateDetailCardProps {
+  leaveRequestData: LeaveRequestType;
+}
+export const DateDetailCard: React.FC<DateDetailCardProps> = ({
+  leaveRequestData,
+}) => {
   return (
-    <section className="bg-white mx-auto max-w-xs w-full mt-2 shadow-lg rounded-xl z-50 relative p-2 px-2 text-slate-700">
+    <section className="bg-white mx-auto max-w-xs w-full mt-2 shadow-lg rounded-xl z-50 relative p-2 px-2 ">
       <div className="flex justify-between text-xs items-center mt-1 -mb-1 px-2">
         <span
           style={{ fontSize: "14px" }}
           className="font-bold text-brown capitalize"
         >
-          Cuti
+          {leaveRequestData.type}
         </span>
         <div className="-mt-2">
           <Badge
@@ -17,9 +25,15 @@ export const DateDetailCard: React.FC = () => {
               marginLeft: "4px",
               borderRadius: "2px",
             }}
-            color="red"
+            color={
+              leaveRequestData.status == "pending"
+                ? "grey"
+                : leaveRequestData.status == "accepted"
+                ? "green"
+                : "red"
+            }
           >
-            Belum disetujui
+            {leaveRequestData.status}
           </Badge>
         </div>
       </div>
@@ -38,17 +52,26 @@ export const DateDetailCard: React.FC = () => {
           <div className="col-span-9 ms-2 text-left mb-2 -ml-2">
             <div className="ms-2 -mb-2">
               <Text size="sm" fw={700}>
-                Tanggal mulai :
+                Tanggal izin :
               </Text>
-              <Text size="sm">Kamis, 17 April 2025</Text>
+              <Text size="sm">
+                {format(leaveRequestData.date, "EEEE, dd MMM yyyy", {
+                  locale: id,
+                })}
+              </Text>
             </div>
 
             <Divider my="sm" />
             <div className="ms-2 -mt-2">
               <Text size="sm" fw={700}>
-                Tanggal selesai :
+                Tanggal pengajuan :
               </Text>
-              <Text size="sm">Kamis, 17 April 2025</Text>
+              <Text size="sm">
+                {" "}
+                {format(leaveRequestData.created_at, "EEEE, dd MMM yyyy", {
+                  locale: id,
+                })}
+              </Text>
             </div>
           </div>
         </div>

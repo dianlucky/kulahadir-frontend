@@ -1,10 +1,30 @@
-import { UnstyledButton } from "@mantine/core";
 import { IconChevronLeft, IconPlus } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import { CashAdvanceList, MonthPickerSection } from "../components";
+import { CashAdvanceType } from "@/types";
+import { useEffect, useState } from "react";
+import { useGetCashAdvanceByMonthEmployeeId } from "../api";
+import { format } from "date-fns";
+import { id } from "date-fns/locale";
 
 export const CashAdvancePage: React.FC = () => {
   const navigate = useNavigate();
+  const [selectedMonth, setSelectedMonth] = useState<string | undefined>(
+    format(new Date(), "yyyy-MM", { locale: id })
+  );
+  const [cashAdvances, setCashAdvances] = useState<CashAdvanceType[]>([]);
+  const { data: DataCashAdvances, refetch: RefetchCashAdvances } =
+    useGetCashAdvanceByMonthEmployeeId(selectedMonth, 1);
+  useEffect(() => {
+    if (DataCashAdvances) {
+      setCashAdvances(DataCashAdvances);
+    }
+  }, [DataCashAdvances]);
+  useEffect(() => {
+    RefetchCashAdvances();
+  }, [selectedMonth]);
+  console.log("Month :", selectedMonth);
+  console.log("Kasbon :", cashAdvances);
   return (
     <main>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
@@ -27,10 +47,13 @@ export const CashAdvancePage: React.FC = () => {
         </div>
       </section>
       <div className="mt-2 mx-6">
-        <MonthPickerSection />
+        <MonthPickerSection setSelectedMonth={setSelectedMonth} />
       </div>
-      <div className="mt-2 mx-6">
-        <CashAdvanceList />
+      <div className="mt-2 mx-6 mb-20">
+        <CashAdvanceList
+          cashAdvances={cashAdvances}
+          refetchCashAdvances={RefetchCashAdvances}
+        />
       </div>
     </main>
   );

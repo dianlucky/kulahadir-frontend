@@ -8,14 +8,26 @@ import {
 } from "@mantine/core";
 import { MonthPickerInput } from "@mantine/dates";
 import { IconAdjustments, IconChevronLeft } from "@tabler/icons-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HistoryRequestList } from "../components";
+import { LeaveRequestType } from "@/types";
+import { useGetLeaveRequestByEmployeeId } from "@/features/employee/pages/LeaveRequest";
 
 export const HistoryRequestPage: React.FC = () => {
   const navigate = useNavigate();
   const [opened, setOpened] = useState<boolean>(false);
 
+  const [leaveRequests, setLeaveRequests] = useState<LeaveRequestType[]>([]);
+  const { data: DataLeaveRequest, refetch: RefetchLeaveRequest } =
+    useGetLeaveRequestByEmployeeId(1);
+  useEffect(() => {
+    if (DataLeaveRequest) {
+      setLeaveRequests(DataLeaveRequest);
+    } else {
+      setLeaveRequests([]);
+    }
+  }, [DataLeaveRequest]);
   return (
     <main>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
@@ -104,7 +116,7 @@ export const HistoryRequestPage: React.FC = () => {
         </div>
       </section>
       <div className="mt-2 mx-6">
-        <HistoryRequestList />
+        <HistoryRequestList leaveRequests={leaveRequests} />
       </div>
     </main>
   );

@@ -5,11 +5,12 @@ const BaseURL = import.meta.env.VITE_API_URL;
 const token = import.meta.env.VITE_TOKEN;
 
 type DailyTaskPost = {
-  task: string;
+  task_code: string;
+  task_name: string;
 };
 
 export const postDailyTasks = async (dailyTask: DailyTaskPost) => {
-    console.log("Data yang dikirim : ", dailyTask);
+  console.log("Data yang dikirim : ", dailyTask);
   const response = await axios.post(`${BaseURL}/daily-tasks/`, dailyTask, {
     headers: {
       Authorization: token,
@@ -21,8 +22,7 @@ export const postDailyTasks = async (dailyTask: DailyTaskPost) => {
 export const useCreateDailyTask = () => {
   return useMutation({
     mutationFn: postDailyTasks,
-    onMutate: async (dailyTask: DailyTaskPost) => {
-    },
+    onMutate: async (dailyTask: DailyTaskPost) => {},
     onError: (error) => {
       console.log("Error :", error);
     },

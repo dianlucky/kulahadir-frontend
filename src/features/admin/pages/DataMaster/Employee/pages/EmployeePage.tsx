@@ -96,8 +96,8 @@ export const EmployeePage: React.FC = () => {
         })}{" "}
       </Table.Td> */}
       <Table.Td>{employee.phone}</Table.Td>
-      <Table.Td>Pegawai tetap</Table.Td>
-      <Table.Td>{employee.account.level.name}</Table.Td>
+      <Table.Td>{employee.account.status}</Table.Td>
+      <Table.Td>{employee.account.level}</Table.Td>
       <Table.Td className="w-40 ">
         <div className="flex gap-1 justify-center">
           <Button
@@ -444,7 +444,7 @@ export const EmployeePage: React.FC = () => {
               </div>
             </section>
           ) : isDetail ? (
-            <section className="col-span-4 bg-white shadow-lg p-6 rounded-lg mt-2">
+            <section className="col-span-4 bg-white shadow-lg p-6 rounded-lg mt-2 mb-10">
               <div className="grid grid-cols-12">
                 <div className="col-span-10 text-dark font-semibold cursor-pointer text-lg mb-2">
                   Detail pegawai
@@ -457,25 +457,25 @@ export const EmployeePage: React.FC = () => {
               <Divider />
               <div className="mt-4">
                 <div className="grid grid-cols-12">
-                  <div className="col-span-6 flex justify-center -ml-5">
+                  <div className="col-span-4 flex justify-center -ml-5">
                     <Image
                       radius="200"
                       src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-7.png"
                       style={{
-                        width: "100px",
-                        height: "100px",
+                        width: "70px",
+                        height: "70px",
                         objectFit: "cover",
                       }}
                     />
                   </div>
-                  <div className="col-span-6">
-                    <div className="mt-5">
+                  <div className="col-span-8">
+                    <div className="mt-2">
                       <Text fw={"bold"} size="lg" truncate="end">
                         {employee?.name}
                       </Text>
                     </div>
                     <div className="-mt-2">
-                      <Text>{employee?.account.level.name}</Text>
+                      <Text>{employee?.account.level}</Text>
                     </div>
                   </div>
                 </div>
@@ -483,31 +483,39 @@ export const EmployeePage: React.FC = () => {
                   <div className="col-span-6">
                     <div className="mt-5">
                       <Text>Username:</Text>
-                      <Text fw={"bold"}>{employee?.account.username}</Text>
+                      <Text fw={"bold"} mt={-5}>
+                        {employee?.account.username}
+                      </Text>
                     </div>
                   </div>
                   <div className="col-span-6">
                     <div className="mt-5">
                       <Text>Role:</Text>
-                      <Text fw={"bold"}>{employee?.account.level.name}</Text>
+                      <Text fw={"bold"} mt={-5}>
+                        {employee?.account.level}
+                      </Text>
                     </div>
                   </div>
                   <div className="col-span-6">
                     <div className="mt-5">
-                      <Text>Nama lengkap:</Text>
-                      <Text fw={"bold"}>{employee?.name}</Text>
+                      <Text>Status:</Text>
+                      <Text fw={"bold"} mt={-5}>
+                        {employee?.account.status}
+                      </Text>
                     </div>
                   </div>
                   <div className="col-span-6">
                     <div className="mt-5">
                       <Text>No Whatsapp:</Text>
-                      <Text fw={"bold"}>{employee?.phone}</Text>
+                      <Text fw={"bold"} mt={-5}>
+                        {employee?.phone}
+                      </Text>
                     </div>
                   </div>
                   <div className="col-span-12">
                     <div className="mt-5">
                       <Text>Tanggal lahir:</Text>
-                      <Text fw={"bold"}>
+                      <Text fw={"bold"} mt={-5}>
                         {employee?.birth_date &&
                           format(
                             new Date(employee.birth_date),
@@ -517,12 +525,20 @@ export const EmployeePage: React.FC = () => {
                       </Text>
                     </div>
                   </div>
-                  {/* <div className="col-span-6">
-                      <div className="mt-5">
-                        <Text>Username:</Text>
-                        <Text fw={"bold"}>{employee?.account.username}</Text>
-                      </div>
-                    </div> */}
+                </div>
+                <Divider mt={7} />
+                <div className="mt-2 px-2 flex gap-2">
+                  <Text fw={400} size="sm">
+                    Tanggal dibuat :
+                  </Text>
+                  <Text fw={700} size="sm">
+                    {employee?.created_at &&
+                      format(
+                        new Date(employee.created_at),
+                        "EEEE, dd MMMM yyyy",
+                        { locale: id }
+                      )}
+                  </Text>
                 </div>
               </div>
             </section>
