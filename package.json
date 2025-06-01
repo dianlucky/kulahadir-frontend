@@ -11,7 +11,10 @@
   },
   "dependencies": {
     "@capacitor/app": "^7.0.0",
+    "@capacitor/camera": "^7.0.1",
     "@capacitor/core": "^7.0.1",
+    "@capacitor/geolocation": "^7.1.2",
+    "@ionic/pwa-elements": "^3.3.0",
     "@mantine/carousel": "^7.16.2",
     "@mantine/charts": "^7.16.2",
     "@mantine/code-highlight": "^7.16.2",

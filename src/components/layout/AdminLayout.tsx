@@ -31,6 +31,7 @@ import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { LoadingScreen } from "../elements";
 import { SegmentControl } from "../navigation";
 import { useTitleContext } from "../providers/TitleProvider";
+import { useAuth } from "@/features/auth";
 type SubMenuListType = {
   maintitle: string;
   title: string;
@@ -156,6 +157,7 @@ const MenuFreelancer = [
 // ================== THIS LAYOUT FOR ADMIN ONLY (SINGLE ROLE) =======================
 // ====================================================================================
 export const AdminLayout: React.FC = () => {
+  const { creds, logout } = useAuth();
   const location = useLocation();
   const { title, setTitle } = useTitleContext();
   const navigate = useNavigate();
@@ -303,7 +305,7 @@ export const AdminLayout: React.FC = () => {
                       <Menu.Divider />
 
                       <Menu.Item
-                        // onClick={() => logout()}
+                        onClick={() => logout()}
                         color="red"
                         leftSection={<IconLogout size={14} />}
                       >

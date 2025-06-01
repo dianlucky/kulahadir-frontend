@@ -5,12 +5,14 @@ import { IconCalendar } from "@tabler/icons-react";
 import { useEffect, useMemo, useState } from "react";
 import { useGetScheduleByMonthEmployeeId } from "../api";
 import { format } from "date-fns";
+import { useAuth } from "@/features/auth";
 
 type DailyCalendarProps = {
   setDate: React.Dispatch<React.SetStateAction<string | undefined>>;
 };
 
 export const DailyCalendar: React.FC<DailyCalendarProps> = ({ setDate }) => {
+  const { creds } = useAuth();
   const [dateValue, setDateValue] = useState<Date | null>(new Date());
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1);
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
@@ -34,7 +36,7 @@ export const DailyCalendar: React.FC<DailyCalendarProps> = ({ setDate }) => {
     isLoading: LoadingSchedules,
   } = useGetScheduleByMonthEmployeeId(
     `${currentYear}-${currentMonth}`,
-    1 //JANGAN KDINGAT MENGGANTI ID EMPLOYEE <=================================
+    creds?.employee_id //JANGAN KDINGAT MENGGANTI ID EMPLOYEE <=================================
   );
   useEffect(() => {
     if (DataSchedules) {
@@ -62,8 +64,6 @@ export const DailyCalendar: React.FC<DailyCalendarProps> = ({ setDate }) => {
       });
   }, [schedules, LoadingSchedules]);
 
-  console.log("Off dates:", offDates);
-  console.log("Jadwal sebulanan:", schedules);
   return (
     <section className="mx-auto max-w-xs bg-white w-full shadow-lg rounded-xl z-50 relative p-2 px-2 text-slate-700 mb-2 mt-2">
       <div className="flex justify-between text-xs items-center p-2 -mt-1 -mb-1">
@@ -92,22 +92,13 @@ export const DailyCalendar: React.FC<DailyCalendarProps> = ({ setDate }) => {
               (d: any) => d.day === day && d.month === month && d.year === year
             );
 
+            const bgClass = isOffDay ? "bg-red-400 text-white" : "";
+
             return (
-              <div style={{ position: "relative" }}>
-                <div>{day}</div>
-                {isOffDay && (
-                  <Indicator
-                    size={6}
-                    color="red"
-                    offset={-9}
-                    style={{
-                      position: "absolute",
-                      top: "50%",
-                      left: "50%",
-                      transform: "translate(-50%, -50%)",
-                    }}
-                  />
-                )}
+              <div
+                className={`w-full h-full flex items-center justify-center rounded ${bgClass}`}
+              >
+                {day}
               </div>
             );
           }}

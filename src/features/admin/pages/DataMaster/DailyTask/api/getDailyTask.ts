@@ -1,3 +1,4 @@
+import storage from "@/utils/storage";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -9,8 +10,7 @@ export async function getAllDailyTask() {
     `${BaseURL}/daily-tasks`,
     {
       headers: {
-        // Authorization: `Bearer ${storage.getToken()}`,
-        Authorization: `${token}`,
+        Authorization: `Bearer ${storage.getToken()}`,
       },
     }
   );

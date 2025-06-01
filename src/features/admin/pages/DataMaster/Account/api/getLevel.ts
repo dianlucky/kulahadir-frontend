@@ -1,3 +1,4 @@
+import storage from "@/utils/storage";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -7,8 +8,7 @@ const token = import.meta.env.VITE_TOKEN;
 export async function getAllLevel() {
   const res = await axios.get(`${BaseURL}/levels`, {
     headers: {
-      // Authorization: `Bearer ${storage.getToken()}`,
-      Authorization: `${token}`,
+      Authorization: `Bearer ${storage.getToken()}`,
     },
   });
   return res.data.data;

@@ -4,6 +4,10 @@ import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { useNavigate } from "react-router-dom";
 
+const BaseURL = import.meta.env.VITE_API_URL;
+const DEFAULT_IMAGE =
+  "/images/profile-default.png";
+
 interface BiodataSectionProps {
   employee?: EmployeeType;
 }
@@ -13,18 +17,20 @@ export const BiodataSection: React.FC<BiodataSectionProps> = ({ employee }) => {
   return (
     <section className="bg-white shadow-md rounded-lg p-3">
       <div className="grid grid-cols-12  px-4">
-        <div className="col-span-4 flex justify-center -ml-5">
-          <Image
-            radius="200"
-            src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-7.png"
-            style={{
-              width: "50px",
-              height: "50px",
-              objectFit: "cover",
-            }}
-          />
+        <div className="col-span-3 flex justify-end mr-2 mt-1">
+          <div className="bg-white-500 rounded-full p-1 w-13 h-13 overflow-hidden">
+            <Image
+              src={
+                employee?.profile_pic
+                  ? `${BaseURL}/uploads/employees/${employee?.profile_pic}`
+                  : DEFAULT_IMAGE
+              }
+              alt="Foto Profil"
+              className="w-full h-full object-cover rounded-full"
+            />
+          </div>
         </div>
-        <div className="col-span-8">
+        <div className="col-span-9">
           <div className="mt-2">
             <Text fw={"bold"} size="md" truncate="end">
               {employee?.name}

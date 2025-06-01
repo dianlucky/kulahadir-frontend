@@ -13,19 +13,24 @@ import { HistoryCashAdvanceList } from "../components";
 import { MonthPickerInput } from "@mantine/dates";
 import { CashAdvanceType } from "@/types";
 import { useGetCashAdvanceByEmployeeId } from "@/features/employee/pages/CashAdvance";
+import { useAuth } from "@/features/auth";
 
 export const HistoryCashAdvancePage: React.FC = () => {
+  const { creds } = useAuth();
   const navigate = useNavigate();
   const [opened, setOpened] = useState<boolean>(false);
   const [cashAdvances, setCashAdvances] = useState<CashAdvanceType[]>([]);
-  const { data: DataCashAdvances } = useGetCashAdvanceByEmployeeId(1);
+  const { data: DataCashAdvances } = useGetCashAdvanceByEmployeeId(
+    creds?.employee_id
+  );
   useEffect(() => {
     if (DataCashAdvances) {
       setCashAdvances(DataCashAdvances);
     }
   }, [DataCashAdvances]);
 
-  console.log("DATA :", cashAdvances);
+  const [status, setStatus] = useState<string | null>("accepted");
+  const [activeStatus, setActiveStatus] = useState<string | null>("accepted");
 
   return (
     <main>
@@ -71,18 +76,12 @@ export const HistoryCashAdvancePage: React.FC = () => {
                     <Select
                       label="Status"
                       size="xs"
-                      // value={status}
-                      // onChange={setStatus}
+                      value={status}
+                      onChange={setStatus}
                       data={[
                         { label: "disetujui", value: "accepted" },
                         { label: "ditolak", value: "rejected" },
                       ]}
-                    />
-                    <MonthPickerInput
-                      label="Bulan"
-                      size="xs"
-                      // value={month}
-                      // onChange={setMonth}
                     />
                   </div>
                   <Divider />
@@ -90,7 +89,10 @@ export const HistoryCashAdvancePage: React.FC = () => {
                     <Button
                       fullWidth
                       size="xs"
-                      onClick={() => setOpened(false)}
+                      onClick={() => {
+                        setActiveStatus(status);
+                        setOpened(false);
+                      }}
                     >
                       Simpan
                     </Button>
@@ -102,7 +104,10 @@ export const HistoryCashAdvancePage: React.FC = () => {
         </div>
       </section>
       <div className="mt-2 mx-6">
-        <HistoryCashAdvanceList cashAdvances={cashAdvances} />
+        <HistoryCashAdvanceList
+          status={activeStatus}
+          cashAdvances={cashAdvances}
+        />
       </div>
     </main>
   );

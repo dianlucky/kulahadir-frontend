@@ -1,3 +1,4 @@
+import storage from "@/utils/storage";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -13,7 +14,7 @@ export const createSchedule = async (data: CreateScheduleRequest) => {
   console.log("Data yang dikirim : ", data);
   const response = await axios.post(`${BaseURL}/schedules`, data, {
     headers: {
-      Authorization: token,
+      Authorization: `Bearer ${storage.getToken()}`,
     },
   });
   return response.data;

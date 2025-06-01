@@ -7,8 +7,10 @@ import { id } from "date-fns/locale";
 import { format } from "date-fns";
 import { SalaryType } from "@/types";
 import { useGetSalaryByMonthEmployeeId } from "../api";
+import { useAuth } from "@/features/auth";
 
 export const SalaryPage: React.FC = () => {
+  const { creds } = useAuth();
   const navigate = useNavigate();
   const [selectedMonth, setSelectedMonth] = useState<string | undefined>(
     format(new Date(), "yyyy-MM", { locale: id })
@@ -18,7 +20,7 @@ export const SalaryPage: React.FC = () => {
     data: DataSalary,
     refetch: RefetchSalary,
     isLoading: LoadingSalary,
-  } = useGetSalaryByMonthEmployeeId(selectedMonth, 1);
+  } = useGetSalaryByMonthEmployeeId(selectedMonth, creds?.employee_id);
   useEffect(() => {
     if (DataSalary) {
       setSalary(DataSalary[0]);
@@ -27,7 +29,7 @@ export const SalaryPage: React.FC = () => {
   useEffect(() => {
     RefetchSalary();
   }, [selectedMonth]);
-  // console.log(salaries);
+  // console.log(salary);
   return (
     <main>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
@@ -54,11 +56,7 @@ export const SalaryPage: React.FC = () => {
         <MonthPickerSection setSelectedMonth={setSelectedMonth} />
       </div>
       <div className="mt-2 mx-6 mb-20">
-        {salary != undefined && !LoadingSalary ? (
-          <SalarySection salary={salary} />
-        ) : (
-          <SalaryNotFound />
-        )}
+        {salary ? <SalarySection salary={salary} /> : <SalaryNotFound />}
       </div>
     </main>
   );

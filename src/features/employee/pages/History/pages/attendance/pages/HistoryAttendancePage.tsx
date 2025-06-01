@@ -10,26 +10,14 @@ import {
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { useGetScheduleByMonthEmployeeId } from "@/features/employee/pages/schedule/api";
+import { useAuth } from "@/features/auth";
 
 export const HistoryAttendancePage: React.FC = () => {
+  const { creds } = useAuth();
   const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState<string>(
     format(new Date(), "yyyy-MM-dd", { locale: id })
   );
-
-  // const [attendances, setAttendances] = useState<AttendanceType[]>([]);
-  // const { data: DataAttendances, refetch: RefetchAttendances } =
-  //   useGetAttendanceByMonthEmployeeId(
-  //     format(new Date(selectedDate), "yyyy-MM", { locale: id }),
-  //     1
-  //   );
-  // useEffect(() => {
-  //   if (DataAttendances) {
-  //     setAttendances(DataAttendances);
-  //   } else {
-  //     setAttendances([]);
-  //   }
-  // }, [DataAttendances]);
 
   // GET SCHEDULES
   const [schedules, setSchedules] = useState<ScheduleType[]>([]);
@@ -39,20 +27,19 @@ export const HistoryAttendancePage: React.FC = () => {
     isLoading: LoadingSchedules,
   } = useGetScheduleByMonthEmployeeId(
     format(new Date(selectedDate), "yyyy-MM", { locale: id }),
-    1 //JANGAN KDINGAT MENGGANTI ID EMPLOYEE <=================================
+    creds?.employee_id
   );
   useEffect(() => {
     if (DataSchedules) {
       setSchedules(DataSchedules);
     }
   }, [DataSchedules]);
-
   // END FOR GET SCHEDULES
 
   // GET ATTENDANCE
   const [attendance, setAttendance] = useState<AttendanceType | undefined>();
   const { data: DataAttendance, refetch: RefecthAttendance } =
-    useGetAttendanceByDateEmployeeId(selectedDate, 1);
+    useGetAttendanceByDateEmployeeId(selectedDate, creds?.employee_id);
   useEffect(() => {
     if (DataAttendance) {
       setAttendance(DataAttendance);

@@ -1,8 +1,8 @@
+import storage from "@/utils/storage";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 const BaseURL = import.meta.env.VITE_API_URL;
-const token = import.meta.env.VITE_TOKEN;
 
 export async function getSalaryByMonthEmployeeId(
   month?: string,
@@ -16,7 +16,7 @@ export async function getSalaryByMonthEmployeeId(
     `${BaseURL}/salaries/by-month?month=${month}&employeeId=${employeeId}`,
     {
       headers: {
-        Authorization: token,
+        Authorization: `Bearer ${storage.getToken()}`,
       },
     }
   );

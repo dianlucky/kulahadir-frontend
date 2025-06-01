@@ -1,19 +1,22 @@
 // import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 
-import { HomeLayout, AppLayout, AdminLayout } from "@/components/layout";
+import {
+  HomeLayout,
+  AppLayout,
+  AdminLayout,
+  AuthLayout,
+} from "@/components/layout";
 // import { useAuth } from "@/features/auth";
 // import { queryClient } from '@/lib/react-query';
 import { lazyImport } from "@/utils/lazyImport";
+import { useAuth } from "@/features/auth";
 
 const { Development } = lazyImport(
   () => import("@/features/employee"),
   "Development"
 );
-const { NotFoundLayout } = lazyImport(
-  () => import("@/components/layout"),
-  "NotFoundLayout"
-);
+
 const { Login } = lazyImport(() => import("@/features/auth"), "Login");
 
 const { DashboardAdmin } = lazyImport(
@@ -143,6 +146,10 @@ const { DetailEmployeeOwnerPage } = lazyImport(
   () => import("@/features/owner/pages/Employees"),
   "DetailEmployeeOwnerPage"
 );
+const { CreateEmployeeOwnerPage } = lazyImport(
+  () => import("@/features/owner/pages/Employees"),
+  "CreateEmployeeOwnerPage"
+);
 const { ScheduleOwnerPage } = lazyImport(
   () => import("@/features/owner/pages/Schedules"),
   "ScheduleOwnerPage"
@@ -180,12 +187,26 @@ const { DetailSalaryOwnerPage } = lazyImport(
   "DetailSalaryOwnerPage"
 );
 
+const { HistoryPageOwner } = lazyImport(
+  () => import("@/features/owner/pages/History"),
+  "HistoryPageOwner"
+);
+const { HistoryRequestPageOwner } = lazyImport(
+  () => import("@/features/owner/pages/History/"),
+  "HistoryRequestPageOwner"
+);
+const { HistoryCashAdvancePageOwner } = lazyImport(
+  () => import("@/features/owner/pages/History/"),
+  "HistoryCashAdvancePageOwner"
+);
+
 export const AppRoutes: React.FC = () => {
-  const role: string = "employee";
+  // const role: string = "admin";
+  const { creds } = useAuth();
   return (
     <Routes>
       <Route path="/" element={<AppLayout />}>
-        {role === "employee" || role === "owner" ? (
+        {creds?.level === "Pegawai" ? (
           <Route element={<HomeLayout />}>
             <Route index element={<Home />} />
             <Route path="schedule" element={<SchedulePage />} />
@@ -220,9 +241,44 @@ export const AppRoutes: React.FC = () => {
             </Route>
 
             {/* ROUTE OWNER */}
+            {/* <Route path="employee-data">
+              <Route index element={<EmployeeOwnerPage />} />
+              <Route path="detail" element={<DetailEmployeeOwnerPage />} />
+              <Route path="add" element={<CreateEmployeeOwnerPage />} />
+            </Route>
+            <Route path="employee-schedule">
+              <Route index element={<ScheduleOwnerPage />} />
+            </Route>
+            <Route path="employee-paid-leave">
+              <Route index element={<PaidLeavesOwnerPage />} />
+            </Route>
+            <Route path="employee-attendances">
+              <Route index element={<AttendancesOwnerPages />} />
+              <Route path="detail" element={<DetailAttendancesOwnerPage />} />
+            </Route>
+            <Route path="employee-request">
+              <Route index element={<RequestOwnerPage />} />
+            </Route>
+            <Route path="employee-cash-advance">
+              <Route index element={<CashAdvanceOwnerPage />} />
+              <Route path="detail" element={<DetailCashAdvanceOwnerPage />} />
+            </Route>
+            <Route path="employee-salary">
+              <Route index element={<SalaryOwnerPage />} />
+              <Route path="detail" element={<DetailSalaryOwnerPage />} />
+            </Route> */}
+          </Route>
+        ) : (
+          <Route path="development" element={<Development />} />
+        )}
+
+        {creds?.level === "Owner" ? (
+          <Route element={<HomeLayout />}>
+            <Route index element={<Home />} />
             <Route path="employee-data">
               <Route index element={<EmployeeOwnerPage />} />
               <Route path="detail" element={<DetailEmployeeOwnerPage />} />
+              <Route path="add" element={<CreateEmployeeOwnerPage />} />
             </Route>
             <Route path="employee-schedule">
               <Route index element={<ScheduleOwnerPage />} />
@@ -245,12 +301,30 @@ export const AppRoutes: React.FC = () => {
               <Route index element={<SalaryOwnerPage />} />
               <Route path="detail" element={<DetailSalaryOwnerPage />} />
             </Route>
+            <Route path="history">
+              <Route index element={<HistoryPageOwner />} />
+              <Route path="request" element={<HistoryRequestPageOwner />} />
+
+              <Route path="cash-advance">
+                <Route index element={<HistoryCashAdvancePageOwner />} />
+                <Route path="detail" element={<DetailCashAdvancePage />} />
+              </Route>
+            </Route>
+            <Route path="profile">
+              <Route index element={<ProfilePage />} />
+              <Route path="biodata" element={<BiodataPage />} />
+              <Route path="edit" element={<BiodataEditPage />} />
+            </Route>
+            <Route path="notification">
+              <Route index element={<NotificationPage />} />
+              <Route path="detail" element={<DetailNotificationPage />} />
+            </Route>
           </Route>
         ) : (
           <Route path="development" element={<Development />} />
         )}
 
-        {role === "admin" ? (
+        {creds?.level === "Admin" ? (
           <Route element={<AdminLayout />}>
             <Route index path="/" element={<DashboardAdmin />} />
 
@@ -278,6 +352,10 @@ export const AppRoutes: React.FC = () => {
 
         {/* Route For Development */}
         <Route path="development" element={<Development />} />
+      </Route>
+      {/* Authentication Page */}
+      <Route path="/" element={<AuthLayout />}>
+        <Route path="login" element={<Login />} />
       </Route>
     </Routes>
   );

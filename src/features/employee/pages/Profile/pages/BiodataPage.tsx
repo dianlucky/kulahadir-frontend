@@ -4,11 +4,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { BiodataSection } from "../components";
 import { EmployeeType } from "@/types";
 import { usegetEmployeeByAccountId } from "../api";
+import { useAuth } from "@/features/auth";
 
 export const BiodataPage: React.FC = () => {
+  const { creds } = useAuth();
   const navigate = useNavigate();
   const [employee, setEmployee] = useState<EmployeeType>();
-  const { data: DataEmployee } = usegetEmployeeByAccountId(1);
+  const { data: DataEmployee } = usegetEmployeeByAccountId(creds?.id);
   useEffect(() => {
     if (DataEmployee) {
       setEmployee(DataEmployee);

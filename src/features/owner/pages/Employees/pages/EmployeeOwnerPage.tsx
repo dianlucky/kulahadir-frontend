@@ -1,11 +1,21 @@
-import { IconChevronLeft } from "@tabler/icons-react";
-import React from "react";
+import { IconChevronLeft, IconPlus } from "@tabler/icons-react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { EmployeeList } from "../components";
-import { Divider, Text } from "@mantine/core";
+import { Divider, Text, UnstyledButton } from "@mantine/core";
+import { useGetAllEmployee } from "@/features/admin/pages/DataMaster/Employee";
+import { EmployeeType } from "@/types";
 
 export const EmployeeOwnerPage: React.FC = () => {
   const navigate = useNavigate();
+  const [employees, setEmployees] = useState<EmployeeType[]>([]);
+  const { data: DataEmployees, isLoading: LoadingEmployees } =
+    useGetAllEmployee();
+  useEffect(() => {
+    if (DataEmployees) {
+      setEmployees(DataEmployees);
+    }
+  }, [DataEmployees]);
   return (
     <main>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
@@ -24,12 +34,20 @@ export const EmployeeOwnerPage: React.FC = () => {
           <div className="font-semibold text-brown">
             <h2 className="font-semibold">Data pegawai</h2>
           </div>
-          <div></div>
+          <div className="mr-2">
+            <UnstyledButton
+              onClick={() => {
+                navigate("/employee-data/add");
+              }}
+            >
+              <IconPlus size={22} />
+            </UnstyledButton>
+          </div>
         </div>
       </section>
       <div>
         <div className="mt-2 mx-6">
-          <EmployeeList />
+          {!LoadingEmployees && <EmployeeList employees={employees} />}
         </div>
       </div>
     </main>

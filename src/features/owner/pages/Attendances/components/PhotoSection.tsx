@@ -1,8 +1,16 @@
+import { AttendanceType } from "@/types";
 import { Divider, Image, Text } from "@mantine/core";
 import { IconMap2, IconPhoto } from "@tabler/icons-react";
 import React from "react";
 
-export const PhotoSection: React.FC = () => {
+const BaseURL = import.meta.env.VITE_API_URL;
+const DEFAULT_IMAGE =
+  "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-9.png";
+interface PhotoSectionProps {
+  attendance: AttendanceType;
+}
+
+export const PhotoSection: React.FC<PhotoSectionProps> = ({ attendance }) => {
   return (
     <section className="bg-white mx-auto max-w-xs w-full shadow-sm rounded-xl z-50 relative p-4 text-slate-700">
       <div className="flex justify-between text-xs items-center mb-2">
@@ -17,7 +25,11 @@ export const PhotoSection: React.FC = () => {
           radius=""
           h={"full"}
           w={"full"}
-          src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-10.png"
+          src={
+            attendance.snapshot
+              ? `${BaseURL}/uploads/attendances/${attendance.snapshot}`
+              : DEFAULT_IMAGE
+          }
         />
       </div>
     </section>

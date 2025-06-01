@@ -1,3 +1,4 @@
+import storage from "@/utils/storage";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -7,7 +8,7 @@ const token = import.meta.env.VITE_TOKEN;
 export async function getSchedule(scheduleId: number) {
   const res = await axios.get(`${BaseURL}/schedules/${scheduleId}`, {
     headers: {
-      Authorization: token,
+      Authorization: `Bearer ${storage.getToken()}`,
     },
   });
   return res.data.data;
@@ -21,7 +22,7 @@ export const useGetSchedule = (scheduleId: number) => {
 };
 
 export async function getScheduleByDateEmployeeId(
-  employeeId: number,
+  employeeId?: number,
   date?: string
 ) {
   console.log(
@@ -32,7 +33,7 @@ export async function getScheduleByDateEmployeeId(
     `${BaseURL}/schedules?employeeId=${employeeId}&date=${date}`,
     {
       headers: {
-        Authorization: token,
+        Authorization: `Bearer ${storage.getToken()}`,
       },
     }
   );
@@ -40,7 +41,7 @@ export async function getScheduleByDateEmployeeId(
 }
 
 export const useGetScheduleByDateEmployeeId = (
-  employeeId: number,
+  employeeId?: number,
   date?: string
 ) => {
   return useQuery({
@@ -51,7 +52,7 @@ export const useGetScheduleByDateEmployeeId = (
 
 export async function getScheduleByMonthEmployeeId(
   month: string,
-  employeeId: number
+  employeeId?: number
 ) {
   console.log(
     "URL :",
@@ -61,7 +62,7 @@ export async function getScheduleByMonthEmployeeId(
     `${BaseURL}/schedules/by-month?month=${month}&employeeId=${employeeId}`,
     {
       headers: {
-        Authorization: token,
+        Authorization: `Bearer ${storage.getToken()}`,
       },
     }
   );
@@ -70,7 +71,7 @@ export async function getScheduleByMonthEmployeeId(
 
 export const useGetScheduleByMonthEmployeeId = (
   month: string,
-  employeeId: number
+  employeeId?: number
 ) => {
   return useQuery({
     queryKey: ["schedule"],

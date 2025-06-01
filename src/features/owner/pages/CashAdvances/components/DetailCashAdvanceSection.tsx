@@ -1,8 +1,49 @@
+import { useUpdateCashAdvanceById } from "@/features/employee/pages/CashAdvance/api/updateCashAdvance";
+import { CashAdvanceType } from "@/types";
 import { Button, Divider, Image, Text } from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
 import { IconCashRegister } from "@tabler/icons-react";
+import { format } from "date-fns";
+import { id } from "date-fns/locale";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-export const DetailCashAdvanceSection: React.FC = () => {
+const BaseURL = import.meta.env.VITE_API_URL;
+
+interface DetailCashAdvanceSectionProps {
+  cashAdvance: CashAdvanceType;
+  totalCashAdvance: number;
+}
+
+type UpdateStatusRequest = {
+  status: string;
+};
+
+export const DetailCashAdvanceSection: React.FC<
+  DetailCashAdvanceSectionProps
+> = ({ cashAdvance, totalCashAdvance }) => {
+  const navigate = useNavigate();
+  // UPDATE STATUS
+  const mutationUpdateLeaveRequest = useUpdateCashAdvanceById(cashAdvance.id);
+  const handleUpdateCashAdvance = async (status: string) => {
+    const updateStatusData: UpdateStatusRequest = {
+      status: status,
+    };
+
+    await mutationUpdateLeaveRequest.mutateAsync(updateStatusData, {
+      onSuccess: (data: CashAdvanceType) => {
+        console.log("Success:", data);
+        navigate(-1);
+        showNotification({
+          message: "Berhasil mengubah status pengajuan kasbon",
+          color: "green",
+          position: "top-center",
+        });
+        close();
+      },
+    });
+  };
+  // END OF UPDATE LEAVE REQUEST
   return (
     <section className="bg-white mx-auto max-w-xs w-full shadow-sm rounded-xl z-50 relative p-4">
       <div className="flex justify-between text-xs items-center mb-2">
@@ -13,21 +54,24 @@ export const DetailCashAdvanceSection: React.FC = () => {
       </div>
       <Divider size="xs" className="mb-2" />
       <div className="mt-2 mb-2">
-        <div className="flex justify-center px-2 my-auto -ml-8">
-          <div className="mt-2">
-            <Image
-              radius="30px"
-              h={40}
-              w={40}
-              src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-10.png"
+        <div className="flex justify-center gap-2 px-2 my-auto">
+          {/* <div className="bg-slate-300 rounded-full p-1 w-[50px] h-[46px] overflow-hidden border-4 border-slate-800">
+            <img
+              src={
+                cashAdvance?.employee.profile_pic
+                  ? `${BaseURL}/uploads/employees/${cashAdvance?.employee.profile_pic}`
+                  : "/images/profile-default.png"
+              }
+              alt="Foto Profil"
+              className="w-full h-full object-cover rounded-full"
             />
-          </div>
-          <div className="ml-3 my-auto">
-            <Text fw={700} size="18px">
-              Dian Lucky Prayogi
+          </div> */}
+          <div className="my-auto">
+            <Text fw={700} size="18px" truncate="end">
+              {cashAdvance.employee.name}
             </Text>
             <Text fw={300} size="xs" mt={-3}>
-              Pegawai tetap
+              {cashAdvance.employee.account.status}
             </Text>
           </div>
         </div>
@@ -38,8 +82,8 @@ export const DetailCashAdvanceSection: React.FC = () => {
           <Text fw={500} size="xs">
             Total kasbon bulan ini :
           </Text>
-          <Text fw={700} size="sm" mt={-3}>
-            Rp. 350.000
+          <Text fw={700} size="sm" mt={-1}>
+            Rp. {new Intl.NumberFormat("id-ID").format(totalCashAdvance)}
           </Text>
         </div>
         <div className="col-span-12 mt-2">
@@ -49,31 +93,47 @@ export const DetailCashAdvanceSection: React.FC = () => {
           <Text fw={500} size="xs">
             Tanggal pengajuan :
           </Text>
-          <Text fw={700} size="sm" mt={-3}>
-            Jumat, 23 Mei 2025
+          <Text fw={700} size="sm" mt={-1}>
+            {cashAdvance.created_at &&
+              format(cashAdvance.created_at, "EEEE, dd MMMM yyyy", {
+                locale: id,
+              })}
           </Text>
         </div>
         <div className="col-span-12 mt-1">
           <Text fw={500} size="xs">
             Kasbon yang diajukan :
           </Text>
-          <Text fw={700} size="sm" mt={-3}>
-            Rp. 200.000
+          <Text fw={700} size="sm" mt={-1}>
+            Rp.{new Intl.NumberFormat("id-ID").format(cashAdvance.amount)}
           </Text>
         </div>
         <div className="col-span-12 mt-1">
           <Text fw={500} size="xs">
             Alasan pengajuan kasbon :
           </Text>
-          <Text fw={700} size="sm" mt={-3}>
-            Buat bayar STNK bang
+          <Text fw={700} size="sm" mt={-1}>
+            {cashAdvance.reason}
           </Text>
         </div>
       </div>
       <Divider />
-      <div className="flex justify-between gap-2 mt-2">
-        <Button size="sm" fullWidth color="red">Tolak</Button>
-        <Button size="sm" fullWidth>Setujui</Button>
+      <div className="flex gap-2 px-1">
+        <Button
+          fullWidth
+          color="red"
+          onClick={() => handleUpdateCashAdvance("rejected")}
+        >
+          Tolak
+        </Button>
+
+        <Button
+          fullWidth
+          color="blue"
+          onClick={() => handleUpdateCashAdvance("accepted")}
+        >
+          Setujui
+        </Button>
       </div>
     </section>
   );

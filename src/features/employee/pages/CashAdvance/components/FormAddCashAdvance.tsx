@@ -13,8 +13,11 @@ import { id } from "date-fns/locale";
 import { useNavigate } from "react-router-dom";
 import { useCreateCashAdvance } from "../api";
 import { CashAdvanceType } from "@/types";
+import { useAuth } from "@/features/auth";
+import { showNotification } from "@mantine/notifications";
 
 export const FormAddCashAdvance: React.FC = () => {
+  const { creds } = useAuth();
   const navigate = useNavigate();
 
   const formCreate = useForm({
@@ -42,7 +45,7 @@ export const FormAddCashAdvance: React.FC = () => {
       amount: formCreate.values.amount,
       date: formCreate.values.date,
       reason: formCreate.values.reason,
-      employee_id: 1,
+      employee_id: creds?.employee_id,
     };
 
     await mutationCreateLeaveRequest.mutateAsync(cashAdvanceData, {
@@ -50,6 +53,11 @@ export const FormAddCashAdvance: React.FC = () => {
         console.log("Success:", data);
         formCreate.reset();
         navigate(-1);
+        showNotification({
+          message: "Berhasil menambah pengajuan kasbon",
+          color: "green",
+          position: "top-center",
+        });
         close();
       },
     });

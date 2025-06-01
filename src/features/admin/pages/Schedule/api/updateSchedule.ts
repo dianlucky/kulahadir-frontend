@@ -1,4 +1,5 @@
 /* eslint-disable linebreak-style */
+import storage from "@/utils/storage";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -21,7 +22,7 @@ async function updateSchedule(
     data,
     {
       headers: {
-        Authorization: token,
+        Authorization: `Bearer ${storage.getToken()}`,
       },
     }
   );
@@ -32,5 +33,23 @@ export const useUpdateSchedule = (scheduleId: number | undefined) => {
   return useMutation({
     mutationFn: (data: UpdateScheduleRequest) =>
       updateSchedule(scheduleId, data),
+  });
+};
+
+async function updateScheduleByDateEmployeeId(data: UpdateScheduleRequest) {
+  console.log("BaseURL : ", `${BaseURL}/schedules/by-date`);
+  console.log("Data yang dikirim : ", data);
+  const response = await axios.patch(`${BaseURL}/schedules/by-date`, data, {
+    headers: {
+      Authorization: `Bearer ${storage.getToken()}`,
+    },
+  });
+  return response.data;
+}
+
+export const useUpdateScheduleByDateEmployeeId = () => {
+  return useMutation({
+    mutationFn: (data: UpdateScheduleRequest) =>
+      updateScheduleByDateEmployeeId(data),
   });
 };

@@ -1,14 +1,14 @@
+import storage from "@/utils/storage";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 const BaseURL = import.meta.env.VITE_API_URL;
-const token = import.meta.env.VITE_TOKEN;
 
 export async function getAllEmployee() {
+  console.log("Token :", storage.getToken());
   const res = await axios.get(`${BaseURL}/employees`, {
     headers: {
-      // Authorization: `Bearer ${storage.getToken()}`,
-      Authorization: `${token}`,
+      Authorization: `Bearer ${storage.getToken()}`,
     },
   });
   return res.data.data;

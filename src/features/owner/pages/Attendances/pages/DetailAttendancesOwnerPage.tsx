@@ -1,6 +1,6 @@
 import { IconChevronLeft } from "@tabler/icons-react";
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   DetailAttendanceSection,
   LocationCardSection,
@@ -8,9 +8,47 @@ import {
   TaskEmployeeSection,
 } from "../components";
 import { Image, Text } from "@mantine/core";
+import { AccountType, AttendanceType, DailyTaskEmployeeType } from "@/types";
+import { useGetAccountById } from "@/features/admin/pages/DataMaster/Account";
+import { useGetDailyTaskEmployeeByDateEmployeeId } from "@/features/employee/pages/CheckLog/api";
+import { format } from "date-fns";
+import { id } from "date-fns/locale";
+
+const BaseURL = import.meta.env.VITE_API_URL;
 
 export const DetailAttendancesOwnerPage: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const attendance = location.state.data as AttendanceType;
+
+  // ====================================================//
+  // GET ACCOUNT
+  const [account, setAccount] = useState<AccountType>();
+  const { data: DataAccount } = useGetAccountById(
+    attendance.schedule.employee.account_id
+  );
+  useEffect(() => {
+    if (DataAccount) {
+      setAccount(DataAccount);
+    }
+  }, [DataAccount]);
+  // END FOR GET ACCOUNT
+  // ====================================================//
+
+  // ====================================================//
+  // GET DAILY TASK EMPLOYEE
+  const [dailyTask, setDailyTask] = useState<DailyTaskEmployeeType[]>([]);
+  const { data: DataDailyTask } = useGetDailyTaskEmployeeByDateEmployeeId(
+    format(attendance.schedule.date, "yyyy-MM-dd", { locale: id }),
+    attendance.schedule.employee_id
+  );
+  useEffect(() => {
+    if (DataDailyTask) {
+      setDailyTask(DataDailyTask);
+    }
+  }, [DataDailyTask]);
+  // END FOR GET DAILY TASK EMPLOYEE
+  // ====================================================//
   return (
     <main className="mb-20">
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
@@ -35,37 +73,41 @@ export const DetailAttendancesOwnerPage: React.FC = () => {
       <div>
         <div className="mt-2 mx-6">
           <section className="bg-white shadow-xs rounded-2xl mx-2 py-5 mt-2">
-            <div className="flex justify-center px-2 my-auto -ml-8">
+            <div className="flex justify-center px-2">
               <div className="">
                 <Image
                   radius="30px"
                   h={40}
                   w={40}
-                  src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-10.png"
+                  src={
+                    attendance.schedule.employee.profile_pic
+                      ? `${BaseURL}/uploads/employees/${attendance.schedule.employee.profile_pic}`
+                      : "/images/profile-default.png"
+                  }
                 />
               </div>
               <div className="ml-3 my-auto">
-                <Text fw={700} size="18px">
-                  Dian Lucky Prayogi
+                <Text fw={700} size="18px" truncate="end">
+                  {attendance.schedule.employee.name}
                 </Text>
                 <Text fw={300} size="xs" mt={-3}>
-                  Pegawai tetap
+                  {account?.status}
                 </Text>
               </div>
             </div>
           </section>
         </div>
         <div className="mt-2 mx-6">
-          <LocationCardSection />
+          <LocationCardSection attendance={attendance} />
         </div>
         <div className="mt-2 mx-6">
-          <PhotoSection />
+          <PhotoSection attendance={attendance} />
         </div>
         <div className="mt-2 mx-9">
-          <DetailAttendanceSection />
+          <DetailAttendanceSection attendance={attendance} />
         </div>
         <div className="mt-2 mx-6">
-          <TaskEmployeeSection />
+          <TaskEmployeeSection dailyTask={dailyTask} />
         </div>
       </div>
     </main>

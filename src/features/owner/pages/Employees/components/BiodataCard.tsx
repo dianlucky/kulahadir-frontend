@@ -1,8 +1,14 @@
+import { EmployeeType } from "@/types";
 import { Button, Divider, Text } from "@mantine/core";
 import { IconUser } from "@tabler/icons-react";
+import { format } from "date-fns";
+import { id } from "date-fns/locale";
 import { useNavigate } from "react-router-dom";
+interface BiodataCardProps {
+  employee: EmployeeType;
+}
 
-export const BiodataCard: React.FC = () => {
+export const BiodataCard: React.FC<BiodataCardProps> = ({ employee }) => {
   const navigate = useNavigate();
   return (
     <section className="bg-white shadow-md rounded-lg p-2 px-5">
@@ -17,57 +23,59 @@ export const BiodataCard: React.FC = () => {
         <div className="col-span-12">
           <Text size="sm">Nama lengkap:</Text>
           <Text size="sm" mt={-2} fw={"bold"} truncate="end">
-            Dian Lucky Prayogi
+            {employee?.name}
           </Text>
         </div>
         <div className="col-span-6 mt-2">
           <Text size="sm">Username:</Text>
           <Text size="sm" mt={-2} fw={"bold"} truncate="end">
-            dianlucky13
+            {employee?.account.username}
           </Text>
         </div>
         <div className="col-span-6 mt-2">
           <Text size="sm">No Whatsapp :</Text>
           <Text size="sm" mt={-2} fw={"bold"}>
-            081349445267
+            {employee?.phone}
           </Text>
         </div>
         <div className="col-span-6 mt-2">
           <Text size="sm">Tanggal lahir :</Text>
           <Text size="sm" mt={-2} fw={"bold"}>
-            23 Mei 2003
+            {employee?.birth_date &&
+              format(employee.birth_date, "dd MM yyyy", { locale: id })}
           </Text>
         </div>
         <div className="col-span-6 mt-2">
           <Text size="sm">Tanggal masuk:</Text>
           <Text size="sm" mt={-2} fw={"bold"}>
-            23 Mei 2003
+            {employee?.created_at &&
+              format(employee.created_at, "dd MM yyyy", { locale: id })}
           </Text>
         </div>
         <div className="col-span-6 mt-2">
           <Text size="sm">Role :</Text>
           <Text size="sm" mt={-2} fw={"bold"}>
-            Pegawai
+            {employee?.account.level}
           </Text>
         </div>
         <div className="col-span-6 mt-2">
           <Text size="sm">Status pegawai:</Text>
           <Text size="sm" mt={-2} fw={"bold"}>
-            Pegawai tetap
+            {employee.account.status}
           </Text>
         </div>
       </div>
       <div className="my-1">
         <Divider />
       </div>
-      <div className="mt-4 px-4 mb-2">
+      <div className="mt-4 mb-2">
         <Button
           color="yellow"
           size="sm"
           fullWidth
-          radius={"md"}
+          radius={"sm"}
           onClick={() => {
-            navigate("/profile/edit");
+            navigate("/profile/edit", { state: { employee } });
           }}
         >
           Edit Biodata pegawai

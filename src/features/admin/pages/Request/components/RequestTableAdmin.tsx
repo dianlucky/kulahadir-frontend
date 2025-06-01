@@ -1,7 +1,9 @@
-import { RequestType } from "@/types";
+import { LeaveRequestType, RequestType } from "@/types";
 import {
+  Badge,
   Button,
   Divider,
+  Indicator,
   Loader,
   Popover,
   Select,
@@ -17,79 +19,96 @@ import { IconAdjustments, IconPencil, IconTrash } from "@tabler/icons-react";
 import { MonthPickerInput } from "@mantine/dates";
 
 interface RequestTableAdminProps {
+  request?: LeaveRequestType[];
   setDelete: React.Dispatch<React.SetStateAction<boolean>>;
   setEdit: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedRequest: React.Dispatch<
+    React.SetStateAction<LeaveRequestType | undefined>
+  >;
 }
 
 export const RequestTableAdmin: React.FC<RequestTableAdminProps> = ({
   setDelete,
   setEdit,
+  request,
+  setSelectedRequest,
 }) => {
-  const [status, setStatus] = useState<string | null>("diproses");
+  const [status, setStatus] = useState<string | null>("pending");
   const [month, setMonth] = useState<Date | null>(new Date());
   const [opened, setOpened] = useState(false);
+  // console.log("Bulan :", month);
 
-  const [requests, setRequests] = useState<RequestType[]>([]);
-  const {
-    data: DataRequest,
-    refetch: RefetchRequest,
-    isLoading: LoadingRequest,
-  } = useGetAllLeave();
-  useEffect(() => {
-    if (DataRequest) {
-      setRequests(DataRequest);
-    }
-  }, [DataRequest]);
-  // console.log("Data request :", requests);
+  const rows = request
+    ?.sort((a, b) => {
+      if (a.status === "pending" && b.status !== "pending") return -1;
+      if (a.status !== "pending" && b.status === "pending") return 1;
 
-  const rows = requests.map((request, index) => (
-    <Table.Tr key={index}>
-      <Table.Td>{index + 1}</Table.Td>
-      <Table.Td>{request.schedule.employee.name}</Table.Td>
-      <Table.Td>
-        {" "}
-        {format(new Date(request.schedule.date), "dd MMMM yyyy", {
-          locale: id,
-        })}{" "}
-      </Table.Td>
-      <Table.Td>
-        <Text truncate="end">{request.reason}</Text>
-      </Table.Td>
-      <Table.Td>{request.status}</Table.Td>
-      <Table.Td className="w-40 ">
-        <div className="flex gap-1 justify-center">
-          <Button
-            size="xs"
-            color="yellow"
-            onClick={() => {
-              setEdit(true);
-              setDelete(false);
-            }}
+      return (
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
+    })
+    .filter(
+      (data) =>
+        data.status === status &&
+        new Date(data.date).getMonth() === month?.getMonth() &&
+        new Date(data.date).getFullYear() === month?.getFullYear()
+    )
+    .map((data, index) => (
+      <Table.Tr key={index}>
+        <Table.Td>{index + 1}</Table.Td>
+        <Table.Td>{data.employee.name}</Table.Td>
+        <Table.Td>
+          {" "}
+          {format(new Date(data.date), "EEEE, dd MMMM yyyy", {
+            locale: id,
+          })}{" "}
+        </Table.Td>
+        <Table.Td>
+          <Text truncate="end">{data.type}</Text>
+        </Table.Td>
+        <Table.Td>
+          <Badge
+            radius={"sm"}
+            color={
+              data.status == "pending"
+                ? "grey"
+                : data.status == "accepted"
+                ? "green"
+                : "red"
+            }
           >
-            <IconPencil />
-          </Button>
-          <Button
-            size="xs"
-            color="red"
-            onClick={() => {
-              setDelete(true);
-              setEdit(false);
-            }}
-          >
-            <IconTrash />
-          </Button>
-        </div>
-      </Table.Td>
-    </Table.Tr>
-  ));
+            {data.status}
+          </Badge>
+        </Table.Td>
+        <Table.Td className="w-40 ">
+          <div className="flex gap-1 justify-center">
+            <Button
+              size="compact-md"
+              color="yellow"
+              onClick={() => {
+                setEdit(true);
+                setDelete(false);
+                setSelectedRequest(data);
+              }}
+            >
+              <IconPencil />
+            </Button>
+            <Button
+              size="compact-md"
+              color="red"
+              onClick={() => {
+                setDelete(true);
+                setEdit(false);
+                setSelectedRequest(data);
+              }}
+            >
+              <IconTrash />
+            </Button>
+          </div>
+        </Table.Td>
+      </Table.Tr>
+    ));
 
-  if (LoadingRequest) {
-    return (
-      <div className="flex justify-center">
-        <Loader color="orange" size="lg" type="dots" />
-      </div>
-    );
-  }
   return (
     <>
       <section>
@@ -104,14 +123,16 @@ export const RequestTableAdmin: React.FC<RequestTableAdminProps> = ({
           <div className="flex justify-between items-center">
             <div>
               <div className="text-dark font-semibold cursor-pointer text-lg">
-                Daftar pegawai
+                Daftar pengajuan izin / sakit
               </div>
             </div>
 
             <Popover.Target>
-              <Button size="xs" onClick={() => setOpened((prev) => !prev)}>
-                <IconAdjustments color="white" />
-              </Button>
+              <Indicator inline color="red" size={10} offset={2}>
+                <Button size="xs" onClick={() => setOpened((prev) => !prev)}>
+                  <IconAdjustments color="white" />
+                </Button>
+              </Indicator>
             </Popover.Target>
           </div>
 
@@ -127,11 +148,12 @@ export const RequestTableAdmin: React.FC<RequestTableAdminProps> = ({
                   label="status"
                   size="xs"
                   value={status}
+                  allowDeselect={false}
                   onChange={setStatus}
                   data={[
-                    { label: "diproses", value: "diproses" },
-                    { label: "diterima", value: "diterima" },
-                    { label: "ditolak", value: "ditolak" },
+                    { label: "pending", value: "pending" },
+                    { label: "accepted", value: "accepted" },
+                    { label: "rejected", value: "rejected" },
                   ]}
                 />
 
@@ -139,15 +161,11 @@ export const RequestTableAdmin: React.FC<RequestTableAdminProps> = ({
                   label="bulan"
                   size="xs"
                   value={month}
+                  allowDeselect={false}
                   onChange={setMonth}
                 />
               </div>
               <Divider />
-              <div>
-                <Button fullWidth size="xs" onClick={() => setOpened(false)}>
-                  Simpan
-                </Button>
-              </div>
             </div>
           </Popover.Dropdown>
         </Popover>
@@ -164,20 +182,24 @@ export const RequestTableAdmin: React.FC<RequestTableAdminProps> = ({
                 <Table.Th className="font-semibold">No</Table.Th>
                 <Table.Th className="font-semibold">Nama</Table.Th>
                 <Table.Th className="font-semibold">Tanggal pengajuan</Table.Th>
-                <Table.Th className="font-semibold">Alasan</Table.Th>
+                <Table.Th className="font-semibold">Tipe</Table.Th>
                 <Table.Th className="font-semibold">Status</Table.Th>
                 <Table.Th className="font-semibold flex justify-center">
                   Aksi
                 </Table.Th>
               </Table.Tr>
             </Table.Thead>
-            {requests ? (
-              <Table.Tbody>{rows}</Table.Tbody>
-            ) : (
-              <Table.Tbody>
-                <Table.Td colSpan={6}>Data tidak ditemukan</Table.Td>
-              </Table.Tbody>
-            )}
+            <Table.Tbody>
+              {request && request.length > 0 ? (
+                rows
+              ) : (
+                <Table.Tr>
+                  <Table.Td colSpan={6} className="text-center">
+                    Data tidak ditemukan
+                  </Table.Td>
+                </Table.Tr>
+              )}
+            </Table.Tbody>
           </Table>
         </div>
       </section>

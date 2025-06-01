@@ -1,3 +1,4 @@
+import storage from "@/utils/storage";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -12,10 +13,10 @@ type CreateEmployeeRequest = {
 };
 
 export const createEmployee = async (data: CreateEmployeeRequest) => {
-    console.log("Data yang dikirim : ", data);
+  console.log("Data yang dikirim : ", data);
   const response = await axios.post(`${BaseURL}/employees/`, data, {
     headers: {
-      Authorization: token,
+      Authorization: `Bearer ${storage.getToken()}`,
     },
   });
   return response.data;

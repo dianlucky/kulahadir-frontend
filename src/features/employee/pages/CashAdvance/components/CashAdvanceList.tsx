@@ -58,9 +58,9 @@ export const CashAdvanceList: React.FC<CashAdvanceListProps> = ({
       <div>
         {cashAdvances.length != 0 &&
           cashAdvances.map((data, index) => (
-            <div className="mt-2 px-3 py-2" key={index}>
+            <div className="px-3 py-2" key={index}>
               <div className="grid grid-cols-12 mb-3">
-                <div className="col-span-2 text-center">
+                <div className="col-span-2 text-center -mb-2">
                   <Text fw={"bold"} size="25px" ml={2}>
                     {format(data.created_at, "dd", { locale: id })}
                   </Text>
@@ -78,10 +78,10 @@ export const CashAdvanceList: React.FC<CashAdvanceListProps> = ({
                 </div>
                 <div className="col-span-3 my-auto relative">
                   <div className="absolute -top-6 -right-0">
-                    <Indicator
+                    {/* <Indicator
                       mt={20}
                       color={data.status == "accepted" ? "green" : "red"}
-                    ></Indicator>
+                    ></Indicator> */}
                   </div>
                   <div className="ml-2 flex gap-1">
                     <Button
@@ -166,7 +166,7 @@ export const CashAdvanceList: React.FC<CashAdvanceListProps> = ({
             </div>
           </div>
         </Modal>
-        <div className="px-5 mt-1 mb-2">
+        <div className="px-2 mt-1 mb-2">
           <Button
             size="sm"
             fullWidth

@@ -1,3 +1,4 @@
+import storage from "@/utils/storage";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -22,9 +23,9 @@ export const useGetAllSchedule = () => {
 };
 
 export async function getScheduleByDate(date: string | undefined) {
-  const res = await axios.get(`${BaseURL}/schedules?date=${date}`, {
+  const res = await axios.get(`${BaseURL}/schedules/by-date?date=${date}`, {
     headers: {
-      Authorization: token,
+      Authorization: `Bearer ${storage.getToken()}`,
     },
   });
   return res.data.data;
@@ -34,5 +35,46 @@ export const useGetScheduleByDate = (date: string | undefined) => {
   return useQuery({
     queryKey: ["schedules", date],
     queryFn: () => getScheduleByDate(date),
+  });
+};
+
+export async function getScheduleByDateStatus(
+  date: string | undefined,
+  status: string
+) {
+  const res = await axios.get(
+    `${BaseURL}/schedules/by-date-status?date=${date}&status=${status}`,
+    {
+      headers: {
+        Authorization: `Bearer ${storage.getToken()}`,
+      },
+    }
+  );
+  return res.data.data;
+}
+
+export const useGetScheduleByDateStatus = (
+  date: string | undefined,
+  status: string
+) => {
+  return useQuery({
+    queryKey: ["schedules", date, status],
+    queryFn: () => getScheduleByDateStatus(date, status),
+  });
+};
+
+export async function getScheduleByMonthAll(month: string | undefined) {
+  const res = await axios.get(`${BaseURL}/schedules/by-month-all?month=${month}`, {
+    headers: {
+      Authorization: `Bearer ${storage.getToken()}`,
+    },
+  });
+  return res.data.data;
+}
+
+export const useGetScheduleByMonthAll = (month: string | undefined) => {
+  return useQuery({
+    queryKey: ["schedules", month],
+    queryFn: () => getScheduleByMonthAll(month),
   });
 };

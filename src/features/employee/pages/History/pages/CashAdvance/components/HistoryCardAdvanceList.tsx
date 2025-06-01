@@ -5,18 +5,18 @@ import { id } from "date-fns/locale";
 import { useNavigate } from "react-router-dom";
 interface HistoryCashAdvanceListProps {
   cashAdvances: CashAdvanceType[];
+  status: string | null;
 }
 
 export const HistoryCashAdvanceList: React.FC<HistoryCashAdvanceListProps> = ({
   cashAdvances,
+  status,
 }) => {
   const navigate = useNavigate();
   return (
     <>
       {cashAdvances
-        .filter(
-          (data) => data.status === "accepted" || data.status === "rejected"
-        )
+        .filter((data) => data.status === status)
         .map((data, index) => (
           <button
             onClick={() =>
@@ -58,9 +58,7 @@ export const HistoryCashAdvanceList: React.FC<HistoryCashAdvanceListProps> = ({
           </button>
         ))}
 
-      {cashAdvances.filter(
-        (data) => data.status === "accepted" || data.status === "rejected"
-      ).length == 0 && (
+      {cashAdvances.length == 0 && (
         <div className="bg-white shadow-sm p-4 rounded-xl">
           <div className="mt-2 px-3 py-2">
             <div className="flex justify-center">

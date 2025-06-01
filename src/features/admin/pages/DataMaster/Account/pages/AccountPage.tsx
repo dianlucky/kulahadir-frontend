@@ -281,7 +281,7 @@ export const AccountPage: React.FC = () => {
                     <TextInput
                       withAsterisk
                       label="Password"
-                      className="mb-4"
+                      className="mb-2"
                       placeholder="password"
                       key={form.key("password")}
                       {...form.getInputProps("password")}
@@ -305,7 +305,8 @@ export const AccountPage: React.FC = () => {
                       data={[
                         { value: "Pegawai tetap", label: "Pegawai tetap" },
                         { value: "Part time", label: "Part time" },
-                        { value: "Lain lain", label: "Lain lain" },
+                        { value: "Owner", label: "Owner" },
+                        { value: "Admin", label: "Admin" },
                       ]}
                       {...form.getInputProps("status")}
                     />

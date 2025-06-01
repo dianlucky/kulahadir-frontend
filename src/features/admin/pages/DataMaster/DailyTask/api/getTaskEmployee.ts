@@ -1,3 +1,4 @@
+import storage from "@/utils/storage";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -7,8 +8,7 @@ const token = import.meta.env.VITE_TOKEN;
 export async function getAllTaskEmployee() {
   const res = await axios.get(`${BaseURL}/task-employees`, {
     headers: {
-      // Authorization: `Bearer ${storage.getToken()}`,
-      Authorization: `${token}`,
+      Authorization: `Bearer ${storage.getToken()}`,
     },
   });
   return res.data.data;
@@ -24,7 +24,7 @@ export const useGetAllTaskEmployee = () => {
 export async function getTaskEmployeeByDay(day: string | null) {
   const res = await axios.get(`${BaseURL}/task-employees?day=${day}`, {
     headers: {
-      Authorization: `${token}`,
+      Authorization: `Bearer ${storage.getToken()}`,
     },
   });
   console.log("URL : ", `${BaseURL}/task-employees?day=${day}`);

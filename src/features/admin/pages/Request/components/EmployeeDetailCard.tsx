@@ -1,7 +1,17 @@
+import { EmployeeType } from "@/types";
 import { Divider, Image, Text } from "@mantine/core";
 import { IconUser } from "@tabler/icons-react";
+import { format } from "date-fns";
+import { id } from "date-fns/locale";
 
-export const EmployeeDetailCard: React.FC = () => {
+const BaseURL = import.meta.env.VITE_API_URL;
+interface EmployeeDetailCardProps {
+  employee?: EmployeeType;
+}
+
+export const EmployeeDetailCard: React.FC<EmployeeDetailCardProps> = ({
+  employee,
+}) => {
   return (
     <div>
       <div className="flex justify-between mb-2">
@@ -18,7 +28,11 @@ export const EmployeeDetailCard: React.FC = () => {
           <div className="col-span-4 flex justify-center -ml-5">
             <Image
               radius="200"
-              src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-7.png"
+              src={
+                employee?.profile_pic
+                  ? `${BaseURL}/uploads/employees/${employee?.profile_pic}`
+                  : "/images/profile-default.png"
+              }
               style={{
                 width: "50px",
                 height: "50px",
@@ -29,15 +43,11 @@ export const EmployeeDetailCard: React.FC = () => {
           <div className="col-span-8">
             <div className="mt-2">
               <Text fw={"bold"} size="md" truncate="end">
-                {/* {employee?.name} */}
-                Dian Lucky Prayogi
+                {employee?.name}
               </Text>
             </div>
             <div className="-mt-2">
-              <Text size="sm">
-                {/* {employee?.account.level.name} */}
-                part-time
-              </Text>
+              <Text size="sm">{employee?.account.status}</Text>
             </div>
           </div>
         </div>
@@ -46,7 +56,7 @@ export const EmployeeDetailCard: React.FC = () => {
             <div className="mt-2">
               <Text size="sm">Username:</Text>
               <Text fw={"bold"} size="md" mt={-5}>
-                Username
+                {employee?.account.username}
               </Text>
             </div>
           </div>
@@ -54,7 +64,7 @@ export const EmployeeDetailCard: React.FC = () => {
             <div className="mt-2">
               <Text size="sm">Role:</Text>
               <Text fw={"bold"} size="md" mt={-5}>
-                Pegawai
+                {employee?.account.level}
               </Text>
             </div>
           </div>
@@ -63,7 +73,7 @@ export const EmployeeDetailCard: React.FC = () => {
             <div className="mt-2">
               <Text size="sm">No Whatsapp:</Text>
               <Text fw={"bold"} size="md" mt={-5} truncate="end">
-                081349445267
+                {employee?.phone}
               </Text>
             </div>
           </div>
@@ -71,14 +81,11 @@ export const EmployeeDetailCard: React.FC = () => {
             <div className="mt-2">
               <Text size="sm">Tanggal lahir:</Text>
               <Text fw={"bold"} size="md" mt={-5}>
-                {/* {employee?.birth_date
-                  ? format(
-                      new Date(employee.birth_date),
-                      "EEEE, dd MMMM yyyy",
-                      { locale: id }
-                    )
-                  : ""} */}
-                23 mei 2003
+                {employee?.birth_date
+                  ? format(new Date(employee?.birth_date), " dd MMMM yyyy", {
+                      locale: id,
+                    })
+                  : ""}
               </Text>
             </div>
           </div>

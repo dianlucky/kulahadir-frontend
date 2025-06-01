@@ -1,11 +1,45 @@
 import { IconChevronLeft } from "@tabler/icons-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CalendarSection } from "../../Schedules";
-import { EmployeePaidLeaveList } from "../components";
+import { CalendarSection, EmployeePaidLeaveList } from "../components";
+import { format } from "date-fns";
+import { ScheduleType } from "@/types";
+import {
+  useGetScheduleByDateStatus,
+  useGetScheduleByMonthAll,
+} from "@/features/admin/pages/Schedule";
+import { id } from "date-fns/locale";
 
 export const PaidLeavesOwnerPage: React.FC = () => {
   const navigate = useNavigate();
+  const [date, setDate] = useState<string | undefined>(
+    format(new Date(), "yyyy-MM-dd")
+  );
+
+  // GET FOR RENDER INDICATOR
+  const [indicatorOff, setIndicatorOff] = useState<ScheduleType[]>([]);
+  const { data: DataIndicatorOff, refetch: RefetchIndicator } =
+    useGetScheduleByMonthAll(
+      format(date ? date : new Date(), "yyyy-MM", { locale: id })
+    );
+  useEffect(() => {
+    if (DataScheduleOff) {
+      setIndicatorOff(DataIndicatorOff);
+    }
+  }, [DataIndicatorOff]);
+  // console.log("Schedule : ", indicatorOff);
+  // GET FOR RENDER INDICATOR
+
+  // GET PAIDLEAVE DAILY
+  const [scheduleOff, setScheduleOff] = useState<ScheduleType[]>([]);
+  const { data: DataScheduleOff, refetch: RefetchPaidLeaveDaily } =
+    useGetScheduleByDateStatus(date, "off");
+  useEffect(() => {
+    if (DataScheduleOff) {
+      setScheduleOff(DataScheduleOff);
+    }
+  }, [DataScheduleOff]);
+  // GET PAIDLEAVE DAILY
   return (
     <main>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
@@ -29,10 +63,15 @@ export const PaidLeavesOwnerPage: React.FC = () => {
       </section>
       <div>
         <div className="mt-2 mx-6">
-          <CalendarSection />
+          <CalendarSection setDate={setDate} indicatorOff={indicatorOff} />
         </div>
-        <div className="mt-2 mx-6">
-          <EmployeePaidLeaveList />
+        <div className="-mt-2 mx-6 mb-20">
+          <EmployeePaidLeaveList
+            date={date}
+            schedulesOff={scheduleOff}
+            refetchSchedule={RefetchIndicator}
+            refetchPaidLeaveDaily={RefetchPaidLeaveDaily}
+          />
         </div>
       </div>
     </main>

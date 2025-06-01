@@ -529,7 +529,7 @@ export const EmployeePage: React.FC = () => {
                 <Divider mt={7} />
                 <div className="mt-2 px-2 flex gap-2">
                   <Text fw={400} size="sm">
-                    Tanggal dibuat :
+                    Tgl dibuat :
                   </Text>
                   <Text fw={700} size="sm">
                     {employee?.created_at &&

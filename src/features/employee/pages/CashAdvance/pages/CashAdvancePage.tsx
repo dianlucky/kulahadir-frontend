@@ -6,15 +6,17 @@ import { useEffect, useState } from "react";
 import { useGetCashAdvanceByMonthEmployeeId } from "../api";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
+import { useAuth } from "@/features/auth";
 
 export const CashAdvancePage: React.FC = () => {
+  const { creds } = useAuth();
   const navigate = useNavigate();
   const [selectedMonth, setSelectedMonth] = useState<string | undefined>(
     format(new Date(), "yyyy-MM", { locale: id })
   );
   const [cashAdvances, setCashAdvances] = useState<CashAdvanceType[]>([]);
   const { data: DataCashAdvances, refetch: RefetchCashAdvances } =
-    useGetCashAdvanceByMonthEmployeeId(selectedMonth, 1);
+    useGetCashAdvanceByMonthEmployeeId(selectedMonth, creds?.employee_id);
   useEffect(() => {
     if (DataCashAdvances) {
       setCashAdvances(DataCashAdvances);

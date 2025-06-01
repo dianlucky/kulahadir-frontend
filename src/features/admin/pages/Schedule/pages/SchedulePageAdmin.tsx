@@ -25,6 +25,7 @@ import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { useEffect, useState } from "react";
 import {
+  useCreateDailyTaskEmployee,
   useCreateSchedule,
   useGetScheduleByDate,
   useUpdateSchedule,
@@ -32,10 +33,13 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { WorkerDetailSchedule } from "../components";
 
+const BaseURL = import.meta.env.VITE_API_URL;
+const DEFAULT_IMAGE =
+  "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-7.png";
+
 export const SchedulePageAdmin: React.FC = () => {
   const [loading, { toggle }] = useDisclosure();
   const [successAdd, setSuccessAdd] = useState(false);
-  const [notificationMessage, setNotificationMessage] = useState("");
   const [worker, setWorker] = useState<ScheduleType>();
   const [status, setStatus] = useState<string | null | undefined>(
     worker?.status
@@ -70,6 +74,7 @@ export const SchedulePageAdmin: React.FC = () => {
 
   // CREATE SCHEDULES
   const mutationCreateSchedules = useCreateSchedule();
+  const mutationCreateDailyTaskEmployee = useCreateDailyTaskEmployee();
   const handleCreateSchedules = async () => {
     const schedulesData = {
       month: format(new Date(formattedDate ? formattedDate : ""), "MM-yyyy", {
@@ -79,6 +84,27 @@ export const SchedulePageAdmin: React.FC = () => {
     };
 
     await mutationCreateSchedules.mutateAsync(schedulesData, {
+      onSuccess: (data: ScheduleType[]) => {
+        console.log("Success:", data);
+        setSuccessAdd(true);
+        setNotificationMessage("Jadwal berhasil dibuat");
+        RefetchWorker();
+        closeSchedules();
+        close();
+
+        setTimeout(() => {
+          setSuccessAdd(false);
+        }, 4500);
+      },
+    });
+
+    const taskData = {
+      month: format(new Date(formattedDate ? formattedDate : ""), "yyyy-MM", {
+        locale: id,
+      }),
+      make_task: true,
+    };
+    await mutationCreateDailyTaskEmployee.mutateAsync(taskData, {
       onSuccess: (data: ScheduleType[]) => {
         console.log("Success:", data);
         setSuccessAdd(true);
@@ -290,7 +316,7 @@ export const SchedulePageAdmin: React.FC = () => {
             <div className="grid grid-cols-12 w-full gap-2 mt-2">
               {workingEmployee.length != 0 &&
                 workingEmployee.map((data, index) => (
-                  <div className="col-span-6 " key={index}>
+                  <div className="col-span-6 w-full" key={index}>
                     <Indicator
                       color={data.status == "on" ? `green` : `red`}
                       inline
@@ -298,18 +324,20 @@ export const SchedulePageAdmin: React.FC = () => {
                       position="top-start"
                       offset={10}
                     >
-                      <div className="bg-white shadow-sm p-3 rounded-lg">
+                      <div className="bg-white shadow-sm p-3 rounded-lg w-full">
                         <div className="grid grid-cols-12">
                           <div className="col-span-2">
-                            <Image
-                              radius="200"
-                              src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-7.png"
-                              style={{
-                                width: "35px",
-                                height: "35px",
-                                objectFit: "cover",
-                              }}
-                            />
+                            <div className="bg-white-500 rounded-full p-1 w-10 h-10 overflow-hidden">
+                              <Image
+                                src={
+                                  data.employee?.profile_pic
+                                    ? `${BaseURL}/uploads/employees/${data.employee?.profile_pic}`
+                                    : DEFAULT_IMAGE
+                                }
+                                alt="Foto Profil"
+                                className="w-full h-full object-fill rounded-full"
+                              />
+                            </div>
                           </div>
                           <div className="col-span-6">
                             <Text fw={"bold"} size="sm" truncate="end" mb={-2}>

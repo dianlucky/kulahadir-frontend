@@ -1,8 +1,27 @@
+import { ScheduleType } from "@/types";
 import { Divider, Text } from "@mantine/core";
 import { IconCalendar } from "@tabler/icons-react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useGetScheduleByMonthEmployeeId } from "../../schedule/api";
+import { format } from "date-fns";
+import { id } from "date-fns/locale";
+import { useAuth } from "@/features/auth";
 
 export const AttendanceRecapCard: React.FC = () => {
+  const { creds } = useAuth();
+
+  const [schedules, setSchedules] = useState<ScheduleType[]>([]);
+  const { data: DataSchedules } = useGetScheduleByMonthEmployeeId(
+    format(new Date(), "yyyy-MM", { locale: id }),
+    creds?.employee_id
+  );
+  useEffect(() => {
+    if (DataSchedules) {
+      setSchedules(DataSchedules);
+    }
+  });
+
   return (
     <section className="bg-white mx-auto max-w-xs w-full -mt-10 shadow-lg rounded-xl z-50 relative p-2 px-2 text-slate-700 ">
       <div className="divide-y divide-gray-300">
@@ -19,7 +38,10 @@ export const AttendanceRecapCard: React.FC = () => {
             className="px-4 flex flex-col items-center justify-center ml-3"
           >
             <div className="p-2 bg-transparent text-green-600 text-2xl rounded-xl font-bold w-full h-full text-center ">
-              13
+              {
+                schedules.filter((data) => data.attendance_status == "Present")
+                  .length
+              }
             </div>
             <div className="text-xs -mt-1 ml-6">Hadir</div>
           </Link>
@@ -32,7 +54,7 @@ export const AttendanceRecapCard: React.FC = () => {
             className="px-4 flex flex-col items-center justify-center"
           >
             <div className="p-2 text-yellow-600 text-2xl  rounded-xl font-bold w-full h-full text-center ">
-              2
+              {schedules.filter((data) => data.status == "On").length}
             </div>
             <div className="text-xs -mt-1">Libur</div>
           </Link>
@@ -45,7 +67,10 @@ export const AttendanceRecapCard: React.FC = () => {
             className="px-4 flex flex-col items-center justify-center mr-15 -ml-2"
           >
             <div className="p-2 text-sky-600 text-2xl rounded-xl font-bold w-full h-full text-center ">
-              4
+              {
+                schedules.filter((data) => data.attendance_status == "Leave")
+                  .length
+              }
             </div>
             <div className="text-xs -mt-1 ml-4">Sakit</div>
           </Link>

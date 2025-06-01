@@ -1,16 +1,69 @@
 import { IconChevronLeft } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
-import { DailyCalendar, DailySchedule } from "../components";
-import { useState } from "react";
+import { DailyCalendar, DailySchedule, DailyTaskSection } from "../components";
+import { useEffect, useState } from "react";
 import { format } from "date-fns";
+import { AttendanceType, DailyTaskEmployeeType, ScheduleType } from "@/types";
+import { useGetScheduleByDateEmployeeId } from "../api";
+import { useAuth } from "@/features/auth";
+import { useGetAttendanceByScheduleId } from "../../History";
+import { useGetDailyTaskEmployeeByDateEmployeeId } from "../../CheckLog/api";
 
 export const SchedulePage: React.FC = () => {
+  const { creds } = useAuth();
   const navigate = useNavigate();
 
   const [date, setDate] = useState<string | undefined>(
     format(new Date(), "yyyy-MM-dd")
   );
-  console.log("selected date: ", date);
+
+  const [selectedSchedule, setSelectedSchedule] = useState<ScheduleType>();
+  const { data: DataSelectedSchedule, refetch: RefetchSchedule } =
+    useGetScheduleByDateEmployeeId(creds?.employee_id, date);
+
+  useEffect(() => {
+    RefetchSchedule(); // panggil saat date berubah
+  }, [date]);
+
+  useEffect(() => {
+    if (DataSelectedSchedule) {
+      setSelectedSchedule(DataSelectedSchedule);
+    } else {
+      setSelectedSchedule(undefined);
+    }
+  }, [DataSelectedSchedule]);
+
+  const [attendance, setAttendance] = useState<AttendanceType | undefined>();
+  const { data: DataAttendance, refetch: RefetchAttendance } =
+    useGetAttendanceByScheduleId(selectedSchedule?.id);
+
+  useEffect(() => {
+    if (selectedSchedule?.id) {
+      RefetchAttendance();
+    }
+  }, [selectedSchedule]);
+
+  useEffect(() => {
+    if (DataAttendance) {
+      setAttendance(DataAttendance);
+    } else {
+      setAttendance(undefined);
+    }
+  }, [DataAttendance]);
+
+  //=========================================//
+  // GET DAILY TASK
+  const [dailyTask, setDailyTask] = useState<DailyTaskEmployeeType[]>([]);
+  const { data: DataDailyTaskEmployee, isLoading: LoadingDailyTaskEmployee } =
+    useGetDailyTaskEmployeeByDateEmployeeId(date, creds?.employee_id);
+  useEffect(() => {
+    if (DataDailyTaskEmployee) {
+      setDailyTask(DataDailyTaskEmployee);
+    }
+  }, [DataDailyTaskEmployee]);
+  // END FOR GET DAILY TASK
+  //=========================================//
+
   return (
     <main>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
@@ -32,10 +85,19 @@ export const SchedulePage: React.FC = () => {
           {/* </div> */}
         </div>
       </section>
+      <div>
+        <DailyCalendar setDate={setDate} />
+      </div>
 
-      <DailyCalendar setDate={setDate} />
-
-      <DailySchedule date={date} />
+      <div>
+        <DailySchedule
+          selectedSchedule={selectedSchedule}
+          attendance={attendance}
+        />
+      </div>
+      <div className="mb-20 -mt-2">
+        <DailyTaskSection dailyTask={dailyTask} />
+      </div>
     </main>
   );
 };

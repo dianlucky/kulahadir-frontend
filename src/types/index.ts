@@ -17,6 +17,7 @@ export type AttendanceType = {
   attendance_long: string;
   attendance_lat: string;
   status: string;
+  snapshot: string;
   schedule_id: number;
 
   schedule: ScheduleType;
@@ -36,6 +37,15 @@ export type TaskEmployeeType = {
 
   task: DailyTaskType;
   employee: EmployeeType;
+};
+
+export type DailyTaskEmployeeType = {
+  id: number;
+  status: string;
+  task_employee_id: number;
+  date: Date;
+
+  task_employee: TaskEmployeeType;
 };
 
 export type EmployeeType = {
@@ -97,6 +107,16 @@ export type SalaryType = {
   cash_advance: number;
   note: string;
   date: Date;
+  created_at: Date;
+  employee_id: number;
+  employee: EmployeeType;
+};
+
+export type NotificationType = {
+  id: number;
+  type: string;
+  message: string;
+  was_read: boolean;
   created_at: Date;
   employee_id: number;
   employee: EmployeeType;

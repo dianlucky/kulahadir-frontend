@@ -1,3 +1,4 @@
+import storage from "@/utils/storage";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -9,7 +10,7 @@ const deleteCashAdvance = async (cashAdvanceId: number | undefined | null) => {
     `${BaseURL}/cash-advances/${cashAdvanceId}`,
     {
       headers: {
-        Authorization: token,
+        Authorization: `Bearer ${storage.getToken()}`,
       },
     }
   );

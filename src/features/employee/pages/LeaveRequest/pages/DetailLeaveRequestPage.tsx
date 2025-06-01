@@ -2,6 +2,7 @@ import { IconChevronLeft } from "@tabler/icons-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AttachmentDescriptionCard, DateDetailCard } from "../components";
 import { LeaveRequestType } from "@/types";
+import { useAuth } from "@/features/auth";
 
 export const DetailLeaveRequestPage: React.FC = () => {
   const navigate = useNavigate();

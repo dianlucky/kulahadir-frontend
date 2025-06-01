@@ -4,30 +4,34 @@ import { IconClockHour8 } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { useGetScheduleByDateEmployeeId } from "../pages/schedule/api";
 import { format } from "date-fns";
-import { data } from "react-router-dom";
 import { id } from "date-fns/locale";
 import { useGetAttendanceByScheduleId } from "../pages/History";
+import { useAuth } from "@/features/auth";
 
 export const ScheduleCard: React.FC = () => {
+  const { creds } = useAuth();
   const [schedule, setSchedule] = useState<ScheduleType>();
   const { data: DataSchedule, isLoading: LoadingSchedule } =
     useGetScheduleByDateEmployeeId(
-      1, //JANGAN KDINGAT DIGANTI ID EMPLOYEE NI
+      creds?.employee_id,
       format(new Date(), "yyyy-MM-dd")
     );
+
+  const [attendance, setAttendance] = useState<AttendanceType>();
+  const { data: DataAttendance, refetch: RefetchAttendance } =
+    useGetAttendanceByScheduleId(schedule?.id);
   useEffect(() => {
     if (DataSchedule) {
       setSchedule(DataSchedule);
     }
   }, [DataSchedule]);
 
-  const [attendance, setAttendance] = useState<AttendanceType>();
-  const { data: DataAttendance } = useGetAttendanceByScheduleId(schedule?.id);
   useEffect(() => {
     if (DataAttendance) {
       setAttendance(DataAttendance);
     }
   }, [DataAttendance]);
+
   if (LoadingSchedule) {
     return (
       <div className="w-full flex justify-center">
@@ -35,6 +39,10 @@ export const ScheduleCard: React.FC = () => {
       </div>
     );
   }
+
+  console.log("Data Schedule :", schedule);
+  console.log("Data attendance :", attendance);
+
   return (
     <section className="mx-auto max-w-xs bg-white  w-full shadow-lg rounded-xl z-50 relative p-2 px-2 text-slate-700 mb-2 -mt-16">
       <div className="flex justify-between text-xs items-center p-2 -mt-1 -mb-1">

@@ -1,19 +1,26 @@
 export type Creds = {
-  id: number | null;
-  is_freelanced: number;
+  id: number;
   username: string;
-  name: string;
-  role: string | 'admin' | 'superadmin' | 'employee' | 'supervisor';
+  level: string;
+  status: string;
   employee_id: number;
-  company_id: number;
 };
+// export type Creds = {
+//   id: number | null;
+//   is_freelanced: number;
+//   username: string;
+//   name: string;
+//   role: string | 'admin' | 'superadmin' | 'employee' | 'supervisor';
+//   employee_id: number;
+//   company_id: number;
+// };
 
 export type User = {
   id: number;
   name: string;
   username: string;
-  role: 'superadmin' | 'admin' | 'employee' | 'supervisor';
-  status: 'active' | 'inactive';
+  role: "superadmin" | "admin" | "employee" | "supervisor";
+  status: "active" | "inactive";
   createdAt: Date;
   updatedAt: Date;
 };

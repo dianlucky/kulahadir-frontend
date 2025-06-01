@@ -1,3 +1,4 @@
+import { useAuth } from "@/features/auth";
 import { CashAdvanceType } from "@/types";
 import { Badge, Button, Divider, Text } from "@mantine/core";
 import { IconCoins } from "@tabler/icons-react";
@@ -11,10 +12,11 @@ interface DetailCashAdvanceProps {
 export const DetailCashAdvanceSection: React.FC<DetailCashAdvanceProps> = ({
   cashAdvance,
 }) => {
+  const { creds } = useAuth();
   const navigate = useNavigate();
   return (
     <div className="mt-2 p-4">
-      <div className="flex justify-between mb-2 px-1">
+      <div className="flex justify-between mb-1 px-1">
         <div>
           <Text fw={"bold"} size="md" c={"#222222"}>
             Detail kasbon
@@ -36,8 +38,18 @@ export const DetailCashAdvanceSection: React.FC<DetailCashAdvanceProps> = ({
           </Badge>
         </div>
       </div>
-      <Divider />
+      <Divider size={"md"} />
       <div className="grid grid-cols-12 px-2 mt-2">
+        {creds?.level == "Owner" && (
+          <div className="col-span-12">
+            <Text fw={500} size="sm">
+              Nama pegawai :
+            </Text>
+            <Text fw={700} size="md" mt={-4}>
+              {cashAdvance.employee.name}
+            </Text>
+          </div>
+        )}
         <div className="col-span-12">
           <Text fw={500} size="sm">
             Tanggal kasbon:
@@ -63,18 +75,19 @@ export const DetailCashAdvanceSection: React.FC<DetailCashAdvanceProps> = ({
             {cashAdvance.reason}
           </Text>
         </div>
-        <div className="col-span-12 mt-5">
-          <Button
-            size="sm"
-            onClick={() => {
-              navigate(-1);
-            }}
-            fullWidth
-            color="grey"
-          >
-            Kembali
-          </Button>
-        </div>
+      </div>
+      <Divider size={"md"} mt={4} />
+      <div className="col-span-12 mt-2">
+        <Button
+          size="sm"
+          onClick={() => {
+            navigate(-1);
+          }}
+          fullWidth
+          color="grey"
+        >
+          Kembali
+        </Button>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 /* eslint-disable linebreak-style */
+import storage from "@/utils/storage";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -18,7 +19,7 @@ async function updateAccountById(
 ) {
   const response = await axios.patch(`${BaseURL}/accounts/${accountId}`, data, {
     headers: {
-      Authorization: token,
+      Authorization: `Bearer ${storage.getToken()}`,
     },
   });
   return response.data;

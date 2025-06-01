@@ -1,3 +1,4 @@
+import storage from "@/utils/storage";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -8,7 +9,7 @@ const deleteAccount = async (accountId: number | undefined | null) => {
   console.log("Account id: ", accountId);
   const response = await axios.delete(`${BaseURL}/accounts/${accountId}`, {
     headers: {
-      Authorization: token,
+      Authorization: `Bearer ${storage.getToken()}`,
     },
   });
   return response.data;

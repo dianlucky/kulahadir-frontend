@@ -1,3 +1,4 @@
+import storage from "@/utils/storage";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -7,7 +8,7 @@ const token = import.meta.env.VITE_TOKEN;
 const deleteDailyTask = async (taskId: number | undefined | null) => {
   const response = await axios.delete(`${BaseURL}/daily-tasks/${taskId}`, {
     headers: {
-      Authorization: token,
+      Authorization: `Bearer ${storage.getToken()}`,
     },
   });
   return response.data;

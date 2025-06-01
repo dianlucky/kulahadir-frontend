@@ -1,9 +1,23 @@
 import { IconChevronLeft } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import { RequestList } from "../components";
+import { LeaveRequestType } from "@/types";
+import { useGetAllLeave } from "@/features/admin/pages/Request";
+import { useEffect, useState } from "react";
 
 export const RequestOwnerPage: React.FC = () => {
   const navigate = useNavigate();
+
+  // GET REQUEST
+  const [requests, setRequests] = useState<LeaveRequestType[]>([]);
+  const { data: DataRequests, isLoading: LoadingRequest } = useGetAllLeave();
+  useEffect(() => {
+    if (DataRequests) {
+      setRequests(DataRequests);
+    }
+  }, [DataRequests]);
+  // END FOR GET REQUEST
+  console.log("Data request :", requests);
   return (
     <main>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
@@ -19,15 +33,17 @@ export const RequestOwnerPage: React.FC = () => {
               className="font-bold rounded-md"
             />
           </div>
-          <div className="font-semibold text-brown">
-            <h2 className="font-semibold">Data pengajuan izin</h2>
+          <div className="font-semibold text-brown -ml-3">
+            <h2 className="font-semibold">Data pengajuan izin / sakit</h2>
           </div>
-          <div></div>
+          <div>
+            
+          </div>
         </div>
       </section>
       <div>
         <div className="mt-2 mx-6">
-          <RequestList />
+          {!LoadingRequest && <RequestList requests={requests} />}
         </div>
       </div>
     </main>

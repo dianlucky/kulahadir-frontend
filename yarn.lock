@@ -185,12 +185,29 @@
   resolved "https://registry.npmjs.org/@capacitor/app/-/app-7.0.0.tgz"
   integrity sha512-/UFwfPFsw/Jen6vjrV0lfTBOQWSaDDdmrYXKpYg4Xn8hwj0xrrRPXxC43j7VmPoj9AFMVPA+hx94ygqjChPASQ==
 
+"@capacitor/camera@^7.0.1":
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/@capacitor/camera/-/camera-7.0.1.tgz#bcbd1c05cce648fa54b844bf7a6745854cae6ba4"
+  integrity sha512-gDUFsYlhMra5VVOa4iJV6+MQRhp3VXpTLQY4JDATj7UvoZ8Hv4DG8qplPL9ufUFNoR3QbDDnf8+gbQOsKdkDjg==
+
 "@capacitor/core@^7.0.1":
   version "7.0.1"
   resolved "https://registry.npmjs.org/@capacitor/core/-/core-7.0.1.tgz"
   integrity sha512-1Ob9bvA/p8g8aNwK6VesxEekGXowLVf6APjkW4LRnr05H+7z/bke+Q5pn9zqh/GgTbIxAQ/rwZrAZvvxkdm1UA==
   dependencies:
     tslib "^2.1.0"
+
+"@capacitor/geolocation@^7.1.2":
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/@capacitor/geolocation/-/geolocation-7.1.2.tgz#394ce56c20c9347dfa8c702f3b7dfd8ab3053129"
+  integrity sha512-J++OuOpn6Bjweo7SZ+jwI/dhVF9DNw6Wx0UHgQ4qfrATqmNKGNZ/BUljGhXiKJceSx2GIhfrYS7BYqo3uWibgQ==
+  dependencies:
+    "@capacitor/synapse" "^1.0.1"
+
+"@capacitor/synapse@^1.0.1":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@capacitor/synapse/-/synapse-1.0.2.tgz#0037c3741ba29fcc927bb3546120ec2847fd2221"
+  integrity sha512-ynq39s4D2rhk+aVLWKfKfMCz9SHPKijL9tq8aFL5dG7ik7/+PvBHmg9cPHbqdvFEUSMmaGzL6cIjzkOruW7vGA==
 
 "@emotion/is-prop-valid@1.2.2":
   version "1.2.2"
@@ -458,6 +475,11 @@
   version "0.4.1"
   resolved "https://registry.npmjs.org/@humanwhocodes/retry/-/retry-0.4.1.tgz"
   integrity sha512-c7hNEllBlenFTHBky65mhq8WD2kbN9Q6gk0bTk8lSBvc554jpXSkST1iePudpt7+A/AQvuHs9EMqjHDXMY1lrA==
+
+"@ionic/pwa-elements@^3.3.0":
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/@ionic/pwa-elements/-/pwa-elements-3.3.0.tgz#971c806ebe410c677740f9e4b32bbf26ac29bb93"
+  integrity sha512-vbykpxd2nGRlA67AnqDwsiVf8PUmInLyi6lQdnPDjeiML1WZa0CPe6r632nGDV9PTi+sWNde9Xexg9SD6Pwyqw==
 
 "@jridgewell/gen-mapping@^0.3.5":
   version "0.3.8"

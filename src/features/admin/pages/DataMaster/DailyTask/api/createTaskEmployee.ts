@@ -1,3 +1,4 @@
+import storage from "@/utils/storage";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -17,7 +18,7 @@ export const postTaskEmployee = async (taskEmployee: TaskEmployeePost) => {
     taskEmployee,
     {
       headers: {
-        Authorization: token,
+        Authorization: `Bearer ${storage.getToken()}`,
       },
     }
   );

@@ -2,7 +2,7 @@ import { useAuth } from '../hooks';
 import { Creds } from '../types';
 
 type Props = {
-  role: Creds['role'][];
+  role: Creds['level'][];
   children: React.ReactNode;
 };
 

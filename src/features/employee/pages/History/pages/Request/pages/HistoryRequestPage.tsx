@@ -13,14 +13,16 @@ import { useNavigate } from "react-router-dom";
 import { HistoryRequestList } from "../components";
 import { LeaveRequestType } from "@/types";
 import { useGetLeaveRequestByEmployeeId } from "@/features/employee/pages/LeaveRequest";
+import { useAuth } from "@/features/auth";
 
 export const HistoryRequestPage: React.FC = () => {
+  const { creds } = useAuth();
   const navigate = useNavigate();
   const [opened, setOpened] = useState<boolean>(false);
 
   const [leaveRequests, setLeaveRequests] = useState<LeaveRequestType[]>([]);
   const { data: DataLeaveRequest, refetch: RefetchLeaveRequest } =
-    useGetLeaveRequestByEmployeeId(1);
+    useGetLeaveRequestByEmployeeId(creds?.employee_id);
   useEffect(() => {
     if (DataLeaveRequest) {
       setLeaveRequests(DataLeaveRequest);
@@ -28,6 +30,14 @@ export const HistoryRequestPage: React.FC = () => {
       setLeaveRequests([]);
     }
   }, [DataLeaveRequest]);
+
+  // FILTER STATE
+  const [type, setType] = useState<string | null>("sakit");
+  const [status, setStatus] = useState<string | null>("accepted");
+
+  const [activeType, setActiveType] = useState<string | null>("sakit");
+  const [activeStatus, setActiveStatus] = useState<string | null>("accepted");
+  // END FOR FILTER STATE
   return (
     <main>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
@@ -73,30 +83,25 @@ export const HistoryRequestPage: React.FC = () => {
                     <Select
                       label="Tipe"
                       size="xs"
-                      // value={status}
-                      // onChange={setStatus}
+                      value={type}
+                      onChange={setType}
                       data={[
-                        { label: "izin", value: "leave" },
-                        { label: "sakit", value: "sick" },
+                        { label: "izin", value: "izin" },
+                        { label: "sakit", value: "sakit" },
                         { label: "semua", value: "all" },
                       ]}
-                    />
-
-                    <MonthPickerInput
-                      label="Bulan"
-                      size="xs"
-                      // value={month}
-                      // onChange={setMonth}
+                      allowDeselect={false}
                     />
                     <Select
                       label="Status"
                       size="xs"
-                      // value={status}
-                      // onChange={setStatus}
+                      value={status}
+                      onChange={setStatus}
                       data={[
                         { label: "disetujui", value: "accepted" },
                         { label: "ditolak", value: "rejected" },
                       ]}
+                      allowDeselect={false}
                     />
                   </div>
                   <Divider />
@@ -104,7 +109,11 @@ export const HistoryRequestPage: React.FC = () => {
                     <Button
                       fullWidth
                       size="xs"
-                      onClick={() => setOpened(false)}
+                      onClick={() => {
+                        setActiveType(type);
+                        setActiveStatus(status);
+                        setOpened(false);
+                      }}
                     >
                       Simpan
                     </Button>
@@ -115,8 +124,12 @@ export const HistoryRequestPage: React.FC = () => {
           </div>
         </div>
       </section>
-      <div className="mt-2 mx-6">
-        <HistoryRequestList leaveRequests={leaveRequests} />
+      <div className=" mx-6">
+        <HistoryRequestList
+          leaveRequests={leaveRequests}
+          type={activeType}
+          status={activeStatus}
+        />
       </div>
     </main>
   );

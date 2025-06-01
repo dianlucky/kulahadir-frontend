@@ -1,3 +1,4 @@
+import storage from "@/utils/storage";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -6,16 +7,16 @@ const token = import.meta.env.VITE_TOKEN;
 
 type CreateLeaveRequest = {
   type: string;
-  date: Date;
+  date: string;
   reason: string;
-  employee_id: number;
+  employee_id?: number;
 };
 
 export const createLeaveRequest = async (data: CreateLeaveRequest) => {
   console.log("Data yang dikirim : ", data);
   const response = await axios.post(`${BaseURL}/leaves/`, data, {
     headers: {
-      Authorization: token,
+      Authorization: `Bearer ${storage.getToken()}`,
     },
   });
   return response.data;

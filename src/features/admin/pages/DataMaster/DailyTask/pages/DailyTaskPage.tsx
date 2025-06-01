@@ -5,6 +5,7 @@ import {
   Collapse,
   Divider,
   Loader,
+  MultiSelect,
   Notification,
   Select,
   Table,
@@ -69,7 +70,7 @@ export const DailyTaskPage: React.FC = () => {
 
   const selectTaskCode = tasks.map((task) => ({
     value: task.id.toString(),
-    label: task.task_name,
+    label: task.task_code,
   }));
   // console.log(tasks)
   const rows = tasks.map((task, index) => (
@@ -172,12 +173,12 @@ export const DailyTaskPage: React.FC = () => {
   // END OF GET TASK EMPLOYEE
 
   // CREATE TASK EMPLOYEE
+  const [selectedCode, setSelectedCode] = useState<string[]>([]);
   const formCreateTaskEmployee = useForm({
     validateInputOnChange: true,
     initialValues: {
       day: "",
       employee_id: "",
-      task_id: "",
     },
   });
   const mutationCreateEmployee = useCreateTaskEmployee();
@@ -186,25 +187,35 @@ export const DailyTaskPage: React.FC = () => {
   ) => {
     event.preventDefault();
 
-    const employeeData = {
-      day: formCreateTaskEmployee.values.day,
-      task_id: parseInt(formCreateTaskEmployee.values.task_id),
-      employee_id: parseInt(formCreateTaskEmployee.values.employee_id),
-    };
+    if (selectedCode.length === 0) {
+      // Handle error jika tidak ada kode tugas dipilih
+      console.error("Tidak ada kode tugas yang dipilih.");
+      return;
+    }
 
-    await mutationCreateEmployee.mutateAsync(employeeData, {
-      onSuccess: (data: EmployeeType) => {
-        console.log("Success:", data);
-        setSuccessAdd(true);
-        formCreateTaskEmployee.reset();
-        RefetchTaskEmployee();
-        close();
+    const day = formCreateTaskEmployee.values.day;
+    const employee_id = parseInt(formCreateTaskEmployee.values.employee_id);
 
-        setTimeout(() => {
-          setSuccessAdd(false);
-        }, 4500);
-      },
-    });
+    try {
+      const promises = selectedCode.map((taskIdStr) => {
+        const task_id = parseInt(taskIdStr);
+        const payload = { day, employee_id, task_id };
+        return mutationCreateEmployee.mutateAsync(payload);
+      });
+
+      await Promise.all(promises);
+
+      console.log("Semua data berhasil dikirim!");
+      setSuccessAdd(true);
+      formCreateTaskEmployee.reset();
+      setSelectedCode([]);
+      RefetchTaskEmployee();
+      close();
+
+      setTimeout(() => setSuccessAdd(false), 4500);
+    } catch (error) {
+      console.error("Gagal mengirim data:", error);
+    }
   };
   // END OF CREATE TASK EMPLOYEE
 
@@ -350,7 +361,7 @@ export const DailyTaskPage: React.FC = () => {
                   <form onSubmit={handleSubmitFormTaskEmployee}>
                     <Select
                       label="Hari"
-                      size="xs"
+                      size="sm"
                       withAsterisk
                       data={[
                         { label: "Senin", value: "Senin" },
@@ -363,12 +374,13 @@ export const DailyTaskPage: React.FC = () => {
                       ]}
                       {...formCreateTaskEmployee.getInputProps("day")}
                     />
-                    <Select
+                    <MultiSelect
                       withAsterisk
-                      label="Nama tugas"
-                      placeholder="Nama tugas"
+                      label="Kode tugas"
+                      placeholder="Kode tugas"
                       data={selectTaskCode}
-                      {...formCreateTaskEmployee.getInputProps("task_id")}
+                      value={selectedCode}
+                      onChange={setSelectedCode}
                     />
                     <Select
                       withAsterisk

@@ -7,6 +7,7 @@ export type Navigation = {
   href: string;
   icon: Icon;
   currentPath: string;
+  hasUnread?: boolean;
 };
 
 interface Props {

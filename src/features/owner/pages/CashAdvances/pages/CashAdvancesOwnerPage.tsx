@@ -1,9 +1,19 @@
 import { IconChevronLeft } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import { CashAdvanceList } from "../components";
+import { useEffect, useState } from "react";
+import { CashAdvanceType } from "@/types";
+import { useGetAllCashAdvance } from "@/features/employee/pages/CashAdvance";
 
 export const CashAdvanceOwnerPage: React.FC = () => {
   const navigate = useNavigate();
+  const [cashAdvances, setCashAdvances] = useState<CashAdvanceType[]>([]);
+  const { data: DataCashAdvances } = useGetAllCashAdvance();
+  useEffect(() => {
+    if (DataCashAdvances) {
+      setCashAdvances(DataCashAdvances);
+    }
+  }, [DataCashAdvances]);
   return (
     <main>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
@@ -27,7 +37,7 @@ export const CashAdvanceOwnerPage: React.FC = () => {
       </section>
       <div>
         <div className="mt-2 mx-6">
-          <CashAdvanceList />
+          <CashAdvanceList cashAdvances={cashAdvances} />
         </div>
       </div>
     </main>

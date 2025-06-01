@@ -11,7 +11,7 @@ const deleteTaskEmployee = async (
     `${BaseURL}/task-employees/${taskEmployeeId}`,
     {
       headers: {
-        Authorization: token,
+        Authorization: `Bearer ${storage.getToken()}`,
       },
     }
   );

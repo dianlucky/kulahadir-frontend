@@ -5,11 +5,15 @@ import { IconChevronLeft, IconPlus } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGetLeaveRequestByEmployeeId } from "../api";
+import { useAuth } from "@/features/auth";
 
 export const LeaveRequestPage: React.FC = () => {
+  const { creds } = useAuth();
   const navigate = useNavigate();
   const [leaveRequests, setLeaveRequests] = useState<LeaveRequestType[]>([]);
-  const { data: DataLeaveRequest } = useGetLeaveRequestByEmployeeId(1);
+  const { data: DataLeaveRequest } = useGetLeaveRequestByEmployeeId(
+    creds?.employee_id
+  );
   useEffect(() => {
     if (DataLeaveRequest) {
       setLeaveRequests(DataLeaveRequest);
@@ -45,7 +49,7 @@ export const LeaveRequestPage: React.FC = () => {
           </div>
         </div>
       </section>
-      <div className="mt-3">
+      <div className="mt-2">
         <RequestList leaveRequests={leaveRequests} />
       </div>
     </main>

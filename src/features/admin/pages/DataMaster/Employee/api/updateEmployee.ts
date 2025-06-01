@@ -1,4 +1,5 @@
 /* eslint-disable linebreak-style */
+import storage from "@/utils/storage";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -21,7 +22,7 @@ async function updateEmployeeById(
     data,
     {
       headers: {
-        Authorization: token,
+        Authorization: `Bearer ${storage.getToken()}`,
       },
     }
   );

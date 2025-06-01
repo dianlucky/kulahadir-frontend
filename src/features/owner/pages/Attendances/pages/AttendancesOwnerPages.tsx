@@ -1,10 +1,28 @@
 import { IconChevronLeft } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
-import { CalendarSection } from "../../Schedules";
-import { EmployeeSection } from "../components";
+import { CalendarSection, EmployeeSection } from "../components";
+import { useEffect, useState } from "react";
+import { format } from "date-fns";
+import { AttendanceType } from "@/types";
+import { useGetAttendanceByDateAll } from "@/features/employee/pages/History";
 
 export const AttendancesOwnerPages: React.FC = () => {
   const navigate = useNavigate();
+  const [date, setDate] = useState<string | undefined>(
+    format(new Date(), "yyyy-MM-dd")
+  );
+
+  // GET ATTENDANCE
+  const [attendances, setAttendances] = useState<AttendanceType[]>([]);
+  const { data: DataAttendances, isLoading: LoadingAttendances } =
+    useGetAttendanceByDateAll(date);
+  useEffect(() => {
+    if (DataAttendances) {
+      setAttendances(DataAttendances);
+    }
+  }, [DataAttendances]);
+  // END FOR GET ATTENDANCE
+  console.log("Data Attendances :", attendances);
   return (
     <main>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
@@ -28,10 +46,10 @@ export const AttendancesOwnerPages: React.FC = () => {
       </section>
       <div>
         <div className="mt-2 mx-6">
-          <CalendarSection />
+          <CalendarSection setDate={setDate} />
         </div>
-        <div className="mt-2 mx-6">
-          <EmployeeSection />
+        <div className="-mt-2 mx-6 mb-20">
+          {!LoadingAttendances && <EmployeeSection attendances={attendances} />}
         </div>
       </div>
     </main>

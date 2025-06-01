@@ -1,22 +1,31 @@
 import { LeaveRequestType } from "@/types";
 import { Badge, Divider, Image, Text } from "@mantine/core";
+import { format } from "date-fns";
+import { id } from "date-fns/locale";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 interface HistoryRequestListProps {
   leaveRequests: LeaveRequestType[];
+  type: string | null;
+  status: string | null;
 }
 
 export const HistoryRequestList: React.FC<HistoryRequestListProps> = ({
   leaveRequests,
+  type,
+  status,
 }) => {
   const navigate = useNavigate();
+  console.log("Tipe :", type);
+  console.log("Status :", status);
   return (
     <>
       {leaveRequests.length != 0 &&
         leaveRequests
           .filter(
             (leave) =>
-              leave.status === "accepted" || leave.status === "rejected"
+              (status === null || leave.status === status) &&
+              (type === "all" || leave.type === type)
           )
           .map((data, index) => (
             <button
@@ -25,7 +34,7 @@ export const HistoryRequestList: React.FC<HistoryRequestListProps> = ({
               }
               key={index}
             >
-              <section className="bg-white shadow-md rounded-lg p-3">
+              <section className="bg-white shadow-md rounded-2xl p-3 mt-2">
                 <div className="grid grid-cols-12 px-2 mb-2">
                   <div className="col-span-1 text-center">
                     <Text fw={"bold"} size="30px">
@@ -60,15 +69,24 @@ export const HistoryRequestList: React.FC<HistoryRequestListProps> = ({
                       </Badge>
                     </div>
                     <div className="text-center mt-1 mb-1">
-                      <Text fw={"bold"} size="16px">
-                        Jumat, 23 Mei 2025
+                      <Text fw={"bold"} size="18px">
+                        {data.date &&
+                          format(data.date, "EEEE, dd MMMM yyyy", {
+                            locale: id,
+                          })}
                       </Text>
                     </div>
                   </div>
                 </div>
                 <Divider />
-                <div className="w-full px-2 mt-1">
-                  <Text size="xs">Tanggal pengajuan : Rabu, 21 Mei 2025</Text>
+                <div className="w-full px-2 mt-1 text-start">
+                  <Text size="xs">
+                    Tanggal pengajuan :{" "}
+                    {data.created_at &&
+                      format(data.created_at, "EEEE, dd MMMM yyyy", {
+                        locale: id,
+                      })}
+                  </Text>
                 </div>
               </section>
             </button>

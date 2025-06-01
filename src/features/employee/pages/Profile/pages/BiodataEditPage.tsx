@@ -24,7 +24,7 @@ export const BiodataEditPage: React.FC = () => {
             />
           </div>
           <div className="col-span-11 text-center -ml-4 font-semibold text-brown">
-            <h2 className="font-semibold">Biodata</h2>
+            <h2 className="font-semibold">Edit Biodata</h2>
           </div>
           {/* </div> */}
         </div>

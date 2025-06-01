@@ -12,38 +12,43 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 
 import { LoadingScreen } from "../elements";
 import { NavItem } from "../navigation/BottomNav/NavItem";
-// import { AttendanceType, useGetAttendance } from '@/features/attendance';
-// import { useAuth } from "@/features/auth";
-// import { formatterDate } from '@/features/history';
-
-const navigationsleft = [
-  { title: "Home", href: "/", icon: IconHome },
-  { title: "Notifikasi", href: "/notification", icon: IconBellRinging },
-];
-const navigationsright = [
-  { title: "Riwayat", href: "/history", icon: IconChecklist },
-  { title: "Profil", href: "/profile", icon: IconUser },
-];
+import { useAuth } from "@/features/auth";
+import { NotificationType } from "@/types";
+import { usegetNotification } from "@/features/employee/api";
 
 export const HomeLayout: React.FC = () => {
   const location = useLocation();
-  // const { creds } = useAuth();
+  const { creds } = useAuth();
   const path = location.pathname;
   const [currentPath, setCurrentPath] = useState(path || "/");
   useEffect(() => {
     setCurrentPath(path);
   }, [path]);
 
-  // const [attendance, setAttendance] = useState<AttendanceType>();
-  // const { data: DataAttendance } = useGetAttendance(
-  //   creds?.employee_id,
-  //   formatterDate(new Date(), 'yyyy-MM-dd')
-  // );
-  // useEffect(() => {
-  //   if (DataAttendance) {
-  //     setAttendance(DataAttendance);
-  //   }
-  // }, [DataAttendance]);
+  // GET NOTIFICATION
+  const [notifications, setNotifications] = useState<NotificationType[]>([]);
+  const { data: DataNotifications } = usegetNotification(creds?.employee_id);
+  useEffect(() => {
+    if (DataNotifications) {
+      setNotifications(DataNotifications);
+    }
+  }, [DataNotifications]);
+  const unreadCount = notifications.filter((n) => !n.was_read).length;
+  // END FOR GET NOTIFICATION
+  const navigationsleft = [
+    { title: "Home", href: "/", icon: IconHome },
+    {
+      title: "Notifikasi",
+      href: "/notification",
+      icon: IconBellRinging,
+      hasUnread: unreadCount > 0,
+    },
+  ];
+  const navigationsright = [
+    { title: "Riwayat", href: "/history", icon: IconChecklist },
+    { title: "Profil", href: "/profile", icon: IconUser },
+  ];
+
   return (
     <div className="max-w-md min-h-screen pb-14 mx-auto bg-gradient-to-t from-[#f2f8fd] via-[#f6f9fc] to-[#f6f9fc] relative overflow-y-auto overflow-x-hidden">
       <Suspense fallback={<LoadingScreen />}>
@@ -61,13 +66,13 @@ export const HomeLayout: React.FC = () => {
         <div className="w-full flex justify-center">
           <div className="absolute bottom-1">
             <Link
-              to={"/check-log"}
+              to={creds?.level == "Pegawai" ? "/check-log": "/employee-attendances"}
               className="bg-brown flex flex-col items-center justify-center text-white w-16 max-w-16  rounded-full min-h-16 h-16 shadow-lg"
             >
               <IconHandStop className="mb-1" color="white" size={37} />
             </Link>
             <div className="text-sm font-medium mb-1 mt-1 text-slate-500 w-full text-center">
-              Check-in
+              {creds?.level == "Owner" ? "Kehadiran" : "Check-in"}
             </div>
           </div>
         </div>

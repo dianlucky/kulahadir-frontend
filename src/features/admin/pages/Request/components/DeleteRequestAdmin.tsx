@@ -1,29 +1,32 @@
-import { RequestType } from "@/types";
+import { LeaveRequestType, RequestType } from "@/types";
 import { Button, CloseButton, Divider, Text } from "@mantine/core";
 import { useDeleteRequest } from "../api";
+import { showNotification } from "@mantine/notifications";
 
 interface DeleteRequestAdminProps {
   setDelete: React.Dispatch<React.SetStateAction<boolean>>;
-  setSuccessDelete: React.Dispatch<React.SetStateAction<boolean>>;
-  request: RequestType | undefined;
+  selectedRequest?: LeaveRequestType;
+  RefetchRequest: () => void;
 }
 
 export const DeleteRequestAdmin: React.FC<DeleteRequestAdminProps> = ({
   setDelete,
-  setSuccessDelete,
-  request,
+  selectedRequest,
+  RefetchRequest,
 }) => {
   const deleteRequestMutation = useDeleteRequest();
   const deleteRequest = async (id: number | undefined) => {
     deleteRequestMutation.mutateAsync(id, {
       onSuccess: (data) => {
         console.log("Success Delete:", data);
-        setSuccessDelete(true);
         setDelete(false);
+        showNotification({
+          message: "Berhasil menghapus pengajuan pegawai",
+          color: "green",
+          position: "bottom-right",
+        });
+        RefetchRequest();
         close();
-        setTimeout(() => {
-          setSuccessDelete(false);
-        }, 4500);
       },
     });
   };
@@ -45,12 +48,12 @@ export const DeleteRequestAdmin: React.FC<DeleteRequestAdminProps> = ({
             Apakah anda yakin ingin menghapus data pengajuan dari pegawai ?
           </Text>
           <Text size="md" c={"red"} fw={600}>
-            "Dian Lucky Prayogi"
+            "{selectedRequest?.employee.name}"
           </Text>
         </div>
         <div className="flex justify-center mt-2">
           <Button
-            onClick={() => deleteRequest(request?.id)}
+            onClick={() => deleteRequest(selectedRequest?.id)}
             type="submit"
             color="red"
           >

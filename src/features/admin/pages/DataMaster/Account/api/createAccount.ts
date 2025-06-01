@@ -1,3 +1,4 @@
+import storage from "@/utils/storage";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -15,7 +16,7 @@ export const postAccount = async (data: AccountPost) => {
   //   console.log("Data yang dikirim : ", data);
   const response = await axios.post(`${BaseURL}/accounts/`, data, {
     headers: {
-      Authorization: token,
+      Authorization: `Bearer ${storage.getToken()}`,
     },
   });
   return response.data;

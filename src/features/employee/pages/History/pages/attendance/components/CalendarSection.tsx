@@ -38,7 +38,7 @@ export const CalendarSection: React.FC<CalendarSectionProps> = ({
   // END FOR DATA INDICATOR
 
   return (
-    <section className="bg-white shadow-md rounded-lg p-3 pb-10">
+    <section className="bg-white shadow-md rounded-xl p-3 pb-10">
       <div className="flex justify-between py-2 px-4">
         <div>
           <Text size="md" fw={"bold"} c={"#222222"}>
@@ -74,17 +74,17 @@ export const CalendarSection: React.FC<CalendarSectionProps> = ({
               bgClass = "bg-blue-600 text-white";
             } else {
               switch (statusInfo?.status) {
-                case "hadir":
-                  bgClass = "bg-green-600 text-white";
+                case "Present":
+                  bgClass = "bg-green-500 text-white";
                   break;
-                case "terlambat":
+                case "Late":
                   bgClass = "bg-yellow-400 text-white";
                   break;
-                case "izin":
+                case "Leave":
                   bgClass = "bg-gray-400 text-white";
                   break;
                 case "off":
-                  bgClass = "bg-red-600 text-white";
+                  bgClass = "bg-red-400 text-white";
                   break;
                 default:
                   bgClass = "";

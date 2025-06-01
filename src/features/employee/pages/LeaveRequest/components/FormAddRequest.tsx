@@ -13,10 +13,14 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreateLeaveRequest } from "../api";
 import { LeaveRequestType } from "@/types";
+import { useAuth } from "@/features/auth";
+import { format } from "date-fns";
+import { showNotification } from "@mantine/notifications";
 
 export const FormAddRequest: React.FC = () => {
-  const [status, setStatus] = useState<string | null>("sakit");
-  const [value, setValue] = useState<Date | null>(new Date());
+  const { creds } = useAuth();
+  // const [status, setStatus] = useState<string | null>("sakit");
+  // const [value, setValue] = useState<Date | null>(new Date());
   const navigate = useNavigate();
 
   const formCreate = useForm({
@@ -27,10 +31,6 @@ export const FormAddRequest: React.FC = () => {
       reason: "",
     },
     validate: {
-      date: (value) =>
-        value instanceof Date && !isNaN(value.getTime())
-          ? null
-          : "Tanggal tidak valid",
       reason: (value) => (value.length < 5 ? "Minimal 5 karakter" : null),
     },
   });
@@ -41,21 +41,22 @@ export const FormAddRequest: React.FC = () => {
 
     const leaveRequestData = {
       type: formCreate.values.type,
-      date: formCreate.values.date,
+      date: format(formCreate.values.date, "yyyy-MM-dd"),
       reason: formCreate.values.reason,
-      employee_id: 1,
+      employee_id: creds?.employee_id,
     };
 
     await mutationCreateLeaveRequest.mutateAsync(leaveRequestData, {
       onSuccess: (data: LeaveRequestType) => {
         console.log("Success:", data);
-        // setSuccessAdd(true);
         formCreate.reset();
+        navigate(-1);
+        showNotification({
+          message: "Berhasil menambah pengajuan",
+          color: "green",
+          position: "top-center",
+        });
         close();
-
-        // setTimeout(() => {
-        //   setSuccessAdd(false);
-        // }, 4500);
       },
     });
   };
@@ -64,7 +65,7 @@ export const FormAddRequest: React.FC = () => {
     <div className="mt-2 p-4">
       <div className="flex justify-between mb-2">
         <div>
-          <Text fw={"bold"} size="md" c={"#222222"}>
+          <Text fw={700} size="md" c={"#222222"}>
             Ajukan izin / sakit
           </Text>
         </div>
@@ -74,7 +75,7 @@ export const FormAddRequest: React.FC = () => {
       </div>
       <Divider />
       <form onSubmit={handleSubmitForm}>
-        <div className="mt-2">
+        <div className="mt-1">
           <Select
             label="Tipe pengajuan"
             size="sm"
@@ -102,6 +103,7 @@ export const FormAddRequest: React.FC = () => {
         </div> */}
         <div className="mt-1">
           <Textarea
+            size="sm"
             label="Keterangan"
             placeholder="Masukkan alasan pengajuan"
             key={formCreate.key("reason")}

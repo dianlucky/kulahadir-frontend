@@ -1,10 +1,15 @@
 import { Image, Text } from "@mantine/core";
 import { IconChevronLeft } from "@tabler/icons-react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { BiodataCard } from "../components";
+import { EmployeeType } from "@/types";
+
+const BaseURL = import.meta.env.VITE_API_URL;
 
 export const DetailEmployeeOwnerPage: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const employee = location.state.data as EmployeeType;
   return (
     <main>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
@@ -32,22 +37,22 @@ export const DetailEmployeeOwnerPage: React.FC = () => {
               radius="30px"
               h={40}
               w={40}
-              src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-10.png"
+              src={employee.profile_pic ? `${BaseURL}/uploads/employees/${employee.profile_pic}` : '/images/profile-default.png'}
             />
           </div>
           <div className="ml-3 my-auto">
             <Text fw={700} size="md">
-              Dian Lucky Prayogi
+              {employee?.name}
             </Text>
             <Text fw={300} size="xs" mt={-4}>
-              Pegawai tetap
+              {employee.account.status}
             </Text>
           </div>
         </div>
       </section>
       <div>
         <div className="mt-2 mx-6">
-          <BiodataCard />
+          <BiodataCard employee={employee} />
         </div>
       </div>
       ;
