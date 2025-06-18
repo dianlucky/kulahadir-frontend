@@ -1,10 +1,7 @@
-import { useState } from "react";
-
 import "./App.css";
 import { Badge, Button, Card, Group, Image, Text } from "@mantine/core";
 
 function App() {
-
   return (
     <>
       <h1 className="text-4xl font-bold underline">Halo Imel</h1>

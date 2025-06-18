@@ -1,8 +1,18 @@
+import { SalaryType, ScheduleType } from "@/types";
 import { Divider, Text } from "@mantine/core";
 import { IconCalendarCheck } from "@tabler/icons-react";
+import { format } from "date-fns";
+import { id } from "date-fns/locale";
 import React from "react";
+interface SalaryCardAdminProps {
+  salary: SalaryType;
+  schedules?: ScheduleType[];
+}
 
-export const SalaryCardAdmin: React.FC = () => {
+export const SalaryCardAdmin: React.FC<SalaryCardAdminProps> = ({
+  salary,
+  schedules,
+}) => {
   return (
     <>
       <div className="bg-white shadow-sm p-4">
@@ -42,7 +52,7 @@ export const SalaryCardAdmin: React.FC = () => {
               </Text>
             </div>
             <div className="col-span-8 mt-1">
-              <Text size="13px">Dian Lucky Prayogi</Text>
+              <Text size="13px">{salary.employee.name}</Text>
             </div>
           </div>
           <div className="grid grid-cols-12">
@@ -57,7 +67,7 @@ export const SalaryCardAdmin: React.FC = () => {
               </Text>
             </div>
             <div className="col-span-8 mt-1">
-              <Text size="13px">Pegawai</Text>
+              <Text size="13px">{salary.employee.account.level}</Text>
             </div>
           </div>
           <div className="grid grid-cols-12">
@@ -72,7 +82,7 @@ export const SalaryCardAdmin: React.FC = () => {
               </Text>
             </div>
             <div className="col-span-8 mt-1">
-              <Text size="13px">Pegawai tetap</Text>
+              <Text size="13px">{salary.employee.account.status}</Text>
             </div>
           </div>
           <div className="grid grid-cols-12">
@@ -87,7 +97,10 @@ export const SalaryCardAdmin: React.FC = () => {
               </Text>
             </div>
             <div className="col-span-8 mt-1">
-              <Text size="13px">Mei 2025</Text>
+              <Text size="13px">
+                {salary.date &&
+                  format(salary.date, "MMMM yyyy", { locale: id })}
+              </Text>
             </div>
           </div>
         </div>
@@ -105,7 +118,18 @@ export const SalaryCardAdmin: React.FC = () => {
               </Text>
             </div>
             <div className="col-span-7 mt-1 text-end">
-              <Text size="13px">Rp. 1.250.000</Text>
+              <Text size="13px">
+                Rp.{" "}
+                {new Intl.NumberFormat("id-ID").format(
+                  (schedules
+                    ? schedules?.filter(
+                        (data) =>
+                          data.attendance_status == "Present" ||
+                          data.attendance_status == "Late"
+                      ).length
+                    : 0) * 40000
+                )}
+              </Text>
             </div>
           </div>
           <div className="grid grid-cols-12">
@@ -120,7 +144,9 @@ export const SalaryCardAdmin: React.FC = () => {
               </Text>
             </div>
             <div className="col-span-7 mt-1 text-end">
-              <Text size="13px">Rp. 200.000</Text>
+              <Text size="13px">
+                Rp. {new Intl.NumberFormat("id-ID").format(salary.bonus)}
+              </Text>
             </div>
           </div>
           <div className="grid grid-cols-12">
@@ -130,7 +156,20 @@ export const SalaryCardAdmin: React.FC = () => {
               </Text>
             </div>
             <div className="col-span-5 mt-1 text-end">
-              <Text size="13px">Rp. 1.450.000</Text>
+              <Text size="13px">
+                Rp.{" "}
+                {new Intl.NumberFormat("id-ID").format(
+                  (schedules
+                    ? schedules?.filter(
+                        (data) =>
+                          data.attendance_status == "Present" ||
+                          data.attendance_status == "Late"
+                      ).length
+                    : 0) *
+                    40000 +
+                    salary.bonus
+                )}
+              </Text>
             </div>
           </div>
           <div className="grid grid-cols-12 mt-3">
@@ -145,7 +184,10 @@ export const SalaryCardAdmin: React.FC = () => {
               </Text>
             </div>
             <div className="col-span-7 mt-1 text-end">
-              <Text size="13px">-</Text>
+              <Text size="13px">
+                Rp.{" "}
+                {new Intl.NumberFormat("id-ID").format(salary.salary_deduction)}
+              </Text>
             </div>
           </div>
           <div className="grid grid-cols-12">
@@ -160,7 +202,9 @@ export const SalaryCardAdmin: React.FC = () => {
               </Text>
             </div>
             <div className="col-span-7 mt-1 text-end">
-              <Text size="13px">Rp. 250.000</Text>
+              <Text size="13px">
+                Rp. {new Intl.NumberFormat("id-ID").format(salary.cash_advance)}
+              </Text>
             </div>
           </div>
           <div className="grid grid-cols-12">
@@ -170,7 +214,12 @@ export const SalaryCardAdmin: React.FC = () => {
               </Text>
             </div>
             <div className="col-span-5 mt-1 text-end">
-              <Text size="13px">Rp. 250.000</Text>
+              <Text size="13px">
+                Rp.{" "}
+                {new Intl.NumberFormat("id-ID").format(
+                  salary.salary_deduction - salary.cash_advance
+                )}
+              </Text>
             </div>
           </div>
           <div className="grid grid-cols-12 mt-3 mb-1">
@@ -185,16 +234,23 @@ export const SalaryCardAdmin: React.FC = () => {
               </Text>
             </div>
             <div className="col-span-6 mt-1 text-end">
-              <Text size="13px">Rp. 1.200.000</Text>
+              <Text size="13px">
+                Rp. {new Intl.NumberFormat("id-ID").format(salary.amount)}
+              </Text>
             </div>
           </div>
           <Divider />
           <div className="grid grid-cols-12 mt-4 mb-2">
             <div className="col-span-3" />
             <div className="col-span-9 text-center">
-                <Text size="xs">Tanah Laut, 13 Juni 2025 </Text>
-                <Text size="xs" m={6} fs={"italic"}>Hafiz Anshari </Text>
-                <Text size="xs">(Owner Kulakita)</Text>
+              <Text size="xs">
+                Tanah Laut,{" "}
+                {format(salary.created_at, "dd MMMM yyyy", { locale: id })}{" "}
+              </Text>
+              <Text size="xs" m={6} fs={"italic"}>
+                Hafiz Anshari{" "}
+              </Text>
+              <Text size="xs">(Owner Kulakita)</Text>
             </div>
           </div>
         </div>

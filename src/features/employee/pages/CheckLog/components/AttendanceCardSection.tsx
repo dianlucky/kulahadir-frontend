@@ -7,6 +7,7 @@ import { useCheckIn, useCheckOut } from "../api";
 import { showNotification } from "@mantine/notifications";
 import { IconClockHour8 } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
+import { Capacitor } from "@capacitor/core";
 
 interface AttendanceCardProps {
   schedule?: ScheduleType;
@@ -40,35 +41,86 @@ export const AttendanceCardSection: React.FC<AttendanceCardProps> = ({
 
   // HANDLE CHECK-IN
   const mutationCheckIn = useCheckIn();
+
   const handleCheckIn = async () => {
     try {
+      const platform = Capacitor.getPlatform();
+
+      // Request permission dengan pengecekan yang lebih robust
+      if (platform !== "web") {
+        const permission = await Camera.requestPermissions();
+        console.log("[PERMISSION]", permission);
+
+        if (permission.camera !== "granted") {
+          console.error("Izin kamera ditolak");
+          showNotification({
+            message: "Izin kamera diperlukan untuk check-in",
+            color: "red",
+            position: "top-center",
+          });
+          return;
+        }
+      }
+
+      // Konfigurasi foto dengan pengaturan yang lebih kompatibel
       const photo = await Camera.getPhoto({
         quality: 90,
         allowEditing: false,
-        resultType: CameraResultType.DataUrl, // hasil base64
+        resultType: CameraResultType.Base64,
         source: CameraSource.Camera,
+        width: 1024, // Tambahkan width
+        height: 1024, // Tambahkan height
+        correctOrientation: true, // Perbaiki orientasi
+        saveToGallery: false, // Jangan simpan ke galeri
       });
 
-      if (!photo || !photo.dataUrl) {
-        console.error("No photo taken");
+      if (!photo || !photo.base64String) {
+        console.error("Tidak ada foto yang diambil");
+        showNotification({
+          message: "Foto gagal diambil",
+          color: "red",
+          position: "top-center",
+        });
         return;
       }
 
-      // convert base64 to Blob
-      const blob = await (await fetch(photo.dataUrl)).blob();
+      console.log("[CHECK-IN] Platform:", platform);
+      console.log("[CHECK-IN] Photo success");
+
+      // Konversi base64 ke File dengan cara yang lebih aman
+      const base64Data = photo.base64String;
+      const byteCharacters = atob(base64Data);
+      const byteNumbers = new Array(byteCharacters.length);
+
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: "image/jpeg" });
       const file = new File([blob], `snapshot-${Date.now()}.jpeg`, {
         type: "image/jpeg",
       });
 
-      // buat FormData
+      // Validasi lokasi
+      if (lat == null || long == null) {
+        showNotification({
+          message: "Lokasi belum tersedia, coba lagi nanti",
+          color: "red",
+          position: "top-center",
+        });
+        return;
+      }
+
+      // Buat FormData
       const formData = new FormData();
       formData.append("check_in", new Date().toISOString());
-      formData.append("attendanc_lat", String(lat)); // asumsi kamu sudah ambil location
+      formData.append("attendanc_lat", String(lat));
       formData.append("attendance_long", String(long));
-      formData.append("schedule_id", String(schedule?.id));
-      formData.append("snapshot", file); // nama field sama dengan di backend
+      formData.append("schedule_id", String(schedule?.id ?? ""));
+      formData.append("snapshot", file);
 
-      // kirim ke backend
+      // Kirim ke backend
       await mutationCheckIn.mutateAsync(formData, {
         onSuccess: (data) => {
           console.log("Check-in berhasil", data);
@@ -90,7 +142,12 @@ export const AttendanceCardSection: React.FC<AttendanceCardProps> = ({
         },
       });
     } catch (error) {
-      console.error("Error taking photo or sending data", error);
+      console.error("Error saat check-in:", error);
+      showNotification({
+        message: "Terjadi kesalahan saat check-in",
+        color: "red",
+        position: "top-center",
+      });
     }
   };
   // END FOR CREATE ATTENDANCE (CHECK-IN)
@@ -121,34 +178,44 @@ export const AttendanceCardSection: React.FC<AttendanceCardProps> = ({
   // END OF UPDATE LEAVE REQUEST
   // END FOR HANDLE CHECK-OUT 🚨🚨🚨🚨
   return (
-    <section className="bg-white mx-auto max-w-xs w-full shadow-lg rounded-xl z-50 relative p-4">
+    <section className="bg-white mx-auto max-w-sm w-full shadow-lg rounded-xl z-50 relative p-4">
       <div className="flex justify-between text-xs items-center mb-2">
         <span className="text-base font-bold text-brown">Absensi</span>
-        {attendance && attendance.status == "Working" ? (
+        <div className="flex justify-between -gap-1">
+          {attendance && attendance.status == "Working" ? (
+            <Badge
+              size="xs"
+              color={attendance?.status == "Working" ? "yellow" : "green"}
+              radius={"xs"}
+              mr={5}
+            >
+              {attendance?.status}
+            </Badge>
+          ) : (
+            <Badge
+              size="xs"
+              color={
+                schedule?.attendance_status == "belum hadir"
+                  ? "red"
+                  : schedule?.attendance_status == "Working"
+                  ? "yellow"
+                  : "green"
+              }
+              radius={"xs"}
+              mr={5}
+            >
+              {schedule?.attendance_status}
+            </Badge>
+          )}
           <Badge
             size="xs"
-            color={attendance?.status == "Working" ? "yellow" : "green"}
+            color={schedule?.status == "off" ? "red" : "green"}
             radius={"xs"}
             mr={5}
           >
-            {attendance?.status}
+            {schedule?.status}
           </Badge>
-        ) : (
-          <Badge
-            size="xs"
-            color={
-              schedule?.attendance_status == "belum hadir"
-                ? "red"
-                : schedule?.attendance_status == "Working"
-                ? "yellow"
-                : "green"
-            }
-            radius={"xs"}
-            mr={5}
-          >
-            {schedule?.attendance_status}
-          </Badge>
-        )}
+        </div>
       </div>
       <Divider size="xs" className="mb-2" />
       <div className="grid grid-cols-12 px-2">
@@ -202,35 +269,45 @@ export const AttendanceCardSection: React.FC<AttendanceCardProps> = ({
           <Button
             size="sm"
             fullWidth
-            disabled={statusLocation ? false : true}
+            // disabled={
+            //   statusLocation ? false : schedule.status == "on" ? false : true
+            // }
+            disabled={schedule.status == "on" && statusLocation ? false : true}
             onClick={handleCheckIn}
           >
-            {statusLocation ? `CHECK-IN` : `Anda berada diluar lokasi`}
+            {/* {!statusLocation
+              ? `Anda berada diluar lokasi`
+              : schedule.status == "off"
+              ? `Anda sedang cuti`
+              : `CHECK-IN`} */}
+            {schedule.status == "off"
+              ? `Anda sedang cuti`
+              : !statusLocation
+              ? `Anda berada diluar lokasi kerja`
+              : `CHECK-IN`}
           </Button>
         )}
-        {schedule?.attendance_status == "Working" ||
-          (schedule?.attendance_status == "Late" &&
-            attendance?.status != "Done" && (
-              <Button
-                size="sm"
-                fullWidth
-                disabled={
-                  !statusLocation ||
-                  dailyTask.filter((data) => data.status == "Belum").length != 0
-                    ? true
-                    : false
-                }
-                onClick={open}
-                color="red"
-              >
-                {!statusLocation
-                  ? `Anda berada diluar lokasi`
-                  : dailyTask.filter((data) => data.status == "Belum").length !=
-                    0
-                  ? "Ada tugas yang belum selesai"
-                  : `CHECK-OUT`}
-              </Button>
-            ))}
+        {(schedule?.attendance_status === "Working" ||
+          schedule?.attendance_status === "Late") &&
+          attendance?.status !== "Done" && (
+            <Button
+              size="sm"
+              fullWidth
+              disabled={
+                !statusLocation ||
+                dailyTask.filter((data) => data.status === "Belum").length !== 0
+              }
+              onClick={open}
+              color="red"
+            >
+              {!statusLocation
+                ? "Anda berada diluar lokasi"
+                : dailyTask.filter((data) => data.status === "Belum").length !==
+                  0
+                ? "Ada tugas yang belum selesai"
+                : "CHECK-OUT"}
+            </Button>
+          )}
       </div>
       <Modal opened={opened} onClose={close} withCloseButton={false}>
         <div className="px-3">

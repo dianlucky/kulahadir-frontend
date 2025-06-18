@@ -1,12 +1,6 @@
 import { DailyTaskEmployeeType } from "@/types";
 import { Divider, Text } from "@mantine/core";
-import {
-  IconChecklist,
-  IconSquare,
-  IconSquareCheck,
-  IconSquareCheckFilled,
-  IconX,
-} from "@tabler/icons-react";
+import { IconChecklist, IconSquareCheckFilled } from "@tabler/icons-react";
 interface TaskEmployeeSectionProps {
   dailyTask: DailyTaskEmployeeType[];
 }

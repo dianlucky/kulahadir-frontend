@@ -54,7 +54,7 @@ export const SchedulePage: React.FC = () => {
   //=========================================//
   // GET DAILY TASK
   const [dailyTask, setDailyTask] = useState<DailyTaskEmployeeType[]>([]);
-  const { data: DataDailyTaskEmployee, isLoading: LoadingDailyTaskEmployee } =
+  const { data: DataDailyTaskEmployee } =
     useGetDailyTaskEmployeeByDateEmployeeId(date, creds?.employee_id);
   useEffect(() => {
     if (DataDailyTaskEmployee) {
@@ -85,17 +85,16 @@ export const SchedulePage: React.FC = () => {
           {/* </div> */}
         </div>
       </section>
-      <div>
+      <div className="mx-5">
         <DailyCalendar setDate={setDate} />
       </div>
-
-      <div>
+      <div className="mx-5">
         <DailySchedule
           selectedSchedule={selectedSchedule}
           attendance={attendance}
         />
       </div>
-      <div className="mb-20 -mt-2">
+      <div className="mb-20 -mt-2 mx-5">
         <DailyTaskSection dailyTask={dailyTask} />
       </div>
     </main>

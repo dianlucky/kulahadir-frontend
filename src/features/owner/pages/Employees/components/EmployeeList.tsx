@@ -1,9 +1,9 @@
 import { EmployeeType } from "@/types";
-import { Badge, Divider, Image, Text } from "@mantine/core";
+import {  Divider, Image, Text } from "@mantine/core";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 
 const DEFAULT_IMAGE = "/images/profile-default.png";
 const BaseURL = import.meta.env.VITE_API_URL;
@@ -63,7 +63,7 @@ export const EmployeeList: React.FC<EmployeeListProps> = ({ employees }) => {
                   <div className="flex justify-between">
                     <Text fw={300} size="11px">
                       Awal bekerja :{" "}
-                      {format(data.created_at, "EEEE, dd MM yyyy", {
+                      {format(data.created_at, "EEEE, dd MMMM yyyy", {
                         locale: id,
                       })}
                     </Text>

@@ -1,23 +1,19 @@
-import { EmployeeType, ScheduleType } from "@/types";
+import { ScheduleType } from "@/types";
 import {
   Button,
   Divider,
-  em,
   Image,
   Indicator,
   Modal,
   Notification,
   Select,
   Text,
-  TextInput,
   Tooltip,
-  UnstyledButton,
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import {
   IconCalendar,
   IconCalendarTime,
-  IconEye,
   IconPencil,
   IconUsers,
 } from "@tabler/icons-react";
@@ -40,6 +36,7 @@ const DEFAULT_IMAGE =
 export const SchedulePageAdmin: React.FC = () => {
   const [loading, { toggle }] = useDisclosure();
   const [successAdd, setSuccessAdd] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
   const [worker, setWorker] = useState<ScheduleType>();
   const [status, setStatus] = useState<string | null | undefined>(
     worker?.status
@@ -349,20 +346,7 @@ export const SchedulePageAdmin: React.FC = () => {
                           </div>
                           <div className="col-span-4">
                             <div className="grid grid-cols-2 gap-1">
-                              <div className="col-span-1">
-                                {/* <Tooltip
-                                  label="Detail jadwal"
-                                  withArrow
-                                  transitionProps={{
-                                    transition: "fade-up",
-                                    duration: 300,
-                                  }}
-                                >
-                                  <Button size="xs">
-                                    <IconEye size={18} color="white" />
-                                  </Button>
-                                </Tooltip> */}
-                              </div>
+                              <div className="col-span-1"></div>
                               <div className="col-span-1">
                                 <Tooltip
                                   label="Ubah jadwal"
@@ -373,7 +357,7 @@ export const SchedulePageAdmin: React.FC = () => {
                                   }}
                                 >
                                   <Button
-                                    size="xs"
+                                    size="compact-sm"
                                     color="yellow"
                                     onClick={() => {
                                       openWorkerDelete(), setWorker(data);

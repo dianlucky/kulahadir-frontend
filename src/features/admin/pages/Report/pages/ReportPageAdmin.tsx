@@ -1,7 +1,14 @@
 import { Divider, Text } from "@mantine/core";
-import { ReportDataTable, ReportMenuList } from "../components";
+import {
+  AttendanceTable,
+  EmployeeTable,
+  ReportMenuList,
+  SalaryTable,
+} from "../components";
+import { useState } from "react";
 
 export const ReportPageAdmin: React.FC = () => {
+  const [menu, setMenu] = useState<string>();
   return (
     <section>
       <div className="bg-white shadow-lg p-6 rounded-lg">
@@ -12,11 +19,13 @@ export const ReportPageAdmin: React.FC = () => {
         </div>
         <Divider />
         <div className="grid grid-cols-12 mt-4 gap-3">
-          <div className="col-span-4">
-            <ReportMenuList />
+          <div className="col-span-4 mb-59">
+            <ReportMenuList setMenu={setMenu} />
           </div>
           <div className="col-span-8">
-            <ReportDataTable />
+            {menu == "Pegawai" && <EmployeeTable />}
+            {menu == "Kehadiran" && <AttendanceTable />}
+            {menu == "Gaji" && <SalaryTable />}
           </div>
         </div>
       </div>

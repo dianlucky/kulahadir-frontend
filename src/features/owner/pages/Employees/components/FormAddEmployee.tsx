@@ -3,7 +3,7 @@ import {
   useDeleteAccount,
 } from "@/features/admin/pages/DataMaster/Account";
 import { useCreateEmployee } from "@/features/admin/pages/DataMaster/Employee";
-import { AccountType, EmployeeType } from "@/types";
+import { EmployeeType } from "@/types";
 import {
   Button,
   Divider,
@@ -31,8 +31,10 @@ export const FormAddEmployee: React.FC = () => {
       status: "",
     },
     validate: {
-      username: (value) => (value.length < 5 ? "Minimal 10 karakter" : null),
-      password: (value) => (value.length < 10 ? "Minimal 10 karakter" : null),
+      username: (value: string) =>
+        value.length < 5 ? "Minimal 10 karakter" : null,
+      password: (value: string) =>
+        value.length < 10 ? "Minimal 10 karakter" : null,
     },
   });
 
@@ -88,12 +90,14 @@ export const FormAddEmployee: React.FC = () => {
       phone: "",
     },
     validate: {
-      name: (value) => (value.length < 10 ? "Minimal 10 karakter" : null),
-      birth_date: (value) =>
+      name: (value: string) =>
+        value.length < 10 ? "Minimal 10 karakter" : null,
+      birth_date: (value: Date) =>
         value instanceof Date && !isNaN(value.getTime())
           ? null
           : "Tanggal tidak valid",
-      phone: (value) => (value.length < 11 ? "Minimal 11 karakter" : null),
+      phone: (value: string) =>
+        value.length < 11 ? "Minimal 11 karakter" : null,
     },
   });
 

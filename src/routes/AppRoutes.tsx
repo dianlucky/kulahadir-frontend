@@ -125,6 +125,19 @@ const { HistoryCashAdvancePage } = lazyImport(
   () => import("@/features/employee/pages/History/pages/CashAdvance"),
   "HistoryCashAdvancePage"
 );
+const { DailyTaskPageOwner } = lazyImport(
+  () => import("@/features/owner/pages/DailyTask"),
+  "DailyTaskPageOwner"
+);
+const { DailyTaskDataPage } = lazyImport(
+  () => import("@/features/owner/pages/DailyTask"),
+  "DailyTaskDataPage"
+);
+
+const { TaskEmployeePage } = lazyImport(
+  () => import("@/features/owner/pages/DailyTask"),
+  "TaskEmployeePage"
+);
 const { NotificationPage } = lazyImport(
   () => import("@/features/employee/pages/Notification"),
   "NotificationPage"
@@ -239,34 +252,6 @@ export const AppRoutes: React.FC = () => {
             <Route path="check-log">
               <Route index element={<CheckLogPage />} />
             </Route>
-
-            {/* ROUTE OWNER */}
-            {/* <Route path="employee-data">
-              <Route index element={<EmployeeOwnerPage />} />
-              <Route path="detail" element={<DetailEmployeeOwnerPage />} />
-              <Route path="add" element={<CreateEmployeeOwnerPage />} />
-            </Route>
-            <Route path="employee-schedule">
-              <Route index element={<ScheduleOwnerPage />} />
-            </Route>
-            <Route path="employee-paid-leave">
-              <Route index element={<PaidLeavesOwnerPage />} />
-            </Route>
-            <Route path="employee-attendances">
-              <Route index element={<AttendancesOwnerPages />} />
-              <Route path="detail" element={<DetailAttendancesOwnerPage />} />
-            </Route>
-            <Route path="employee-request">
-              <Route index element={<RequestOwnerPage />} />
-            </Route>
-            <Route path="employee-cash-advance">
-              <Route index element={<CashAdvanceOwnerPage />} />
-              <Route path="detail" element={<DetailCashAdvanceOwnerPage />} />
-            </Route>
-            <Route path="employee-salary">
-              <Route index element={<SalaryOwnerPage />} />
-              <Route path="detail" element={<DetailSalaryOwnerPage />} />
-            </Route> */}
           </Route>
         ) : (
           <Route path="development" element={<Development />} />
@@ -292,6 +277,7 @@ export const AppRoutes: React.FC = () => {
             </Route>
             <Route path="employee-request">
               <Route index element={<RequestOwnerPage />} />
+              <Route path="detail" element={<DetailLeaveRequestPage />} />
             </Route>
             <Route path="employee-cash-advance">
               <Route index element={<CashAdvanceOwnerPage />} />
@@ -310,6 +296,10 @@ export const AppRoutes: React.FC = () => {
                 <Route path="detail" element={<DetailCashAdvancePage />} />
               </Route>
             </Route>
+            <Route path="leave-request">
+              <Route index element={<LeaveRequestPage />} />
+              <Route path="detail" element={<DetailLeaveRequestPage />} />
+            </Route>
             <Route path="profile">
               <Route index element={<ProfilePage />} />
               <Route path="biodata" element={<BiodataPage />} />
@@ -318,6 +308,15 @@ export const AppRoutes: React.FC = () => {
             <Route path="notification">
               <Route index element={<NotificationPage />} />
               <Route path="detail" element={<DetailNotificationPage />} />
+            </Route>
+            <Route path="daily-task">
+              <Route index element={<DailyTaskPageOwner />} />
+            </Route>
+            <Route path="daily-task-data">
+              <Route index element={<DailyTaskDataPage />} />
+            </Route>
+            <Route path="task-employee-data">
+              <Route index element={<TaskEmployeePage />} />
             </Route>
           </Route>
         ) : (

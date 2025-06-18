@@ -1,16 +1,7 @@
 import { TaskEmployeeType } from "@/types";
-import {
-  Button,
-  Divider,
-  Loader,
-  Popover,
-  Select,
-  Table,
-  Text,
-} from "@mantine/core";
-import React, { useEffect, useState } from "react";
+import { Button, Divider, Popover, Select, Table, Text } from "@mantine/core";
+import React, { useState } from "react";
 import { IconAdjustments, IconTrash } from "@tabler/icons-react";
-import { useGetAllDailyTask, useGetAllTaskEmployee } from "../api";
 
 interface WeeklyTaskSectionProps {
   taskEmployees: TaskEmployeeType[];

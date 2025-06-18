@@ -1,7 +1,6 @@
 import { AttendanceType } from "@/types";
 import { Divider, Image, Text, UnstyledButton } from "@mantine/core";
 import {
-  IconCalendar,
   IconClockDown,
   IconClockUp,
   IconInfoCircle,
@@ -22,7 +21,7 @@ export const EmployeeSection: React.FC<EmployeeSectionProps> = ({
 }) => {
   const navigate = useNavigate();
   return (
-    <section className="mx-auto max-w-xs bg-white w-full shadow-lg rounded-xl z-50 relative p-2 px-2 text-slate-700 mb-4 mt-2">
+    <section className="mx-auto max-w-sm bg-white w-full shadow-lg rounded-xl z-50 relative p-2 px-2 text-slate-700 mb-4 mt-2">
       <div className="flex justify-between text-xs items-center p-2 px-2 -mt-1 -mb-1">
         <div>
           <Text fw={700} c="#654433">
@@ -78,7 +77,15 @@ export const EmployeeSection: React.FC<EmployeeSectionProps> = ({
                       <IconClockDown color="#77B254" size={16} />
                     </div>
                     <div className="ml-2">
-                      <Text size="xs" fw={"bold"} c={data.schedule.attendance_status == "Late" ? 'yellow' : 'black'}>
+                      <Text
+                        size="xs"
+                        fw={"bold"}
+                        c={
+                          data.schedule.attendance_status == "Late"
+                            ? "yellow"
+                            : "black"
+                        }
+                      >
                         {data.check_in
                           ? format(data.check_in, "HH:mm", { locale: id })
                           : "--:--"}

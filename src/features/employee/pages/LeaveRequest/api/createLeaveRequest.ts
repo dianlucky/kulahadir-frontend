@@ -3,20 +3,21 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
 const BaseURL = import.meta.env.VITE_API_URL;
-const token = import.meta.env.VITE_TOKEN;
 
-type CreateLeaveRequest = {
-  type: string;
-  date: string;
-  reason: string;
-  employee_id?: number;
+
+const logFormData = (formData: FormData) => {
+  console.log("FormData contents:");
+  for (const [key, value] of formData.entries()) {
+    console.log(`${key}:`, value);
+  }
 };
 
-export const createLeaveRequest = async (data: CreateLeaveRequest) => {
-  console.log("Data yang dikirim : ", data);
-  const response = await axios.post(`${BaseURL}/leaves/`, data, {
+export const createLeaveRequest = async (formData: FormData) => {
+  logFormData(formData);
+  const response = await axios.post(`${BaseURL}/leaves/`, formData, {
     headers: {
       Authorization: `Bearer ${storage.getToken()}`,
+      "Content-Type": "multipart/form-data",
     },
   });
   return response.data;
@@ -25,7 +26,7 @@ export const createLeaveRequest = async (data: CreateLeaveRequest) => {
 export const useCreateLeaveRequest = () => {
   return useMutation({
     mutationFn: createLeaveRequest,
-    onMutate: async (data: CreateLeaveRequest) => {},
+    onMutate: async () => {},
     onError: (error) => {
       console.log("Error :", error);
     },

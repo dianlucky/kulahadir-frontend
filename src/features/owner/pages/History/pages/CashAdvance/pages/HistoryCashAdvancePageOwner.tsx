@@ -11,11 +11,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CashAdvanceType } from "@/types";
 import { useGetAllCashAdvance } from "@/features/employee/pages/CashAdvance";
-import { useAuth } from "@/features/auth";
 import { HistoryCashAdvanceList } from "../components";
 
 export const HistoryCashAdvancePageOwner: React.FC = () => {
-  const { creds } = useAuth();
+  // const { creds } = useAuth();
   const navigate = useNavigate();
   const [opened, setOpened] = useState<boolean>(false);
   const [cashAdvances, setCashAdvances] = useState<CashAdvanceType[]>([]);

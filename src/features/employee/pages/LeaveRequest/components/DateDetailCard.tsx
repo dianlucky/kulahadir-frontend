@@ -10,7 +10,7 @@ export const DateDetailCard: React.FC<DateDetailCardProps> = ({
   leaveRequestData,
 }) => {
   return (
-    <section className="bg-white mx-auto max-w-xs w-full mt-2 shadow-lg rounded-xl z-50 relative p-2 px-2 ">
+    <section className="bg-white mx-auto max-w-sm w-full mt-2 shadow-lg rounded-xl z-50 relative p-2 px-2 ">
       <div className="flex justify-between text-xs items-center mt-1 -mb-1 px-2">
         <span
           style={{ fontSize: "14px" }}

@@ -1,4 +1,4 @@
-import { IconChevronLeft, IconPlus } from "@tabler/icons-react";
+import { IconChevronLeft } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import { CashAdvanceList, MonthPickerSection } from "../components";
 import { CashAdvanceType } from "@/types";

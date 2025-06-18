@@ -1,13 +1,14 @@
 import { useGetScheduleByDate } from "@/features/admin/pages/Schedule";
 import { ScheduleType } from "@/types";
 import { Badge, Button, Divider, RingProgress, Text } from "@mantine/core";
-import { format, set } from "date-fns";
+import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const RecapAttendanceCard: React.FC = () => {
   const navigate = useNavigate();
+
   const [schedules, setSchedules] = useState<ScheduleType[]>([]);
   const { data: DataSchedules } = useGetScheduleByDate(
     format(new Date(), "yyyy-MM-dd", { locale: id })
@@ -17,7 +18,6 @@ export const RecapAttendanceCard: React.FC = () => {
       setSchedules(DataSchedules);
     }
   }, [DataSchedules]);
-  console.log("Set Schedule :", schedules);
 
   // 🪐 RING
   const [totalPresent, setTotalPresent] = useState<number>(0);
@@ -25,7 +25,7 @@ export const RecapAttendanceCard: React.FC = () => {
   const [totalAbsen, setTotalAbsen] = useState<number>(0);
 
   useEffect(() => {
-    const totalEmployees = schedules.length;
+    const totalMonth = schedules.length;
 
     const presentCount = schedules.filter(
       (data) =>
@@ -41,9 +41,9 @@ export const RecapAttendanceCard: React.FC = () => {
       (data) => data.attendance_status === "belum hadir"
     ).length;
 
-    setTotalPresent((presentCount * 100) / totalEmployees);
-    setTotalLate((lateCount * 100) / totalEmployees);
-    setTotalAbsen((absenCount * 100) / totalEmployees);
+    setTotalPresent((presentCount * 100) / totalMonth);
+    setTotalLate((lateCount * 100) / totalMonth);
+    setTotalAbsen((absenCount * 100) / totalMonth);
   }, [schedules]);
   // 🔚 END RING
   console.log("Present :", totalPresent);
@@ -54,7 +54,8 @@ export const RecapAttendanceCard: React.FC = () => {
       <div className="px-3">
         <div className="text-center mb-1">
           <Text fw={600} size="sm">
-            Rekap absensi hari ini
+            Rekap absensi{" "}
+            {format(new Date(), "EEEE, dd MMMM yyyy", { locale: id })}
           </Text>
         </div>
         <Divider />

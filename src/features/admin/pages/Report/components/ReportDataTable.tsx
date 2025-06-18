@@ -7,8 +7,13 @@ import {
 } from "@tabler/icons-react";
 import { useState } from "react";
 
-export const ReportDataTable: React.FC = () => {
+interface ReportDataTableProps {
+  menu?: string;
+}
+
+export const ReportDataTable: React.FC<ReportDataTableProps> = ({ menu }) => {
   const [opened, setOpened] = useState<boolean>(false);
+  console.log(menu)
   return (
     <section className="bg-white shadow-sm p-4">
       <div className="flex justify-between mb-2">

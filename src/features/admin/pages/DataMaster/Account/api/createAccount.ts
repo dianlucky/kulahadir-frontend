@@ -3,7 +3,6 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
 const BaseURL = import.meta.env.VITE_API_URL;
-const token = import.meta.env.VITE_TOKEN;
 
 type AccountPost = {
   username: string;
@@ -25,7 +24,7 @@ export const postAccount = async (data: AccountPost) => {
 export const useCreateAccount = () => {
   return useMutation({
     mutationFn: postAccount,
-    onMutate: async (data: AccountPost) => {},
+    onMutate: async () => {},
     onError: (error) => {
       console.log("Error :", error);
     },

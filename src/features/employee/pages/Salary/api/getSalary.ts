@@ -20,6 +20,8 @@ export async function getSalaryByMonthEmployeeId(
       },
     }
   );
+
+  console.log("Response :", res.data.data);
   return res.data.data;
 }
 
@@ -28,7 +30,7 @@ export const useGetSalaryByMonthEmployeeId = (
   employeeId?: number
 ) => {
   return useQuery({
-    queryKey: ["getCashAdvance-monthly"],
+    queryKey: ["getSalary-monthly", month, employeeId],
     queryFn: () => getSalaryByMonthEmployeeId(month, employeeId),
   });
 };

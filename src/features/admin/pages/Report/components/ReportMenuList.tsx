@@ -1,45 +1,32 @@
 import { Button, Divider, Text } from "@mantine/core";
 import {
-  IconCalendar,
   IconCalendarCheck,
-  IconCalendarDollar,
   IconCashRegister,
   IconCategory,
-  IconChecklist,
   IconInfoCircle,
   IconUsers,
 } from "@tabler/icons-react";
-import { useState } from "react";
 
-export const ReportMenuList: React.FC = () => {
-  const [selectedMenu, setSelectedMenu] = useState("employees");
+interface ReportMenuListProps {
+  setMenu: React.Dispatch<React.SetStateAction<string | undefined>>;
+}
+
+export const ReportMenuList: React.FC<ReportMenuListProps> = ({ setMenu }) => {
   const listMenu = [
     {
-      key: "employees",
+      key: "Pegawai",
       title: "Data Pegawai",
       description: "Data pegawai kulakita",
       icon: <IconUsers size={40} />,
     },
     {
-      key: "schedules",
-      title: "Data Jadwal",
-      description: "Data jadwal pegawai kulakita",
-      icon: <IconCalendar size={40} />,
-    },
-    {
-      key: "attendances",
+      key: "Kehadiran",
       title: "Data Kehadiran",
       description: "Data kehadiran pegawai kulakita",
       icon: <IconCalendarCheck size={40} />,
     },
     {
-      key: "daily-tasks",
-      title: "Data Tugas harian",
-      description: "Data tugas harian pegawai kulakita",
-      icon: <IconChecklist size={40} />,
-    },
-    {
-      key: "salaries",
+      key: "Gaji",
       title: "Data Gaji ",
       description: "Data gaji bulanan pegawai kulakita",
       icon: <IconCashRegister size={40} />,
@@ -83,7 +70,7 @@ export const ReportMenuList: React.FC = () => {
                 size="xs"
                 variant="subtle"
                 color="gray"
-                onClick={() => setSelectedMenu(item.key)}
+                onClick={() => setMenu(item.key)}
               >
                 <IconInfoCircle color="#4E71FF" />
               </Button>

@@ -84,10 +84,10 @@ export const CheckLogPage: React.FC = () => {
   return (
     <main>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
-      <div className="mb-2">
+      <div className="mb-2 mx-5">
         <LocationCard long={userCoords?.lng} lat={userCoords?.lat} />
       </div>
-      <div className="mt-2">
+      <div className="mt-2 mx-5">
         <AttendanceCardSection
           dailyTask={dailyTask}
           RefetchSchedule={RefetchSchedule}
@@ -99,7 +99,7 @@ export const CheckLogPage: React.FC = () => {
           lat={userCoords?.lat}
         />
       </div>
-      <div className="mt-2 mb-20">
+      <div className="mt-2 mb-20 mx-5">
         {!LoadingDailyTaskEmployee && (
           <DailyTaskSection
             dailyTask={dailyTask}

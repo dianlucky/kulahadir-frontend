@@ -1,5 +1,5 @@
 import { AttendanceType } from "@/types";
-import { Divider, Text } from "@mantine/core";
+import { Divider } from "@mantine/core";
 import { IconMap2 } from "@tabler/icons-react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 interface LocationCardSectionProps {

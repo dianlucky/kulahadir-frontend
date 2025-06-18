@@ -1,9 +1,7 @@
 import { useUpdateCashAdvanceById } from "@/features/employee/pages/CashAdvance/api/updateCashAdvance";
-import { useUpdateLeaveRequestById } from "@/features/employee/pages/LeaveRequest";
 import { CashAdvanceType, LeaveRequestType } from "@/types";
 import { Badge, Button, Divider, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
-import { IconClipboardText } from "@tabler/icons-react";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import React from "react";

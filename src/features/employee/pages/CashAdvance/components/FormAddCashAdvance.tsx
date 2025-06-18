@@ -28,12 +28,14 @@ export const FormAddCashAdvance: React.FC = () => {
       amount: 0,
     },
     validate: {
-      date: (value) =>
+      date: (value: Date) =>
         value instanceof Date && !isNaN(value.getTime())
           ? null
           : "Tanggal tidak valid",
-      amount: (value) => (value < 10000 ? "Jumalah kasbon tidak valid" : null),
-      reason: (value) => (value.length < 5 ? "Minimal 5 karakter" : null),
+      amount: (value: number) =>
+        value < 10000 ? "Jumalah kasbon tidak valid" : null,
+      reason: (value: string) =>
+        value.length < 5 ? "Minimal 5 karakter" : null,
     },
   });
   const mutationCreateLeaveRequest = useCreateCashAdvance();

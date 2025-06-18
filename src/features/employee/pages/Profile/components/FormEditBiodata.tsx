@@ -1,7 +1,6 @@
 import {
   Button,
   Divider,
-  FileInput,
   Image,
   NumberInput,
   Text,
@@ -14,8 +13,7 @@ import { useState } from "react";
 import { useUpdateAccountById, useUpdateEmployeeById } from "../api";
 import { AccountType, EmployeeType } from "@/types";
 import { useNavigate } from "react-router-dom";
-const DEFAULT_IMAGE =
-  "/images/profile-default.png";
+const DEFAULT_IMAGE = "/images/profile-default.png";
 
 const BaseURL = import.meta.env.VITE_API_URL;
 
@@ -64,7 +62,8 @@ export const FormEditBiodata: React.FC<FormEditBiodataProps> = ({
       password: "",
     },
     validate: {
-      username: (value) => (value.length < 5 ? "Minimal 10 karakter" : null),
+      username: (value: string) =>
+        value.length < 5 ? "Minimal 10 karakter" : null,
     },
   });
 
@@ -95,7 +94,6 @@ export const FormEditBiodata: React.FC<FormEditBiodataProps> = ({
   };
   // END OF UPDATE ACCOUNT
 
-
   // UPDATE EMPLOYEE
   const formEmployee = useForm({
     validateInputOnChange: true,
@@ -106,8 +104,10 @@ export const FormEditBiodata: React.FC<FormEditBiodataProps> = ({
       profile_pic: employee?.profile_pic || "",
     },
     validate: {
-      name: (value) => (value.length < 5 ? "Minimal 10 karakter" : null),
-      phone: (value) => (value.length < 11 ? "Minimal 11 karakter" : null),
+      name: (value: string) =>
+        value.length < 5 ? "Minimal 10 karakter" : null,
+      phone: (value: string) =>
+        value.length < 11 ? "Minimal 11 karakter" : null,
     },
   });
 

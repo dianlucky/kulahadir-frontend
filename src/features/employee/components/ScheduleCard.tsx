@@ -18,7 +18,7 @@ export const ScheduleCard: React.FC = () => {
     );
 
   const [attendance, setAttendance] = useState<AttendanceType>();
-  const { data: DataAttendance, refetch: RefetchAttendance } =
+  const { data: DataAttendance } =
     useGetAttendanceByScheduleId(schedule?.id);
   useEffect(() => {
     if (DataSchedule) {

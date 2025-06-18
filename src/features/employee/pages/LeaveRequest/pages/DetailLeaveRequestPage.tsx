@@ -2,7 +2,6 @@ import { IconChevronLeft } from "@tabler/icons-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AttachmentDescriptionCard, DateDetailCard } from "../components";
 import { LeaveRequestType } from "@/types";
-import { useAuth } from "@/features/auth";
 
 export const DetailLeaveRequestPage: React.FC = () => {
   const navigate = useNavigate();
@@ -30,10 +29,12 @@ export const DetailLeaveRequestPage: React.FC = () => {
           {/* </div> */}
         </div>
       </section>
-
-      <DateDetailCard leaveRequestData={leaveRequestData} />
-
-      <AttachmentDescriptionCard leaveRequestData={leaveRequestData} />
+      <div className="mx-6">
+        <DateDetailCard leaveRequestData={leaveRequestData} />
+      </div>
+      <div className="mx-6">
+        <AttachmentDescriptionCard leaveRequestData={leaveRequestData} />
+      </div>
     </main>
   );
 };

@@ -24,7 +24,7 @@ export const createCashAdvance = async (data: CreateCashAdvanceRequest) => {
 export const useCreateCashAdvance = () => {
   return useMutation({
     mutationFn: createCashAdvance,
-    onMutate: async (data: CreateCashAdvanceRequest) => {},
+    onMutate: async () => {},
     onError: (error) => {
       console.log("Error :", error);
     },

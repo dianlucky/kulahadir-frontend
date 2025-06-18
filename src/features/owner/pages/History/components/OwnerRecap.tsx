@@ -1,7 +1,6 @@
 import { Divider, Text } from "@mantine/core";
 import { IconCalendar } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
-import { useAuth } from "@/features/auth";
 import { CashAdvanceType, LeaveRequestType } from "@/types";
 interface OwnerRecapProps {
   requests: LeaveRequestType[];
@@ -12,7 +11,7 @@ export const OwnerRecap: React.FC<OwnerRecapProps> = ({
   requests,
   cashAdvances,
 }) => {
-  const { creds } = useAuth();
+  // const { creds } = useAuth();
 
   return (
     <section className="bg-white mx-auto max-w-xs w-full -mt-10 shadow-lg rounded-xl z-50 relative p-2 px-2 text-slate-700 ">

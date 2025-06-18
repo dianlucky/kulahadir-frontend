@@ -2,7 +2,7 @@ import { CashAdvanceType } from "@/types";
 import { Badge, Divider, Image, Text } from "@mantine/core";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface CashAdvanceListProps {
   cashAdvances: CashAdvanceType[];

@@ -10,7 +10,7 @@ export const DailyTaskSection: React.FC<DailyTaskSectionProps> = ({
 }) => {
   return (
     <>
-      <section className="bg-white mx-auto max-w-xs w-full shadow-lg rounded-xl z-50 relative p-4">
+      <section className="bg-white mx-auto max-w-sm w-full shadow-lg rounded-xl z-50 relative p-4">
         <div className="flex justify-between text-xs items-center mb-2">
           <span className="text-base font-bold text-brown">Tugas harian</span>
           <IconChecklist size={22} />

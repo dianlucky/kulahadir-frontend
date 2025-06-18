@@ -7,7 +7,6 @@ import {
   NumberInput,
   Text,
   Textarea,
-  TextInput,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
@@ -16,7 +15,6 @@ import { id } from "date-fns/locale";
 import React, { useEffect, useState } from "react";
 import { useCreateSalary } from "../api";
 import { showNotification } from "@mantine/notifications";
-import { useNavigate } from "react-router-dom";
 
 interface CreateSalarySectionProps {
   cashAdvances: CashAdvanceType[];
@@ -38,7 +36,7 @@ export const CreateSalarySection: React.FC<CreateSalarySectionProps> = ({
   schedules,
 }) => {
   const [opened, { open, close }] = useDisclosure(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // INFO MODAL
   const [totalCashAdvance, setTotalCashAdvance] = useState<number>(0);
@@ -106,7 +104,7 @@ export const CreateSalarySection: React.FC<CreateSalarySectionProps> = ({
   // END FOR HANDLE CREATE SALARY
 
   return (
-    <section className="mx-auto max-w-xs bg-white w-full shadow-lg rounded-xl z-50 relative p-2 px-2 text-slate-700 mb-30 -mt-2">
+    <section className="mx-auto max-w-sm bg-white w-full shadow-lg rounded-xl z-50 relative p-2 px-2 text-slate-700 mb-30 -mt-2">
       <div className="flex justify-between text-xs items-center p-2 px-2 -mt-1 -mb-1">
         <div>
           <Text fw={600} c="#654433">

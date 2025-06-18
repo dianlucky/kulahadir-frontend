@@ -4,7 +4,6 @@ import { IconUser } from "@tabler/icons-react";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import React from "react";
-import { useLocation } from "react-router-dom";
 
 const BaseURL = import.meta.env.VITE_API_URL;
 
@@ -16,7 +15,7 @@ export const DetailEmployeeSection: React.FC<DetailEmployeeSectionProps> = ({
   employee,
 }) => {
   return (
-    <section className="mx-auto max-w-xs bg-white w-full shadow-sm rounded-xl z-50 relative p-2 px-2 text-slate-700 mb-4 mt-2">
+    <section className="mx-auto max-w-sm bg-white w-full shadow-sm rounded-xl z-50 relative p-2 px-2 text-slate-700 mb-4 mt-2">
       <div className="flex justify-between text-xs items-center p-2 px-2 -mt-1 -mb-1">
         <div>
           <Text fw={600} c="#654433">

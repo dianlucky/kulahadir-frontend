@@ -46,6 +46,7 @@ export type DailyTaskEmployeeType = {
   date: Date;
 
   task_employee: TaskEmployeeType;
+  
 };
 
 export type EmployeeType = {

@@ -3,7 +3,6 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
 const BaseURL = import.meta.env.VITE_API_URL;
-const token = import.meta.env.VITE_TOKEN;
 
 type CreateScheduleRequest = {
   month: string;
@@ -23,7 +22,7 @@ export const createSchedule = async (data: CreateScheduleRequest) => {
 export const useCreateSchedule = () => {
   return useMutation({
     mutationFn: createSchedule,
-    onMutate: async (data: CreateScheduleRequest) => {},
+    onMutate: async () => {},
     onError: (error) => {
       console.log("Error :", error);
     },

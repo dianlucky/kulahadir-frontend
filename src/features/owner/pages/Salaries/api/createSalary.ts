@@ -9,9 +9,9 @@ type CreateSalaryRequest = {
   salary_deduction: number | null;
   cash_advance: number | null;
   note: string | null;
-  date: string;
+  date?: string;
   amount: number | null;
-  employee_id: number;
+  employee_id?: number;
 };
 
 export const createSalary = async (data: CreateSalaryRequest) => {
@@ -27,7 +27,7 @@ export const createSalary = async (data: CreateSalaryRequest) => {
 export const useCreateSalary = () => {
   return useMutation({
     mutationFn: createSalary,
-    onMutate: async (data: CreateSalaryRequest) => {},
+    onMutate: async () => {},
     onError: (error) => {
       console.log("Error :", error);
     },

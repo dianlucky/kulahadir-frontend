@@ -1,13 +1,12 @@
 import {
   AppShell,
   Avatar,
-  Burger,
   Group,
   Menu,
   UnstyledButton,
   Button,
 } from "@mantine/core";
-import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import { useMediaQuery } from "@mantine/hooks";
 import {
   IconCalendar,
   IconSettings,
@@ -22,11 +21,9 @@ import {
   IconFileAlert,
   IconClockPin,
   IconMap2,
-  IconDashboard,
-  IconAdjustmentsFilled,
 } from "@tabler/icons-react";
 import { Suspense, useEffect, useState } from "react";
-import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import { LoadingScreen } from "../elements";
 import { SegmentControl } from "../navigation";
@@ -157,9 +154,10 @@ const MenuFreelancer = [
 // ================== THIS LAYOUT FOR ADMIN ONLY (SINGLE ROLE) =======================
 // ====================================================================================
 export const AdminLayout: React.FC = () => {
-  const { creds, logout } = useAuth();
+  const { logout } = useAuth();
   const location = useLocation();
   const { title, setTitle } = useTitleContext();
+  console.log(title);
   const navigate = useNavigate();
   const [submenu, setSubmenu] = useState<SubMenuListType[]>(MenuBeranda);
   const isMobile = useMediaQuery("(max-width: 800px)");

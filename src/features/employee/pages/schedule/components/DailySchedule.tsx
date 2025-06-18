@@ -1,13 +1,8 @@
 import { AttendanceType, ScheduleType } from "@/types";
 import { Badge, Divider, Text } from "@mantine/core";
 import { IconClockHour8 } from "@tabler/icons-react";
-import { useEffect, useState } from "react";
-import { useGetScheduleByDateEmployeeId } from "../api";
-import { id, se } from "date-fns/locale";
+import { id } from "date-fns/locale";
 import { format } from "date-fns";
-import { useGetAttendanceByScheduleId } from "../../History";
-import { useAuth } from "@/features/auth";
-
 type DailyScheduleProps = {
   selectedSchedule?: ScheduleType;
   attendance?: AttendanceType;
@@ -20,7 +15,7 @@ export const DailySchedule: React.FC<DailyScheduleProps> = ({
   console.log("Kehadiran :", attendance);
   console.log("Jadwal :", selectedSchedule);
   return (
-    <section className="mx-auto max-w-xs bg-white  w-full shadow-lg rounded-xl z-50 relative p-2 px-2 text-slate-700 mb-4">
+    <section className="mx-auto max-w-sm bg-white  w-full shadow-lg rounded-xl z-50 relative p-2 px-2 text-slate-700 mb-4">
       <div className="flex justify-between text-xs items-center p-2 -mt-1 -mb-1">
         <div>
           <Text fw={700} c="#654433">

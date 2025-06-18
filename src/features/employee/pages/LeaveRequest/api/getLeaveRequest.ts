@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 const BaseURL = import.meta.env.VITE_API_URL;
-const token = import.meta.env.VITE_TOKEN;
 
 export async function getLeaveRequestByEmployeeId(employeeId?: number) {
   const res = await axios.get(

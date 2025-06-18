@@ -1,5 +1,4 @@
-import { IconBriefcase, IconChevronLeft, IconUser } from "@tabler/icons-react";
-import { useNavigate } from "react-router-dom";
+import { IconBriefcase } from "@tabler/icons-react";
 import { ProfileMenu } from "../components";
 import { useEffect, useState } from "react";
 import { EmployeeType } from "@/types";
@@ -8,8 +7,7 @@ import { Image } from "@mantine/core";
 import { useAuth } from "@/features/auth";
 
 const BaseURL = import.meta.env.VITE_API_URL;
-const DEFAULT_IMAGE =
-  "/images/profile-default.png";
+const DEFAULT_IMAGE = "/images/profile-default.png";
 
 export const ProfilePage: React.FC = () => {
   const { creds } = useAuth();
@@ -32,7 +30,7 @@ export const ProfilePage: React.FC = () => {
                 : DEFAULT_IMAGE
             }
             alt="Foto Profil"
-            width={64} 
+            width={64}
             height={64}
             className="object-cover w-full h-full"
           />

@@ -9,7 +9,6 @@ import {
 import { DatePickerInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { IconNotes } from "@tabler/icons-react";
-import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreateLeaveRequest } from "../api";
 import { LeaveRequestType } from "@/types";
@@ -29,9 +28,11 @@ export const FormAddRequest: React.FC = () => {
       type: "",
       date: new Date(),
       reason: "",
+      attachment: null as File | null,
     },
     validate: {
-      reason: (value) => (value.length < 5 ? "Minimal 5 karakter" : null),
+      reason: (value: string) =>
+        value.length < 5 ? "Minimal 5 karakter" : null,
     },
   });
   const mutationCreateLeaveRequest = useCreateLeaveRequest();
@@ -39,14 +40,18 @@ export const FormAddRequest: React.FC = () => {
     event.preventDefault();
     if (!formCreate.isValid()) return;
 
-    const leaveRequestData = {
-      type: formCreate.values.type,
-      date: format(formCreate.values.date, "yyyy-MM-dd"),
-      reason: formCreate.values.reason,
-      employee_id: creds?.employee_id,
-    };
+    const formData = new FormData();
+    formData.append("type", formCreate.values.type);
+    formData.append("date", format(formCreate.values.date, "yyyy-MM-dd"));
+    formData.append("reason", formCreate.values.reason);
+    if (creds?.employee_id !== undefined) {
+      formData.append("employee_id", creds.employee_id.toString());
+    }
+    if (formCreate.values.attachment != null) {
+      formData.append("profile_pic", formCreate.values.attachment);
+    }
 
-    await mutationCreateLeaveRequest.mutateAsync(leaveRequestData, {
+    await mutationCreateLeaveRequest.mutateAsync(formData, {
       onSuccess: (data: LeaveRequestType) => {
         console.log("Success:", data);
         formCreate.reset();
@@ -98,9 +103,14 @@ export const FormAddRequest: React.FC = () => {
             }}
           />
         </div>
-        {/* <div className="mt-1">
-          <FileInput label="Lampiran" placeholder="Masukkan gambar" />
-        </div> */}
+        <div className="mt-1">
+          <FileInput
+            label="Lampiran"
+            placeholder="Masukkan gambar"
+            accept="image/*"
+            {...formCreate.getInputProps("attachment")}
+          />
+        </div>
         <div className="mt-1">
           <Textarea
             size="sm"

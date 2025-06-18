@@ -1,6 +1,6 @@
 import { IconChevronLeft } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { BiodataSection } from "../components";
 import { EmployeeType } from "@/types";
 import { usegetEmployeeByAccountId } from "../api";

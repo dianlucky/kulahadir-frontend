@@ -1,8 +1,8 @@
+import storage from "@/utils/storage";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
 const BaseURL = import.meta.env.VITE_API_URL;
-const token = import.meta.env.VITE_TOKEN;
 
 const deleteTaskEmployee = async (
   taskEmployeeId: number | undefined | null

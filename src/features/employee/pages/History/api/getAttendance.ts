@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 const BaseURL = import.meta.env.VITE_API_URL;
-const token = import.meta.env.VITE_TOKEN;
 
 export async function getAttendanceByScheduleId(scheduleId?: number) {
   console.log(
@@ -50,7 +49,7 @@ export const useGetAttendanceByMonthEmployeeId = (
   employeeId?: number
 ) => {
   return useQuery({
-    queryKey: ["attendance-monthly"],
+    queryKey: ["attendance-monthly-emp-id"],
     queryFn: () => getAttendanceByMonthEmployeeId(month, employeeId),
   });
 };
@@ -108,5 +107,24 @@ export const useGetAttendanceByDateAll = (date?: string) => {
   return useQuery({
     queryKey: ["attendance-daily-all", date],
     queryFn: () => getAttendanceByDateAll(date),
+  });
+};
+
+export async function getAttendanceByMonth(month?: string) {
+  const res = await axios.get(
+    `${BaseURL}/attendances/by-month-all?month=${month}`,
+    {
+      headers: {
+        Authorization: `Bearer ${storage.getToken()}`,
+      },
+    }
+  );
+  return res.data.data;
+}
+
+export const useGetAttendanceByMonth = (month?: string) => {
+  return useQuery({
+    queryKey: ["attendance-monthly"],
+    queryFn: () => getAttendanceByMonth(month),
   });
 };

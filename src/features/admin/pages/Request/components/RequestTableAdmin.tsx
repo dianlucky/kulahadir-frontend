@@ -1,18 +1,15 @@
-import { LeaveRequestType, RequestType } from "@/types";
+import { LeaveRequestType } from "@/types";
 import {
   Badge,
   Button,
   Divider,
   Indicator,
-  Loader,
   Popover,
   Select,
   Table,
   Text,
-  UnstyledButton,
 } from "@mantine/core";
-import { useEffect, useState } from "react";
-import { useGetAllLeave } from "../api";
+import {  useState } from "react";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { IconAdjustments, IconPencil, IconTrash } from "@tabler/icons-react";

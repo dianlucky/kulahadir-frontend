@@ -3,7 +3,6 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
 const BaseURL = import.meta.env.VITE_API_URL;
-const token = import.meta.env.VITE_TOKEN;
 
 type CreateEmployeeRequest = {
   name: string;
@@ -25,7 +24,7 @@ export const createEmployee = async (data: CreateEmployeeRequest) => {
 export const useCreateEmployee = () => {
   return useMutation({
     mutationFn: createEmployee,
-    onMutate: async (data: CreateEmployeeRequest) => {},
+    onMutate: async () => {},
     onError: (error) => {
       console.log("Error :", error);
     },

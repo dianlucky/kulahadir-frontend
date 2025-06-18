@@ -1,6 +1,6 @@
 import { AttendanceType } from "@/types";
 import { Divider, Image, Text } from "@mantine/core";
-import { IconMap2, IconPhoto } from "@tabler/icons-react";
+import { IconPhoto } from "@tabler/icons-react";
 import React from "react";
 
 const BaseURL = import.meta.env.VITE_API_URL;

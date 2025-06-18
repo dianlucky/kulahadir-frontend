@@ -48,7 +48,7 @@ export const ScheduleOwnerPage: React.FC = () => {
         <div className="mt-2 mx-6">
           <CalendarSection setDate={setDate} />
         </div>
-        <div className="-mt-2 mx-2 mb-15">
+        <div className="-mt-2 mx-6 mb-15">
           <EmployeeScheduleList
             workingEmployees={workingEmployees}
             date={date}

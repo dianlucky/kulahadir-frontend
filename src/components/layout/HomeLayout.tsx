@@ -3,9 +3,7 @@ import {
   IconUser,
   IconHandStop,
   IconChecklist,
-  IconNews,
   IconBellRinging,
-  IconBellRinging2,
 } from "@tabler/icons-react";
 import { Suspense, useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";

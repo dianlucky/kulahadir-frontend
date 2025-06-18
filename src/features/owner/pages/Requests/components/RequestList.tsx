@@ -2,7 +2,7 @@ import { LeaveRequestType } from "@/types";
 import { Badge, Divider, Image, Text } from "@mantine/core";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface RequestListProps {
   requests: LeaveRequestType[];
@@ -18,7 +18,7 @@ export const RequestList: React.FC<RequestListProps> = ({ requests }) => {
           .map((data, index) => (
             <button
               onClick={() =>
-                navigate("/leave-request/detail", { state: { data } })
+                navigate("/employee-request/detail", { state: { data } })
               }
               style={{ marginTop: "4px" }}
               key={index}
@@ -74,7 +74,7 @@ export const RequestList: React.FC<RequestListProps> = ({ requests }) => {
               </section>
             </button>
           ))}
-      {requests.filter((data) => data.status == "Pending").length == 0 && (
+      {requests.filter((data) => data.status == "pending").length == 0 && (
         <div className="bg-white shadow-sm p-4 rounded-xl">
           <div className="mt-2 px-3 py-2">
             <div className="flex justify-center">
@@ -95,7 +95,6 @@ export const RequestList: React.FC<RequestListProps> = ({ requests }) => {
                 Tidak ada pengajuan
               </Text>
             </div>
-            
           </div>
         </div>
       )}

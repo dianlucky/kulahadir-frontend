@@ -10,17 +10,16 @@ import { IconAdjustments, IconChevronLeft } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LeaveRequestType } from "@/types";
-import { useAuth } from "@/features/auth";
 import { useGetAllLeave } from "@/features/admin/pages/Request";
 import { HistoryRequestList } from "../components";
 
 export const HistoryRequestPageOwner: React.FC = () => {
-  const { creds } = useAuth();
+  // const { creds } = useAuth();
   const navigate = useNavigate();
   const [opened, setOpened] = useState<boolean>(false);
 
   const [leaveRequests, setLeaveRequests] = useState<LeaveRequestType[]>([]);
-  const { data: DataLeaveRequest, refetch: RefetchLeaveRequest } =
+  const { data: DataLeaveRequest } =
     useGetAllLeave();
   useEffect(() => {
     if (DataLeaveRequest) {

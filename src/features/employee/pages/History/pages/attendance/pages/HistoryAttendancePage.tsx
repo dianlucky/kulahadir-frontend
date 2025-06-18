@@ -1,12 +1,9 @@
 import { IconChevronLeft } from "@tabler/icons-react";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AttendanceCard, CalendarSection } from "../components";
 import { AttendanceType, ScheduleType } from "@/types";
-import {
-  useGetAttendanceByDateEmployeeId,
-  useGetAttendanceByMonthEmployeeId,
-} from "../../../api";
+import { useGetAttendanceByDateEmployeeId } from "../../../api";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { useGetScheduleByMonthEmployeeId } from "@/features/employee/pages/schedule/api";
@@ -21,14 +18,11 @@ export const HistoryAttendancePage: React.FC = () => {
 
   // GET SCHEDULES
   const [schedules, setSchedules] = useState<ScheduleType[]>([]);
-  const {
-    data: DataSchedules,
-    refetch: RefetchSchedules,
-    isLoading: LoadingSchedules,
-  } = useGetScheduleByMonthEmployeeId(
-    format(new Date(selectedDate), "yyyy-MM", { locale: id }),
-    creds?.employee_id
-  );
+  const { data: DataSchedules, refetch: RefetchSchedules } =
+    useGetScheduleByMonthEmployeeId(
+      format(new Date(selectedDate), "yyyy-MM", { locale: id }),
+      creds?.employee_id
+    );
   useEffect(() => {
     if (DataSchedules) {
       setSchedules(DataSchedules);

@@ -1,4 +1,4 @@
-import { LeaveRequestType, RequestType } from "@/types";
+import { LeaveRequestType } from "@/types";
 import { Button, CloseButton, Divider, Text } from "@mantine/core";
 import { useDeleteRequest } from "../api";
 import { showNotification } from "@mantine/notifications";

@@ -1,10 +1,9 @@
 import { useAuth } from "@/features/auth";
 import { CashAdvanceType } from "@/types";
 import { Badge, Button, Divider, Text } from "@mantine/core";
-import { IconCoins } from "@tabler/icons-react";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 interface DetailCashAdvanceProps {
   cashAdvance: CashAdvanceType;
 }

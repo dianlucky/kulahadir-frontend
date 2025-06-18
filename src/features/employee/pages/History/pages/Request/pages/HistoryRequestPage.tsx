@@ -6,7 +6,6 @@ import {
   Text,
   UnstyledButton,
 } from "@mantine/core";
-import { MonthPickerInput } from "@mantine/dates";
 import { IconAdjustments, IconChevronLeft } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -21,8 +20,9 @@ export const HistoryRequestPage: React.FC = () => {
   const [opened, setOpened] = useState<boolean>(false);
 
   const [leaveRequests, setLeaveRequests] = useState<LeaveRequestType[]>([]);
-  const { data: DataLeaveRequest, refetch: RefetchLeaveRequest } =
-    useGetLeaveRequestByEmployeeId(creds?.employee_id);
+  const { data: DataLeaveRequest } = useGetLeaveRequestByEmployeeId(
+    creds?.employee_id
+  );
   useEffect(() => {
     if (DataLeaveRequest) {
       setLeaveRequests(DataLeaveRequest);

@@ -1,10 +1,8 @@
 import { CashAdvanceType } from "@/types";
 import {
-  Badge,
   Button,
   Divider,
   Image,
-  Indicator,
   Modal,
   Text,
 } from "@mantine/core";

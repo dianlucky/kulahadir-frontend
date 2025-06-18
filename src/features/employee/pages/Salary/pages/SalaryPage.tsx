@@ -16,20 +16,19 @@ export const SalaryPage: React.FC = () => {
     format(new Date(), "yyyy-MM", { locale: id })
   );
   const [salary, setSalary] = useState<SalaryType>();
-  const {
-    data: DataSalary,
-    refetch: RefetchSalary,
-    isLoading: LoadingSalary,
-  } = useGetSalaryByMonthEmployeeId(selectedMonth, creds?.employee_id);
+  const { data: DataSalary, refetch: RefetchSalary } =
+    useGetSalaryByMonthEmployeeId(selectedMonth, creds?.employee_id);
   useEffect(() => {
     if (DataSalary) {
-      setSalary(DataSalary[0]);
+      setSalary(DataSalary);
+    } else {
+      setSalary(undefined);
     }
   }, [DataSalary]);
   useEffect(() => {
     RefetchSalary();
   }, [selectedMonth]);
-  // console.log(salary);
+  console.log("Gaji :", salary);
   return (
     <main>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>

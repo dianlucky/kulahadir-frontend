@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">kulahadir</string>
+    <string name="title_activity_main">kulahadir</string>
+    <string name="package_name">kulahadir.app</string>
+    <string name="custom_url_scheme">kulahadir.app</string>
+</resources>

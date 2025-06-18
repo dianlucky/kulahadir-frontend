@@ -19,7 +19,6 @@ import {
   useDeleteDailyTask,
   useDeleteTaskEmployee,
   useGetAllDailyTask,
-  useGetAllTaskEmployee,
   useGetTaskByDay,
 } from "../api";
 import { useForm } from "@mantine/form";
@@ -41,7 +40,7 @@ export const DailyTaskPage: React.FC = () => {
 
   // GET EMPLOYEES
   const [employees, setEmployees] = useState<EmployeeType[]>([]);
-  const { data: DataEmployee, refetch: RefetchEmployee } = useGetAllEmployee();
+  const { data: DataEmployee } = useGetAllEmployee();
   useEffect(() => {
     if (DataEmployee) {
       setEmployees(DataEmployee);
@@ -102,8 +101,8 @@ export const DailyTaskPage: React.FC = () => {
       task_name: "",
     },
     validate: {
-      task_name: (value) => (value.length < 10 ? "Minimal 10 karakter" : null),
-      task_code: (value) => (value.length < 2 ? "Minimal 2 karakter" : null),
+      task_name: (value: string) => (value.length < 10 ? "Minimal 10 karakter" : null),
+      task_code: (value: string) => (value.length < 2 ? "Minimal 2 karakter" : null),
     },
   });
   const mutationAddLateRequest = useCreateDailyTask();

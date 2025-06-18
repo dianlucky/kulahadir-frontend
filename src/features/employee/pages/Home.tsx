@@ -9,6 +9,7 @@ import {
   IconCalendarCancel,
   IconHandStop,
   IconClipboardPlus,
+  IconListCheck,
 } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 
@@ -147,6 +148,12 @@ export const Home: React.FC = () => {
                 title: "Gaji pegawai",
                 href: "/employee-salary",
                 icon: IconFileDollar,
+                color: "bg-brown",
+              },
+              {
+                title: "Tugas Harian",
+                href: "/daily-task",
+                icon: IconListCheck,
                 color: "bg-brown",
               },
             ]}

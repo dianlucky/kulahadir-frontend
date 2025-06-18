@@ -1,6 +1,6 @@
 import { useUpdateCashAdvanceById } from "@/features/employee/pages/CashAdvance/api/updateCashAdvance";
 import { CashAdvanceType } from "@/types";
-import { Button, Divider, Image, Text } from "@mantine/core";
+import { Button, Divider, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { IconCashRegister } from "@tabler/icons-react";
 import { format } from "date-fns";
@@ -8,7 +8,7 @@ import { id } from "date-fns/locale";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const BaseURL = import.meta.env.VITE_API_URL;
+// const BaseURL = import.meta.env.VITE_API_URL;
 
 interface DetailCashAdvanceSectionProps {
   cashAdvance: CashAdvanceType;
@@ -45,7 +45,7 @@ export const DetailCashAdvanceSection: React.FC<
   };
   // END OF UPDATE LEAVE REQUEST
   return (
-    <section className="bg-white mx-auto max-w-xs w-full shadow-sm rounded-xl z-50 relative p-4">
+    <section className="bg-white mx-auto max-w-sm w-full shadow-sm rounded-xl z-50 relative p-4">
       <div className="flex justify-between text-xs items-center mb-2">
         <Text fw={700} c="#654433">
           Detail pengajuan kasbon

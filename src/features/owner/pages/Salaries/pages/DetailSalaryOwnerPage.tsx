@@ -27,7 +27,7 @@ export const DetailSalaryOwnerPage: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<string>(
     format(new Date(), "yyyy-MM-dd", { locale: id })
   );
-  // console.log("Data pegawai : ", month);
+  console.log("Data pegawai : ", selectedDate);
 
   // GET SALARIES
   const [salary, setSalary] = useState<SalaryType>();
@@ -97,7 +97,7 @@ export const DetailSalaryOwnerPage: React.FC = () => {
         <div className="mt-2 mx-6">
           <DetailEmployeeSection employee={employee} />
         </div>
-        <div className="-mt-2 mx-9 -mb-4">
+        <div className="-mt-2 mx-6 -mb-4">
           <CalendarSection
             setSelectedDate={setSelectedDate}
             schedules={schedules}

@@ -153,12 +153,14 @@ export const EmployeePage: React.FC = () => {
       account_id: "",
     },
     validate: {
-      name: (value) => (value.length < 10 ? "Minimal 10 karakter" : null),
-      birth_date: (value) =>
+      name: (value: string) =>
+        value.length < 10 ? "Minimal 10 karakter" : null,
+      birth_date: (value: Date) =>
         value instanceof Date && !isNaN(value.getTime())
           ? null
           : "Tanggal tidak valid",
-      phone: (value) => (value.length < 11 ? "Minimal 11 karakter" : null),
+      phone: (value: string) =>
+        value.length < 11 ? "Minimal 11 karakter" : null,
     },
   });
   const mutationCreateEmployee = useCreateEmployee();
@@ -199,8 +201,9 @@ export const EmployeePage: React.FC = () => {
       account_id: "",
     },
     validate: {
-      name: (value) => (value.length < 8 ? "Minimal 8 karakter" : null),
-      phone: (value) => (value.length < 11 ? "Minimal 11 karakter" : null),
+      name: (value: string) => (value.length < 8 ? "Minimal 8 karakter" : null),
+      phone: (value: string) =>
+        value.length < 11 ? "Minimal 11 karakter" : null,
     },
   });
   const mutationUpdateEmployee = useUpdateEmployeeById(employee?.id);

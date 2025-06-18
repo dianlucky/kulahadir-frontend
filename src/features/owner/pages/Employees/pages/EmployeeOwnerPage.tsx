@@ -2,7 +2,7 @@ import { IconChevronLeft, IconPlus } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { EmployeeList } from "../components";
-import { Divider, Text, UnstyledButton } from "@mantine/core";
+import { UnstyledButton } from "@mantine/core";
 import { useGetAllEmployee } from "@/features/admin/pages/DataMaster/Employee";
 import { EmployeeType } from "@/types";
 

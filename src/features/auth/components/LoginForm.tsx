@@ -1,21 +1,23 @@
-import { Anchor, Button, PasswordInput, TextInput } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { notifications } from '@mantine/notifications';
-import { IconAt, IconLock } from '@tabler/icons-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Button, PasswordInput, TextInput } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { notifications } from "@mantine/notifications";
+import { IconLock, IconUser } from "@tabler/icons-react";
+import { useNavigate } from "react-router-dom";
 
-import { queryClient } from '@/lib/react-query';
-import storage from '@/utils/storage';
+import { queryClient } from "@/lib/react-query";
+import storage from "@/utils/storage";
 
-import { useLogin } from '../api';
+import { useLogin } from "../api";
 
 export const LoginForm: React.FC = () => {
   const form = useForm({
     validateInputOnChange: true,
-    initialValues: { username: '', password: '' },
+    initialValues: { username: "", password: "" },
     validate: {
-      username: (value) => (value.length < 5 ? 'Name must have at least 5 letters' : null),
-      password: (value) => (value.length < 2 ? 'Name must have at least 2 letters' : null),
+      username: (value: string) =>
+        value.length < 5 ? "Name must have at least 5 letters" : null,
+      password: (value: string) =>
+        value.length < 2 ? "Name must have at least 2 letters" : null,
     },
   });
   const loginMutation = useLogin();
@@ -32,16 +34,19 @@ export const LoginForm: React.FC = () => {
             form.setErrors(response.data.errors);
           } else {
             notifications.show({
-              message: JSON.parse(response?.request.response).status ?? message ?? 'Error',
-              color: 'red',
+              message:
+                JSON.parse(response?.request.response).status ??
+                message ??
+                "Error",
+              color: "red",
             });
           }
         },
         onSuccess: (data) => {
           console.log(data);
-          queryClient.setQueryData(['creds'], data.creds);
+          queryClient.setQueryData(["creds"], data.creds);
           storage.setToken(data.token);
-          navigate('/');
+          navigate("/");
         },
       }
     );
@@ -53,8 +58,8 @@ export const LoginForm: React.FC = () => {
         <TextInput
           name="username"
           placeholder="username"
-          leftSection={<IconAt size={14} />}
-          {...form.getInputProps('username')}
+          leftSection={<IconUser size={14} />}
+          {...form.getInputProps("username")}
         />
       </div>
       <div className="mb-2">
@@ -62,13 +67,20 @@ export const LoginForm: React.FC = () => {
           name="password"
           placeholder="**********"
           leftSection={<IconLock size={14} />}
-          {...form.getInputProps('password')}
+          {...form.getInputProps("password")}
         />
       </div>
-
-      <Button className="mt-8" type="submit" fullWidth loading={loginMutation.isPending}>
-        Login
-      </Button>
+      <div className="mt-7">
+        <Button
+          color="#654433"
+          className="mt-8"
+          type="submit"
+          fullWidth
+          loading={loginMutation.isPending}
+        >
+          Login
+        </Button>
+      </div>
     </form>
   );
 };

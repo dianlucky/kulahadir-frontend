@@ -1,43 +1,95 @@
 /* eslint-disable linebreak-style */
-import { Button, RingProgress, Select } from "@mantine/core";
+import {
+  Badge,
+  Button,
+  Divider,
+  RingProgress,
+  Select,
+  Text,
+} from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-// import { useGetAttendanceRecap } from "@/admin_features/attendance/api";
 import { useTitleContext } from "@/components/providers/TitleProvider";
 import { useAuth } from "@/features/auth";
-import { formatDateToString } from "@/utils/format";
-
-export const AttendanceCard: React.FC = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { title, setTitle } = useTitleContext();
+import { AttendanceType, ScheduleType } from "@/types";
+interface AttendanceCardProps {
+  attendances?: AttendanceType[];
+  schedules?: ScheduleType[];
+}
+export const AttendanceCard: React.FC<AttendanceCardProps> = ({
+  attendances,
+  schedules,
+}) => {
+  const { setTitle } = useTitleContext();
   const navigate = useNavigate();
   const { creds } = useAuth();
   if (!creds) navigate("/login");
-  const [ringHovered, setRingHovered] = useState<string | null>("Hadir 0");
-  const DateNow = formatDateToString(new Date().toDateString());
+  const [status, setStatus] = useState<string | null>("Semua");
 
-  // const { data, isLoading } = useGetAttendanceRecap(DateNow, creds?.company_id);
-  // const calculatePercentage = (value: number, overall: number) =>
-  //   (value / overall) * 100;
+  // MAKE WORKER ARRAY
+  const workers = schedules?.map((schedule) => {
+    const attendance = attendances?.find(
+      (att) => att.schedule_id === schedule.id
+    );
 
-  // useEffect(() => {
-  //   if (data) {
-  //     setRingHovered(`Hadir ${data?.Hadir ?? 0}`);
-  //   }
-  // }, [data]);
+    return {
+      ...schedule,
+      attendance_id: attendance?.id ?? null,
+      attendance_status: attendance?.status ?? null,
+      attendance: attendance ? attendance : null,
+    };
+  });
+  console.log(workers);
+  // END FOR MAKE WORKER ARRAY
 
-  // if (isLoading) return <div>Loading...</div>;
-  // const recalculatedOverall =
-  //   (data?.Hadir ?? 0) +
-  //   (data?.BelumHadir ?? 0) +
-  //   (data?.Izin ?? 0) +
-  //   (data?.Sakit ?? 0) +
-  //   (data?.Terlambat ?? 0);
+  // 🪐 RING
+  const [totalPresent, setTotalPresent] = useState<number>(0);
+  const [totalLate, setTotalLate] = useState<number>(0);
+  const [totalAbsen, setTotalAbsen] = useState<number>(0);
+
+  useEffect(() => {
+    const totalEmployee = schedules
+      ? schedules.filter((data) =>
+          status == "Semua" ? true : data.employee.account.status == status
+        ).length
+      : 0;
+
+    const presentCount = schedules
+      ? schedules.filter((data) =>
+          (data.attendance_status === "Working" ||
+            data.attendance_status === "Present") &&
+          status === "Semua"
+            ? true
+            : data.employee.account.status == status
+        ).length
+      : 0;
+
+    const lateCount = schedules
+      ? schedules.filter((data) =>
+          data.attendance_status === "Late" && status === "Semua"
+            ? true
+            : data.employee.account.status == status
+        ).length
+      : 0;
+
+    const absenCount = schedules
+      ? schedules.filter((data) =>
+          data.attendance_status === "belum hadir" && status === "Semua"
+            ? true
+            : data.employee.account.status == status
+        ).length
+      : 0;
+
+    setTotalPresent((presentCount * 100) / totalEmployee);
+    setTotalLate((lateCount * 100) / totalEmployee);
+    setTotalAbsen((absenCount * 100) / totalEmployee);
+  }, [schedules]);
+  // 🔚 END RING
 
   return (
-    <section className="bg-white shadow-lg p-6 rounded-lg max-h-72">
+    <section className="bg-white shadow-lg p-6 rounded-lg ">
       <div className="grid lg:grid-cols-2">
         <div>
           <h2 className="font-bold">Rekap Absensi Karyawan</h2>
@@ -47,140 +99,136 @@ export const AttendanceCard: React.FC = () => {
         </div>
         <Select
           className="mt-2 lg:mt-0 w-full"
-          placeholder="Pilih Divisi"
+          placeholder="Pilih status"
           data={[
-            "Semua Divisi",
-            "Developer",
-            "Designer",
-            "Marketing",
-            "HRD",
-            "Finance",
+            { label: "Semua", value: "Semua" },
+            { label: "Pegawai tetap", value: "Pegawai tetap" },
+            { label: "Part time", value: "Part time" },
           ]}
-          defaultValue="Semua Divisi"
+          value={status}
+          onChange={setStatus}
         />
       </div>
-      <div className="grid lg:grid-cols-2">
-        {/* <RingProgress
-          className="mx-auto"
-          size={220}
-          thickness={25}
-          label={
-            <div className="text-center font-semibold text-slate-500">
-              {ringHovered}
+      <div className="grid grid-cols-2">
+        <div className="py-7 text-sm">
+          <div className="ml-3 mb-2">
+            <Divider my={10} label="Status kehadiran" labelPosition="right" />
+            <div className="flex">
+              <Badge radius={"sm"} color="#8FD14F" size="md">
+                {
+                  schedules?.filter(
+                    (data) =>
+                      (data.attendance_status === "Present" ||
+                        data.attendance_status === "Late") &&
+                      (status === "Semua" ||
+                        data.employee.account.status === status)
+                  ).length
+                }
+              </Badge>
+              <Text fw={600} size="sm" ml={3}>
+                Hadir
+              </Text>
             </div>
-          }
-          // sections={[
-          //   {
-          //     value: calculatePercentage(data?.Hadir ?? 0, recalculatedOverall),
-          //     color: "green",
-          //     tooltip: `Hadir ${data?.Hadir ?? 0} Karyawan`,
-          //     onMouseEnter: () => setRingHovered(`Hadir ${data?.Hadir ?? 0}`),
-          //   },
-          //   {
-          //     value: calculatePercentage(
-          //       data?.BelumHadir ?? 0,
-          //       recalculatedOverall
-          //     ),
-          //     color: "red",
-          //     tooltip: `Belum Absen ${data?.BelumHadir ?? 0} Karyawan`,
-          //     onMouseEnter: () =>
-          //       setRingHovered(`Belum Absen ${data?.BelumHadir ?? 0}`),
-          //   },
-          //   {
-          //     value: calculatePercentage(data?.Izin ?? 0, recalculatedOverall),
-          //     color: "blue",
-          //     tooltip: `Izin ${data?.Izin ?? 0} Karyawan`,
-          //     onMouseEnter: () => setRingHovered(`Izin ${data?.Izin ?? 0}`),
-          //   },
-          //   {
-          //     value: calculatePercentage(data?.Sakit ?? 0, recalculatedOverall),
-          //     color: "blue",
-          //     tooltip: `Sakit ${data?.Sakit ?? 0} Karyawan`,
-          //     onMouseEnter: () => setRingHovered(`Sakit ${data?.Sakit ?? 0}`),
-          //   },
-          //   {
-          //     value: calculatePercentage(
-          //       data?.Terlambat ?? 0,
-          //       recalculatedOverall
-          //     ),
-          //     color: "yellow",
-          //     tooltip: `Terlambat ${data?.Terlambat ?? 0} Karyawan`,
-          //     onMouseEnter: () =>
-          //       setRingHovered(`Terlambat ${data?.Terlambat ?? 0}`),
-          //   },
-          //   {
-          //     value: calculatePercentage(data?.Cuti ?? 0, recalculatedOverall),
-          //     color: "purple",
-          //     tooltip: `Cuti ${data?.Cuti ?? 0} Karyawan`,
-          //     onMouseEnter: () => setRingHovered(`Cuti ${data?.Cuti ?? 0}`),
-          //   },
-          // ]}
-        ></RingProgress> */}
-        <div className="py-7 text-sm flex flex-col justify-between">
-          <table className="w-full">
-            <tbody>
-              <tr>
-                <td>
-                  <div className="bg-green-600 w-5 h-5 rounded-full"></div>
-                </td>
-                <td>Hadir</td>
-                {/* <td>: {data?.Hadir} </td> */}
-                <td>Orang</td>
-              </tr>
-              <tr>
-                <td>
-                  <div className="bg-red-600 w-5 h-5 rounded-full"></div>
-                </td>
-                <td>Belum Absen</td>
-                {/* <td>: {data?.BelumHadir} </td> */}
-                <td>Orang</td>
-              </tr>
-              <tr>
-                <td>
-                  <div className="bg-blue-600 w-5 h-5 rounded-full"></div>
-                </td>
-                <td>Izin</td>
-                {/* <td>: {data?.Izin} </td> */}
-                <td>Orang</td>
-              </tr>
-              <tr>
-                <td>
-                  <div className="bg-cyan-500 w-5 h-5 rounded-full"></div>
-                </td>
-                <td>Sakit</td>
-                {/* <td>: {data?.Sakit} </td> */}
-                <td>Orang</td>
-              </tr>
-              <tr>
-                <td>
-                  <div className="bg-yellow-600 w-5 h-5 rounded-full"></div>
-                </td>
-                <td>Terlambat</td>
-                {/* <td>: {data?.Terlambat} </td> */}
-                <td>Orang</td>
-              </tr>
-              <tr>
-                <td>
-                  <div className="bg-purple-600 w-5 h-5 rounded-full"></div>
-                </td>
-                <td>Cuti</td>
-                {/* <td>: {data?.Cuti} </td> */}
-                <td>Orang</td>
-              </tr>
-            </tbody>
-          </table>
+            <div className="flex mt-2">
+              <Badge radius={"sm"} color="yellow" size="md">
+                {
+                  schedules?.filter(
+                    (data) =>
+                      data.attendance_status == "Late" &&
+                      (status == "Semua" ||
+                        data.employee.account.status == status)
+                  ).length
+                }
+              </Badge>
+              <Text fw={600} size="sm" ml={3}>
+                Terlambat
+              </Text>
+            </div>
+            <div className="flex mt-2">
+              <Badge radius={"sm"} color="grey" size="md">
+                {
+                  schedules?.filter((data) =>
+                    data.attendance_status == "belum hadir" && status == "Semua"
+                      ? true
+                      : data.employee.account.status == status
+                  ).length
+                }
+              </Badge>
+              <Text fw={600} size="sm" ml={3}>
+                Belum hadir
+              </Text>
+            </div>
+            <Divider my={10} label="Pegawai" labelPosition="right" />
+            <div className="flex mt-2">
+              <Badge radius={"sm"} color="blue" size="md">
+                {
+                  schedules?.filter(
+                    (data) => data.employee.account.status == "Pegawai tetap"
+                  ).length
+                }
+              </Badge>
+              <Text fw={600} size="sm" ml={3}>
+                Pegawai tetap
+              </Text>
+            </div>
+            <div className="flex mt-2 mb-5">
+              <Badge radius={"sm"} color="#9f7aea" size="md">
+                {
+                  schedules?.filter(
+                    (data) => data.employee.account.status == "Part time"
+                  ).length
+                }
+              </Badge>
+              <Text fw={600} size="sm" ml={3}>
+                Part time
+              </Text>
+            </div>
+          </div>
           <Button
             justify="space-between"
             fullWidth
-            className="mt-2 border-2 shadow-lg"
+            className=" border-2 shadow-lg"
             onClick={() => {
               setTitle("Absensi");
-              navigate("/attendance");
+              navigate("/schedule");
             }}
             rightSection={<IconChevronRight size={14} />}
           >
-            Lihat Semua Rekap
+            Lihat Seluruh Jadwal
           </Button>
+        </div>
+        <div className="m-auto">
+          <RingProgress
+            ml={20}
+            size={260}
+            thickness={35}
+            label={
+              <Text fw={700} size="30px" ta="center">
+                {
+                  schedules?.filter(
+                    (data) =>
+                      (data.attendance_status === "Present" ||
+                        data.attendance_status === "Late") &&
+                      (status === "Semua" ||
+                        data.employee.account.status === status)
+                  ).length
+                }
+                /
+                {
+                  schedules?.filter((data) =>
+                    status == "Semua"
+                      ? true
+                      : data.employee.account.status == status
+                  ).length
+                }
+              </Text>
+            }
+            sections={[
+              { value: totalPresent, color: "#8FD14F" },
+              { value: totalLate, color: "yellow" },
+              { value: totalAbsen, color: "grey" },
+            ]}
+          />
         </div>
       </div>
     </section>

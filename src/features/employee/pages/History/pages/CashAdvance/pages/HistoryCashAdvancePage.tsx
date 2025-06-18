@@ -10,7 +10,6 @@ import { IconAdjustments, IconChevronLeft } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HistoryCashAdvanceList } from "../components";
-import { MonthPickerInput } from "@mantine/dates";
 import { CashAdvanceType } from "@/types";
 import { useGetCashAdvanceByEmployeeId } from "@/features/employee/pages/CashAdvance";
 import { useAuth } from "@/features/auth";

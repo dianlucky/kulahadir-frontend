@@ -25,7 +25,7 @@ export const CreateLeaveRequestPage: React.FC = () => {
         </div>
       </section>
 
-      <section className="bg-white shadow-md rounded-lg mt-2 mx-6">
+      <section className="bg-white shadow-md rounded-lg mt-2 mx-6 mb-20">
         <FormAddRequest />
       </section>
     </main>

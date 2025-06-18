@@ -73,7 +73,7 @@ export const DetailNotificationPage: React.FC = () => {
       </section>
       <section className="bg-white mx-5 p-3 shadow-md rounded-lg flex flex-col gap-2 mt-2 mb-2">
         <div className="flex justify-between px-4">
-          <Text size="md" fw={"bold"}>
+          <Text size="md" fw={"bold"} truncate="end">
             {notification.type}
           </Text>
           <Text size="sm" my={"auto"}>

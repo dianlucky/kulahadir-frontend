@@ -49,7 +49,7 @@ export const LeaveRequestPage: React.FC = () => {
           </div>
         </div>
       </section>
-      <div className="mt-2">
+      <div className="mt-1 mx-6">
         <RequestList leaveRequests={leaveRequests} />
       </div>
     </main>

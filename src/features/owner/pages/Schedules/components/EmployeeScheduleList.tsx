@@ -59,7 +59,7 @@ export const EmployeeScheduleList: React.FC<EmployeeScheduleListProps> = ({
   // END FOR CREATE SCHEDULE
 
   return (
-    <section className="mx-auto max-w-xs bg-white w-full shadow-lg rounded-xl z-50 relative p-2 px-2 text-slate-700 mb-4 mt-2">
+    <section className="mx-auto max-w-sm bg-white w-full shadow-lg rounded-xl z-50 relative p-2 px-2 text-slate-700 mb-4 mt-2">
       <div className="flex justify-between text-xs items-center p-2 px-2 -mt-1 -mb-1">
         <div>
           <Text fw={700} c="#654433">

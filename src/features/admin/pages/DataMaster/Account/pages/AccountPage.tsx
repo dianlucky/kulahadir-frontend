@@ -18,7 +18,7 @@ import {
   useGetAllAccount,
   useUpdateAccountById,
 } from "../api";
-import { IconInfoCircle, IconPencil, IconTrash } from "@tabler/icons-react";
+import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 
@@ -100,8 +100,10 @@ export const AccountPage: React.FC = () => {
       status: "",
     },
     validate: {
-      username: (value) => (value.length < 5 ? "Minimal 10 karakter" : null),
-      password: (value) => (value.length < 10 ? "Minimal 10 karakter" : null),
+      username: (value: string) =>
+        value.length < 5 ? "Minimal 10 karakter" : null,
+      password: (value: string) =>
+        value.length < 10 ? "Minimal 10 karakter" : null,
     },
   });
   const mutationCreateAccount = useCreateAccount();
@@ -142,7 +144,8 @@ export const AccountPage: React.FC = () => {
       status: "",
     },
     validate: {
-      username: (value) => (value.length < 5 ? "Minimal 10 karakter" : null),
+      username: (value: string) =>
+        value.length < 5 ? "Minimal 10 karakter" : null,
     },
   });
 

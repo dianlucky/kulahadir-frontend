@@ -3,7 +3,6 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
 const BaseURL = import.meta.env.VITE_API_URL;
-const token = import.meta.env.VITE_TOKEN;
 
 type CreateDailyTaskEmployeeRequest = {
   month: string;
@@ -25,7 +24,7 @@ export const createDailyTaskEmployee = async (
 export const useCreateDailyTaskEmployee = () => {
   return useMutation({
     mutationFn: createDailyTaskEmployee,
-    onMutate: async (data: CreateDailyTaskEmployeeRequest) => {},
+    onMutate: async () => {},
     onError: (error) => {
       console.log("Error :", error);
     },

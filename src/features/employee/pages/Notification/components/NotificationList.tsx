@@ -24,7 +24,10 @@ export const NotificationList: React.FC<NotificationListProps> = ({
                 new Date(a.created_at).getTime()
             )
             .map((data, index) => (
-              <div
+              <button
+                onClick={() => {
+                  navigate("/notification/detail", { state: { data } });
+                }}
                 className="bg-white shadow-md rounded-2xl"
                 style={{ marginTop: "4px" }}
                 key={index}
@@ -36,22 +39,16 @@ export const NotificationList: React.FC<NotificationListProps> = ({
                   <div className="col-span-1">
                     <div className="w-px h-full bg-gray-300 mx-4" />
                   </div>
-                  <div className="col-span-9 mx-auto">
+                  <div className="col-span-9 mx-auto text-left">
                     <Text fw={"bold"} size="14px" lineClamp={2} c={"#222831"}>
                       {data.message}
                     </Text>
                   </div>
                   <div className="col-span-1">
-                    <UnstyledButton
-                      onClick={() => {
-                        navigate("/notification/detail", { state: { data } });
-                      }}
-                    >
-                      <IconChevronRight color="#654433" />
-                    </UnstyledButton>
+                    <IconChevronRight color="#654433" />
                   </div>
                 </div>
-              </div>
+              </button>
             ))}
         </div>
       )}

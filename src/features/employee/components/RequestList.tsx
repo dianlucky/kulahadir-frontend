@@ -23,7 +23,7 @@ export const RequestList: React.FC<RequestListProps> = ({ leaveRequests }) => {
                 navigate("/leave-request/detail", { state: { data } })
               }
               style={{ marginTop: "5px" }}
-              className="bg-white max-w-xs w-full shadow-md rounded-2xl z-50 text-slate-700"
+              className="bg-white max-w-sm w-full shadow-md rounded-xl z-50 text-slate-700"
             >
               <div className="grid grid-cols-12 p-3">
                 <div className="col-span-2 text-center -mb-2">
@@ -58,10 +58,10 @@ export const RequestList: React.FC<RequestListProps> = ({ leaveRequests }) => {
                       {data?.status}
                     </Badge>
                   </div>
-                  <div className="text-center my-auto">
+                  <div className="my-auto -ml-8">
                     <Text size="md" fw={700}>
                       {data?.date
-                        ? format(data?.date, "EEEE, dd MMM yyyy", {
+                        ? format(data?.date, "EEEE, dd MMMM yyyy", {
                             locale: id,
                           })
                         : "-"}

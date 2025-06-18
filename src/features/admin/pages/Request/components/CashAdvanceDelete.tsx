@@ -1,8 +1,6 @@
-import { CashAdvanceType, LeaveRequestType, RequestType } from "@/types";
+import { CashAdvanceType } from "@/types";
 import { Button, CloseButton, Divider, Text } from "@mantine/core";
-import { useDeleteRequest } from "../api";
 import { showNotification } from "@mantine/notifications";
-import { de } from "date-fns/locale";
 import { useDeleteCashAdvance } from "@/features/employee/pages/CashAdvance";
 
 interface CashAdvanceDeleteProps {

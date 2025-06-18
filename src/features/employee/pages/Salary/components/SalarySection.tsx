@@ -1,6 +1,6 @@
 import { SalaryType } from "@/types";
 import { Button, Divider, Text } from "@mantine/core";
-import { IconCalendarCheck, IconDownload } from "@tabler/icons-react";
+import { IconDownload } from "@tabler/icons-react";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import React from "react";

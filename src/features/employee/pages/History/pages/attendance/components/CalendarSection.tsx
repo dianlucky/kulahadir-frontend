@@ -38,11 +38,11 @@ export const CalendarSection: React.FC<CalendarSectionProps> = ({
   // END FOR DATA INDICATOR
 
   return (
-    <section className="bg-white shadow-md rounded-xl p-3 pb-10">
+    <section className="bg-white shadow-md  rounded-xl p-3 pb-10 ">
       <div className="flex justify-between py-2 px-4">
         <div>
           <Text size="md" fw={"bold"} c={"#222222"}>
-            Kalender
+            Kalender kehadiran
           </Text>
         </div>
         <div>

@@ -1,7 +1,7 @@
 import { Icon } from "@tabler/icons-react";
 
 interface EmployeeCardProps {
-  employee_total: number;
+  employee_total?: number;
   IconProps: Icon;
   title: string;
   color?: string;
