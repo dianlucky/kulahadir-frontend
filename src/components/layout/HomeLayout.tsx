@@ -16,12 +16,8 @@ import { usegetNotification } from "@/features/employee/api";
 
 export const HomeLayout: React.FC = () => {
   const location = useLocation();
+  const currentPath = location.pathname;
   const { creds } = useAuth();
-  const path = location.pathname;
-  const [currentPath, setCurrentPath] = useState(path || "/");
-  useEffect(() => {
-    setCurrentPath(path);
-  }, [path]);
 
   // GET NOTIFICATION
   const [notifications, setNotifications] = useState<NotificationType[]>([]);
@@ -64,7 +60,11 @@ export const HomeLayout: React.FC = () => {
         <div className="w-full flex justify-center">
           <div className="absolute bottom-1">
             <Link
-              to={creds?.level == "Pegawai" ? "/check-log": "/employee-attendances"}
+              to={
+                creds?.level == "Pegawai"
+                  ? "/check-log"
+                  : "/employee-attendances"
+              }
               className="bg-brown flex flex-col items-center justify-center text-white w-16 max-w-16  rounded-full min-h-16 h-16 shadow-lg"
             >
               <IconHandStop className="mb-1" color="white" size={37} />

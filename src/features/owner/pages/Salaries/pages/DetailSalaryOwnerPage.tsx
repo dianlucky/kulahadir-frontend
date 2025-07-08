@@ -105,7 +105,11 @@ export const DetailSalaryOwnerPage: React.FC = () => {
         </div>
         {salary && !LoadingSalary ? (
           <div className="mt-6 mx-6 mb-20">
-            <PayslipSection salary={salary} schedules={schedules} />
+            <PayslipSection
+              salary={salary}
+              refetchSalary={RefetchSalary}
+              schedules={schedules}
+            />
           </div>
         ) : (
           <div className="mt-6 mx-6">

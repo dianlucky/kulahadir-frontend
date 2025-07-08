@@ -2,6 +2,7 @@ import { AccountType, EmployeeType } from "@/types";
 import { format, formatISO } from "date-fns";
 import { id } from "date-fns/locale";
 import {
+  Badge,
   Button,
   CloseButton,
   Collapse,
@@ -26,6 +27,7 @@ import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { DatePickerInput } from "@mantine/dates";
 import { useGetAllAccount } from "../../Account";
+import { showNotification } from "@mantine/notifications";
 
 type UpdateEmployeeRequest = {
   name?: string;
@@ -85,61 +87,78 @@ export const EmployeePage: React.FC = () => {
   }, [DataEmployees]);
   //   console.log("Data akun:", accounts);
 
-  const rows = employees.map((employee, index) => (
-    <Table.Tr key={index}>
-      <Table.Td>{index + 1}</Table.Td>
-      <Table.Td>{employee.name}</Table.Td>
-      {/* <Table.Td>
+  const rows = employees
+    .slice() // membuat salinan supaya tidak mengubah data asli
+    .sort((a, b) => a.account.status.localeCompare(b.account.status))
+    .map((employee, index) => (
+      <Table.Tr key={index} style={{ textAlign: "center" }}>
+        <Table.Td>{index + 1}</Table.Td>
+        <Table.Td>{employee.name}</Table.Td>
+        {/* <Table.Td>
         {" "}
         {format(new Date(employee.birth_date), "d MMMM yyyy", {
           locale: id,
         })}{" "}
       </Table.Td> */}
-      <Table.Td>{employee.phone}</Table.Td>
-      <Table.Td>{employee.account.status}</Table.Td>
-      <Table.Td>{employee.account.level}</Table.Td>
-      <Table.Td className="w-40 ">
-        <div className="flex gap-1 justify-center">
-          <Button
-            size="xs"
-            color="indigo"
-            onClick={() => {
-              setDetail(true);
-              setEdit(false);
-              setDelete(false);
-              setEmployee(employee);
-            }}
+        <Table.Td>{employee.phone}</Table.Td>
+        <Table.Td>
+          <Badge
+            radius={"xs"}
+            color={
+              employee.account.status == "Pegawai tetap"
+                ? "blue"
+                : employee.account.status == "Part time"
+                ? "	#a46ede"
+                : "yellow"
+            }
           >
-            <IconInfoCircle />
-          </Button>
-          <Button
-            size="xs"
-            color="yellow"
-            onClick={() => {
-              setEdit(true);
-              setDetail(false);
-              setDelete(false);
-              setEmployee(employee);
-            }}
-          >
-            <IconPencil />
-          </Button>
-          <Button
-            size="xs"
-            color="red"
-            onClick={() => {
-              setDelete(true);
-              setEdit(false);
-              setDetail(false);
-              setEmployee(employee);
-            }}
-          >
-            <IconTrash />
-          </Button>
-        </div>
-      </Table.Td>
-    </Table.Tr>
-  ));
+            {" "}
+            {employee.account.status}
+          </Badge>
+        </Table.Td>
+        <Table.Td>{employee.account.level}</Table.Td>
+        <Table.Td className="w-40 ">
+          <div className="flex gap-1 justify-center">
+            <Button
+              size="compact-sm"
+              color="indigo"
+              onClick={() => {
+                setDetail(true);
+                setEdit(false);
+                setDelete(false);
+                setEmployee(employee);
+              }}
+            >
+              <IconInfoCircle />
+            </Button>
+            <Button
+              size="compact-sm"
+              color="yellow"
+              onClick={() => {
+                setEdit(true);
+                setDetail(false);
+                setDelete(false);
+                setEmployee(employee);
+              }}
+            >
+              <IconPencil />
+            </Button>
+            <Button
+              size="compact-sm"
+              color="red"
+              onClick={() => {
+                setDelete(true);
+                setEdit(false);
+                setDetail(false);
+                setEmployee(employee);
+              }}
+            >
+              <IconTrash />
+            </Button>
+          </div>
+        </Table.Td>
+      </Table.Tr>
+    ));
 
   // END OF GET EMPLOYEE
 
@@ -186,6 +205,14 @@ export const EmployeePage: React.FC = () => {
         setTimeout(() => {
           setSuccessAdd(false);
         }, 4500);
+      },
+      onError: (error: any) => {
+        console.error("Error:", error);
+        showNotification({
+          message: "Gagal menambahkan data",
+          color: "red",
+          position: "bottom-right",
+        });
       },
     });
   };
@@ -250,6 +277,13 @@ export const EmployeePage: React.FC = () => {
           setSuccessDelete(false);
         }, 4500);
       },
+      onError: () => {
+        showNotification({
+          message: "Gagal! Data ini berelasi ke tabel lain",
+          color: "red",
+          position: "bottom-right",
+        });
+      },
     });
   };
   // END OF DELETE EMPLOYEE
@@ -280,11 +314,36 @@ export const EmployeePage: React.FC = () => {
               >
                 <Table.Thead>
                   <Table.Tr>
-                    <Table.Th className="font-semibold">No</Table.Th>
-                    <Table.Th className="font-semibold">Nama</Table.Th>
-                    <Table.Th className="font-semibold">No. Whatsapp</Table.Th>
-                    <Table.Th className="font-semibold">Status</Table.Th>
-                    <Table.Th className="font-semibold">Role</Table.Th>
+                    <Table.Th
+                      className="font-semibold"
+                      style={{ textAlign: "center" }}
+                    >
+                      No
+                    </Table.Th>
+                    <Table.Th
+                      className="font-semibold"
+                      style={{ textAlign: "center" }}
+                    >
+                      Nama
+                    </Table.Th>
+                    <Table.Th
+                      className="font-semibold"
+                      style={{ textAlign: "center" }}
+                    >
+                      No. Whatsapp
+                    </Table.Th>
+                    <Table.Th
+                      className="font-semibold"
+                      style={{ textAlign: "center" }}
+                    >
+                      Status
+                    </Table.Th>
+                    <Table.Th
+                      className="font-semibold"
+                      style={{ textAlign: "center" }}
+                    >
+                      Role
+                    </Table.Th>
                     <Table.Th className="font-semibold flex justify-center">
                       Aksi
                     </Table.Th>
@@ -463,7 +522,7 @@ export const EmployeePage: React.FC = () => {
                   <div className="col-span-4 flex justify-center -ml-5">
                     <Image
                       radius="200"
-                      src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-7.png"
+                      src="/images/profile-default.png"
                       style={{
                         width: "70px",
                         height: "70px",

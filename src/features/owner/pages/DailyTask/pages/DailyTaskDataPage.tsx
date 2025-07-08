@@ -126,7 +126,7 @@ export const DailyTaskDataPage: React.FC = () => {
             <div className="mt-2">
               <Textarea
                 label="Nama Tugas"
-                placeholder="alasan pengajuan kasbon"
+                placeholder="Masukkan nama tugas"
                 size="sm"
                 key={form.key("task_name")}
                 {...form.getInputProps("task_name")}

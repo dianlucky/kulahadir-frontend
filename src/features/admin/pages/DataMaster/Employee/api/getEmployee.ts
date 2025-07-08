@@ -5,7 +5,6 @@ import axios from "axios";
 const BaseURL = import.meta.env.VITE_API_URL;
 
 export async function getAllEmployee() {
-  console.log("Token :", storage.getToken());
   const res = await axios.get(`${BaseURL}/employees`, {
     headers: {
       Authorization: `Bearer ${storage.getToken()}`,

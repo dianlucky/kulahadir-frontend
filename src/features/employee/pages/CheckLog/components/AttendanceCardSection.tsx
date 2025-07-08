@@ -8,6 +8,7 @@ import { showNotification } from "@mantine/notifications";
 import { IconClockHour8 } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import { Capacitor } from "@capacitor/core";
+import { toZonedTime } from "date-fns-tz";
 
 interface AttendanceCardProps {
   schedule?: ScheduleType;
@@ -175,8 +176,26 @@ export const AttendanceCardSection: React.FC<AttendanceCardProps> = ({
       },
     });
   };
-  // END OF UPDATE LEAVE REQUEST
   // END FOR HANDLE CHECK-OUT 🚨🚨🚨🚨
+
+  // WITA TIMEZONE
+  const KalselTimeZone = toZonedTime(new Date(), "Asia/Makassar");
+  const KalselHour = KalselTimeZone.getHours();
+  const KalselMinute = KalselTimeZone.getMinutes();
+
+  const isCheckOutTime = () => {
+    const hour = KalselHour;
+    const minute = KalselMinute;
+
+    // Antara 23:30 - 23:59
+    if (hour === 23 && minute >= 30) return true;
+
+    // Antara 00:00 - 02:59
+    if (hour >= 0 && hour < 3) return true;
+
+    return false;
+  };
+  // END FOR WITA TIMEZONE
   return (
     <section className="bg-white mx-auto max-w-sm w-full shadow-lg rounded-xl z-50 relative p-4">
       <div className="flex justify-between text-xs items-center mb-2">
@@ -272,7 +291,12 @@ export const AttendanceCardSection: React.FC<AttendanceCardProps> = ({
             // disabled={
             //   statusLocation ? false : schedule.status == "on" ? false : true
             // }
-            disabled={schedule.status == "on" && statusLocation ? false : true}
+            disabled={
+              schedule.status !== "on" || !statusLocation
+              // ||
+              // KalselHour < 15 ||
+              // KalselHour >= 23
+            }
             onClick={handleCheckIn}
           >
             {/* {!statusLocation
@@ -280,11 +304,15 @@ export const AttendanceCardSection: React.FC<AttendanceCardProps> = ({
               : schedule.status == "off"
               ? `Anda sedang cuti`
               : `CHECK-IN`} */}
-            {schedule.status == "off"
-              ? `Anda sedang cuti`
+            {schedule.status === "off"
+              ? "Anda sedang cuti"
               : !statusLocation
-              ? `Anda berada diluar lokasi kerja`
-              : `CHECK-IN`}
+              ? "Anda berada di luar lokasi kerja"
+              : // : KalselHour < 15
+                // ? "Check-in tersedia mulai jam 15.00 WIB"
+                // : KalselHour >= 23
+                // ? "Check-in sudah ditutup"
+                "CHECK-IN"}
           </Button>
         )}
         {(schedule?.attendance_status === "Working" ||
@@ -295,16 +323,20 @@ export const AttendanceCardSection: React.FC<AttendanceCardProps> = ({
               fullWidth
               disabled={
                 !statusLocation ||
-                dailyTask.filter((data) => data.status === "Belum").length !== 0
+                dailyTask.filter((data) => data.status === "Belum").length !==
+                  0 ||
+                !isCheckOutTime()
               }
               onClick={open}
               color="red"
             >
               {!statusLocation
-                ? "Anda berada diluar lokasi"
+                ? "Anda berada di luar lokasi"
                 : dailyTask.filter((data) => data.status === "Belum").length !==
                   0
                 ? "Ada tugas yang belum selesai"
+                // : !isCheckOutTime()
+                // ? "Check-out tersedia pukul 23:30 - 03:00 WIB"
                 : "CHECK-OUT"}
             </Button>
           )}

@@ -11,6 +11,8 @@ import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { downloadFile } from "../api";
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 export const EmployeeTable: React.FC = () => {
   const [opened, setOpened] = useState<boolean>(false);
   // FILTER STATE
@@ -54,14 +56,14 @@ export const EmployeeTable: React.FC = () => {
   // HANDLE DOWNLOAD
   const handleDownloadPDF = () => {
     downloadFile(
-      `http://localhost:3000/api/employees/pdf?status=${status}`,
+      `${BASE_URL}/employees/pdf?status=${status}`,
       `laporan-pegawai-${status}.pdf`
     );
   };
 
   const handleDownloadExcel = () => {
     downloadFile(
-      `http://localhost:3000/api/employees/excel?status=${status}`,
+      `${BASE_URL}/employees/excel?status=${status}`,
       "laporan-pegawai.xlsx"
     );
   };

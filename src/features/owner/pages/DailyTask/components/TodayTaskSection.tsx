@@ -1,20 +1,28 @@
 import { DailyTaskEmployeeType } from "@/types";
-import { Divider, Text } from "@mantine/core";
+import { Button, Divider, Popover, Skeleton, Text } from "@mantine/core";
+import { DatePicker } from "@mantine/dates";
 import {
-  IconChecklist,
+  IconCalendarCheck,
   IconSquareCheckFilled,
   IconSquareFilled,
 } from "@tabler/icons-react";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
-import React from "react";
 
 interface TodayTaskSectionProps {
   dailyTask: DailyTaskEmployeeType[];
+  selectedDate: Date | null;
+  setSelectedDate: React.Dispatch<React.SetStateAction<Date | null>>;
+  formattedDate: string;
+  LoadingDailyTaskEmployee: boolean;
 }
 
 export const TodayTaskSection: React.FC<TodayTaskSectionProps> = ({
   dailyTask,
+  selectedDate,
+  setSelectedDate,
+  formattedDate,
+  LoadingDailyTaskEmployee,
 }) => {
   const groupByEmployeeName = (
     dailyTask: DailyTaskEmployeeType[]
@@ -30,17 +38,80 @@ export const TodayTaskSection: React.FC<TodayTaskSectionProps> = ({
       return acc;
     }, {} as Record<string, DailyTaskEmployeeType[]>);
   };
-
+  const skeletonItems = Array(6).fill(null);
   return (
     <section className="bg-white mx-auto max-w-sm w-full shadow-lg rounded-xl z-50 relative p-4">
       <div className="flex justify-between text-xs items-center mb-2">
         <span className="text-base font-bold text-brown">
-          Tugas Hari {format(new Date(), "EEEE, dd MMMM yyyy", { locale: id })}
+          Tugas Hari{" "}
+          {format(
+            new Date(selectedDate ?? formattedDate),
+            "EEEE, dd MMM yyyy",
+            {
+              locale: id,
+            }
+          )}
         </span>
-        <IconChecklist size={22} />
+        <Popover
+          width={300}
+          position="bottom-end"
+          offset={4}
+          withArrow
+          shadow="lg"
+        >
+          <Popover.Target>
+            <Button size="compact-sm" color="#654433">
+              <IconCalendarCheck size={22} />
+            </Button>
+          </Popover.Target>
+          <Popover.Dropdown>
+            <div className="flex justify-center">
+              <DatePicker
+                size="sm"
+                value={selectedDate}
+                onChange={setSelectedDate}
+              />
+            </div>
+          </Popover.Dropdown>
+        </Popover>
       </div>
       <Divider size="xs" className="mb-2" />
-      {dailyTask.length != 0 &&
+      {LoadingDailyTaskEmployee && (
+        <div>
+          <div className="grid grid-cols-12 px-1">
+            <div className="col-span-1 m-auto -mb-7">
+              <Skeleton height={30} circle mb="xl" />
+            </div>
+            <div className="col-span-1 ml-1">
+              <div className="w-px h-full bg-gray-300 mx-4" />
+            </div>
+            <div className="col-span-9 ml-1 my-auto">
+              <Skeleton height={8} radius="xl" />
+              <Skeleton height={8} mt={2} width="40%" radius="xl" />
+            </div>
+          </div>
+          {skeletonItems.map((_, index) => (
+            <div key={index}>
+              <div className="my-2">
+                <Divider labelPosition="left" />
+              </div>
+              <div className="grid grid-cols-12 px-1">
+                <div className="col-span-1 m-auto -mb-7">
+                  <Skeleton height={30} circle mb="xl" />
+                </div>
+                <div className="col-span-1 ml-1">
+                  <div className="w-px h-full bg-gray-300 mx-4" />
+                </div>
+                <div className="col-span-9 ml-1 my-auto">
+                  <Skeleton height={8} radius="xl" />
+                  <Skeleton height={8} mt={2} width="40%" radius="xl" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+      {dailyTask.length != 0 && !LoadingDailyTaskEmployee && 
         Object.entries(groupByEmployeeName(dailyTask)).map(
           ([employeeName, tasks]) => (
             <div key={employeeName}>

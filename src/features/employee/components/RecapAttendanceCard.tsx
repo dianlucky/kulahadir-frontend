@@ -1,18 +1,32 @@
 import { useGetScheduleByDate } from "@/features/admin/pages/Schedule";
 import { ScheduleType } from "@/types";
 import { Badge, Button, Divider, RingProgress, Text } from "@mantine/core";
-import { format } from "date-fns";
+import { format, subDays } from "date-fns";
 import { id } from "date-fns/locale";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { toZonedTime } from "date-fns-tz";
 export const RecapAttendanceCard: React.FC = () => {
   const navigate = useNavigate();
 
+  // DATE FORMATTER TIME
+  const getEffectiveDate = () => {
+    const makassarTime = toZonedTime(new Date(), "Asia/Makassar");
+    const hour = makassarTime.getHours();
+
+    if (hour < 3) {
+      const yesterday = subDays(makassarTime, 1);
+      return format(yesterday, "yyyy-MM-dd");
+    }
+
+    return format(makassarTime, "yyyy-MM-dd");
+  };
+  // END FOR DATE FORMATTER TIME
+
+  const formattedDate = getEffectiveDate();
+  console.log("Formatted Date : ", formattedDate);
   const [schedules, setSchedules] = useState<ScheduleType[]>([]);
-  const { data: DataSchedules } = useGetScheduleByDate(
-    format(new Date(), "yyyy-MM-dd", { locale: id })
-  );
+  const { data: DataSchedules } = useGetScheduleByDate(formattedDate);
   useEffect(() => {
     if (DataSchedules) {
       setSchedules(DataSchedules);
@@ -55,7 +69,7 @@ export const RecapAttendanceCard: React.FC = () => {
         <div className="text-center mb-1">
           <Text fw={600} size="sm">
             Rekap absensi{" "}
-            {format(new Date(), "EEEE, dd MMMM yyyy", { locale: id })}
+            {format(new Date(formattedDate), "EEEE, dd MMMM yyyy", { locale: id })}
           </Text>
         </div>
         <Divider />

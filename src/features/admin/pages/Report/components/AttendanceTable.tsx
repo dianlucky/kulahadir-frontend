@@ -1,5 +1,5 @@
 import { AttendanceType } from "@/types";
-import { Button, Divider, Popover, Select, Table, Text } from "@mantine/core";
+import { Button, Divider, Popover, Table, Text } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import {
   IconAdjustments,
@@ -12,17 +12,17 @@ import { id } from "date-fns/locale";
 import { downloadFile } from "../api";
 import { useGetAttendanceByMonth } from "@/features/employee/pages/History";
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 export const AttendanceTable: React.FC = () => {
   const [opened, setOpened] = useState<boolean>(false);
 
   // FILTER STATE
   const [month, setMonth] = useState<Date | null>(new Date());
   const [activeMonth, setActiveMonth] = useState<Date | null>(new Date());
-  const [status, setStatus] = useState<string | null>("Semua");
-  const [activeStatus, setActiveStatus] = useState<string | null>("Semua");
   // END FOR FILTER STATE
 
-  //   GET ALL EMPLOYEE
+  //   GET ALL ATTENDANCES
   const [attendances, setAttendances] = useState<AttendanceType[]>([]);
   const { data: DataAttendances, refetch: RefetchAttendances } =
     useGetAttendanceByMonth(format(month ? month : new Date(), "yyyy-MM"));
@@ -37,7 +37,7 @@ export const AttendanceTable: React.FC = () => {
   }, [month]);
 
   console.log(attendances);
-  //   END FOR GET ALL EMPLOYEE
+  //   END FOR GET ALL ATTENDANCES
 
   const rows = attendances
     .filter((data) => {
@@ -49,11 +49,7 @@ export const AttendanceTable: React.FC = () => {
         date.getMonth() === active.getMonth() &&
         date.getFullYear() === active.getFullYear();
 
-      const isStatusMatch =
-        activeStatus === "Semua" ||
-        data.schedule.attendance_status === activeStatus;
-
-      return isSameMonthYear && isStatusMatch;
+      return isSameMonthYear;
     })
     .map((data, index) => (
       <Table.Tr key={index}>
@@ -73,21 +69,36 @@ export const AttendanceTable: React.FC = () => {
 
   // HANDLE DOWNLOAD
   const handleDownloadPDF = () => {
-    downloadFile(
-      `http://localhost:3000/api/salaries/pdf?status=${status}&month=${format(
+    console.log(
+      `${BASE_URL}/attendances/pdf?&date=${format(
         month ? month : new Date(),
-        "yyyy-MM"
+        "yyyy-MM-dd"
+      )}`
+    );
+    downloadFile(
+      `${BASE_URL}/attendances/pdf?&date=${format(
+        month ? month : new Date(),
+        "yyyy-MM-dd"
       )}`,
-      `laporan-gaji-pegawai-${format(month ? month : new Date(), "MMMM yyyy", {
-        locale: id,
-      })}-${status}.pdf`
+      `laporan-kehadiran-pegawai-${format(
+        month ? month : new Date(),
+        "dd MMMM yyyy",
+        {
+          locale: id,
+        }
+      )}.pdf`
     );
   };
 
   const handleDownloadExcel = () => {
     downloadFile(
-      `http://localhost:3000/api/employees/excel?status=${status}`,
-      "laporan-pegawai.xlsx"
+      `${BASE_URL}/attendances/excel?date=${format(
+        month ? month : new Date(),
+        "yyyy-MM-dd"
+      )}`,
+      `laporan-pegawai-${format(month ? month : new Date(), "dd MMMM yyyy", {
+        locale: id,
+      })}.xlsx`
     );
   };
   // END FOR HANDLE DOWNLOAD
@@ -96,7 +107,10 @@ export const AttendanceTable: React.FC = () => {
     <section className="bg-white shadow-sm p-4">
       <div className="flex justify-between mb-2">
         <div className="text-dark font-semibold cursor-pointer text-md">
-          Data Gaji pegawai
+          Data Kehadiran pegawai{" "}
+          {format(month ? month : new Date(), "EEEE, dd MMMM yyyy", {
+            locale: id,
+          })}
         </div>
         <Popover
           width={250}
@@ -133,17 +147,6 @@ export const AttendanceTable: React.FC = () => {
                 </Text>
                 <Divider className="mb-2" />
 
-                <Select
-                  label="status"
-                  size="sm"
-                  value={status}
-                  onChange={setStatus}
-                  data={[
-                    { label: "Pegawai tetap", value: "Pegawai tetap" },
-                    { label: "Part time", value: "Part time" },
-                    { label: "Semua", value: "Semua" },
-                  ]}
-                />
                 <DatePickerInput
                   label="Tanggal"
                   onChange={setMonth}
@@ -157,7 +160,6 @@ export const AttendanceTable: React.FC = () => {
                   size="xs"
                   onClick={() => {
                     setActiveMonth(month);
-                    setActiveStatus(status);
                     setOpened(false);
                   }}
                 >

@@ -14,10 +14,12 @@ const BaseURL = import.meta.env.VITE_API_URL;
 
 interface EmployeeSectionProps {
   attendances: AttendanceType[];
+  date?: string;
 }
 
 export const EmployeeSection: React.FC<EmployeeSectionProps> = ({
   attendances,
+  date,
 }) => {
   const navigate = useNavigate();
   return (
@@ -25,7 +27,10 @@ export const EmployeeSection: React.FC<EmployeeSectionProps> = ({
       <div className="flex justify-between text-xs items-center p-2 px-2 -mt-1 -mb-1">
         <div>
           <Text fw={700} c="#654433">
-            Data pegawai
+            Presensi{" "}
+            {format(new Date(date ? date : ""), "EEEE, dd MMMM yyyy", {
+              locale: id,
+            })}
           </Text>
         </div>
         <div className="my-auto text-right mb-1 me-2">

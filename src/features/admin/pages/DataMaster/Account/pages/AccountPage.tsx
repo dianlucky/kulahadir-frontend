@@ -1,5 +1,6 @@
 import { AccountType } from "@/types";
 import {
+  Badge,
   Button,
   CloseButton,
   Collapse,
@@ -21,6 +22,7 @@ import {
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
+import { showNotification } from "@mantine/notifications";
 
 type UpdateAccountRequest = {
   username?: string;
@@ -53,40 +55,57 @@ export const AccountPage: React.FC = () => {
   }, [DataAccounts]);
   console.log("Data akun:", accounts);
 
-  const rows = accounts.map((account, index) => (
-    <Table.Tr key={index}>
-      <Table.Td>{index + 1}</Table.Td>
-      <Table.Td>{account.username}</Table.Td>
-      <Table.Td>{account.level}</Table.Td>
-      <Table.Td>{account.status}</Table.Td>
-      <Table.Td className="w-40 ">
-        <div className="flex gap-1 justify-center">
-          <Button
-            size="xs"
-            color="yellow"
-            onClick={() => {
-              setEdit(true);
-              setDelete(false);
-              setAccount(account);
-            }}
+  const rows = accounts
+    .slice()
+    .sort((a, b) => a.status.localeCompare(b.status))
+    .map((account, index) => (
+      <Table.Tr key={index} className="text-center">
+        <Table.Td>{index + 1}</Table.Td>
+        <Table.Td>{account.username}</Table.Td>
+        <Table.Td>{account.level}</Table.Td>
+        <Table.Td>
+          <Badge
+            radius={"xs"}
+            color={
+              account.status == "Pegawai tetap"
+                ? "blue"
+                : account.status == "Part time"
+                ? "	#a46ede"
+                : "yellow"
+            }
           >
-            <IconPencil />
-          </Button>
-          <Button
-            size="xs"
-            color="red"
-            onClick={() => {
-              setDelete(true);
-              setEdit(false);
-              setAccount(account);
-            }}
-          >
-            <IconTrash />
-          </Button>
-        </div>
-      </Table.Td>
-    </Table.Tr>
-  ));
+            {" "}
+            {account.status}
+          </Badge>
+        </Table.Td>
+        <Table.Td className="w-40 ">
+          <div className="flex gap-1 justify-center">
+            <Button
+              size="compact-sm"
+              color="yellow"
+              onClick={() => {
+                setEdit(true);
+                setDelete(false);
+                setAccount(account);
+              }}
+            >
+              <IconPencil />
+            </Button>
+            <Button
+              size="compact-sm"
+              color="red"
+              onClick={() => {
+                setDelete(true);
+                setEdit(false);
+                setAccount(account);
+              }}
+            >
+              <IconTrash />
+            </Button>
+          </div>
+        </Table.Td>
+      </Table.Tr>
+    ));
 
   // END OF GET ACCOUNT
 
@@ -207,6 +226,13 @@ export const AccountPage: React.FC = () => {
           setSuccessDelete(false);
         }, 4500);
       },
+      onError: () => {
+        showNotification({
+          message: "Gagal! Data ini berelasi ke tabel lain",
+          color: "red",
+          position: "bottom-right",
+        });
+      },
     });
   };
   // END OF DELETE ACCOUNT
@@ -237,10 +263,27 @@ export const AccountPage: React.FC = () => {
               >
                 <Table.Thead>
                   <Table.Tr>
-                    <Table.Th className="font-semibold">No</Table.Th>
-                    <Table.Th className="font-semibold">Username</Table.Th>
-                    <Table.Th className="font-semibold">Role</Table.Th>
-                    <Table.Th className="font-semibold">Status</Table.Th>
+                    <Table.Th className="font-semibold flex justify-center">
+                      No
+                    </Table.Th>
+                    <Table.Th
+                      className="font-semibold"
+                      style={{ textAlign: "center" }}
+                    >
+                      Username
+                    </Table.Th>
+                    <Table.Th
+                      className="font-semibold"
+                      style={{ textAlign: "center" }}
+                    >
+                      Role
+                    </Table.Th>
+                    <Table.Th
+                      className="font-semibold"
+                      style={{ textAlign: "center" }}
+                    >
+                      Status
+                    </Table.Th>
                     <Table.Th className="font-semibold flex justify-center">
                       Aksi
                     </Table.Th>
@@ -328,7 +371,7 @@ export const AccountPage: React.FC = () => {
               <div>
                 <div className="grid grid-cols-12">
                   <div className="col-span-10 text-dark font-semibold cursor-pointer text-lg mb-2">
-                    Hapus tugas
+                    Hapus akun
                   </div>
                   <CloseButton
                     onClick={() => setDelete(false)}

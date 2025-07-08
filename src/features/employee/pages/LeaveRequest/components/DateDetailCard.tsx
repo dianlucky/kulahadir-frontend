@@ -55,7 +55,7 @@ export const DateDetailCard: React.FC<DateDetailCardProps> = ({
                 Tanggal izin :
               </Text>
               <Text size="sm">
-                {format(leaveRequestData.date, "EEEE, dd MMM yyyy", {
+                {format(leaveRequestData.date, "EEEE, dd MMMM yyyy", {
                   locale: id,
                 })}
               </Text>
@@ -68,7 +68,7 @@ export const DateDetailCard: React.FC<DateDetailCardProps> = ({
               </Text>
               <Text size="sm">
                 {" "}
-                {format(leaveRequestData.created_at, "EEEE, dd MMM yyyy", {
+                {format(leaveRequestData.created_at, "EEEE, dd MMMM yyyy", {
                   locale: id,
                 })}
               </Text>

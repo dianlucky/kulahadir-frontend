@@ -10,6 +10,8 @@ import {
   IconHandStop,
   IconClipboardPlus,
   IconListCheck,
+  IconPackages,
+  IconSnowflake,
 } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 
@@ -86,7 +88,7 @@ export const Home: React.FC = () => {
               {
                 title: "Pengajuan izin",
                 href: "/leave-request",
-                icon: IconFileDollar,
+                icon: IconClipboardPlus,
                 color: "bg-brown",
               },
               {
@@ -114,18 +116,13 @@ export const Home: React.FC = () => {
                 icon: IconUsers,
                 color: "bg-brown",
               },
-              {
-                title: "Jadwal pegawai",
-                href: "/employee-schedule",
-                icon: IconCalendar,
-                color: "bg-brown",
-              },
-              {
-                title: "Atur cuti pegawai",
-                href: "/employee-paid-leave",
-                icon: IconCalendarCancel,
-                color: "bg-brown",
-              },
+              // {
+              //   title: "Jadwal pegawai",
+              //   href: "/employee-schedule",
+              //   icon: IconCalendar,
+              //   color: "bg-brown",
+              // },
+
               {
                 title: "Data kehadiran",
                 href: "/employee-attendances",
@@ -133,13 +130,26 @@ export const Home: React.FC = () => {
                 color: "bg-brown",
               },
               {
-                title: "Pengajuan izin / sakit",
-                href: "/employee-request",
-                icon: IconClipboardPlus,
+                title: "Tugas Harian",
+                href: "/daily-task",
+                icon: IconListCheck,
                 color: "bg-brown",
               },
               {
-                title: "Pengajuan kasbon",
+                title: "Cuti Pegawai",
+                href: "/employee-paid-leave",
+                icon: IconCalendarCancel,
+                color: "bg-brown",
+              },
+
+              // {
+              //   title: "Pengajuan izin / sakit",
+              //   href: "/employee-request",
+              //   icon: IconClipboardPlus,
+              //   color: "bg-brown",
+              // },
+              {
+                title: "Permintaan kasbon",
                 href: "/employee-cash-advance",
                 icon: IconCashRegister,
                 color: "bg-brown",
@@ -151,9 +161,15 @@ export const Home: React.FC = () => {
                 color: "bg-brown",
               },
               {
-                title: "Tugas Harian",
-                href: "/daily-task",
-                icon: IconListCheck,
+                title: "Stok Gudang",
+                href: "/warehouse-inventory",
+                icon: IconPackages,
+                color: "bg-brown",
+              },
+              {
+                title: "Stok Frozen",
+                href: "/frozen-inventory",
+                icon: IconSnowflake,
                 color: "bg-brown",
               },
             ]}

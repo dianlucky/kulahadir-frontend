@@ -35,7 +35,7 @@ export const CashAdvanceDelete: React.FC<CashAdvanceDeleteProps> = ({
       <div>
         <div className="grid grid-cols-12">
           <div className="col-span-10 text-dark font-semibold cursor-pointer text-lg mb-2">
-            Hapus data pegawai
+            Hapus pengajuan kasbon
           </div>
           <div className="col-span-1"></div>
           <div className="col-span-1">

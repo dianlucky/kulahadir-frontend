@@ -4,10 +4,11 @@ import { Button, Divider, Image, Text } from "@mantine/core";
 import { IconClipboardText } from "@tabler/icons-react";
 import { useUpdateLeaveRequestById } from "../api";
 import { useNavigate } from "react-router-dom";
+import { showNotification } from "@mantine/notifications";
 
 const BaseURL = import.meta.env.VITE_API_URL;
-const DEFAULT_IMAGE =
-  "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-9.png";
+const URL = import.meta.env.VITE_BASE_URL;
+const DEFAULT_IMAGE = "/images/splash.png";
 
 interface AttachmentDescriptionCardProps {
   leaveRequestData: LeaveRequestType;
@@ -22,7 +23,6 @@ export const AttachmentDescriptionCard: React.FC<
 > = ({ leaveRequestData }) => {
   const { creds } = useAuth();
   const navigate = useNavigate();
-
   // UPDATE STATUS
   const mutationUpdateLeaveRequest = useUpdateLeaveRequestById(
     leaveRequestData.id
@@ -36,6 +36,11 @@ export const AttachmentDescriptionCard: React.FC<
       onSuccess: (data: LeaveRequestType) => {
         console.log("Success:", data);
         navigate(-1);
+        showNotification({
+          message: "Status pengajuan berhasil diubah",
+          color: "green",
+          position: "top-center",
+        });
         close();
       },
     });
@@ -81,7 +86,7 @@ export const AttachmentDescriptionCard: React.FC<
             src={
               leaveRequestData.attachment
                 ? `${BaseURL}/uploads/attachments/${leaveRequestData.attachment}`
-                : DEFAULT_IMAGE
+                : URL + DEFAULT_IMAGE
             }
           />
         </div>

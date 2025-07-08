@@ -3,7 +3,7 @@ import { Badge, Divider, RingProgress, Text } from "@mantine/core";
 import { IconChartBar } from "@tabler/icons-react";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 interface RecapAttendanceProps {
   date: Date | null;
@@ -14,6 +14,49 @@ export const RecapAttendance: React.FC<RecapAttendanceProps> = ({
   date,
   schedules,
 }) => {
+  // 🪐 RING
+  const [totalPresent, setTotalPresent] = useState<number>(0);
+  const [totalLate, setTotalLate] = useState<number>(0);
+  const [totalAbsen, setTotalAbsen] = useState<number>(0);
+
+  useEffect(() => {
+    const totalEmployee = schedules
+      ? schedules.filter((data) =>
+          status == "Semua" ? true : data.employee.account.status == status
+        ).length
+      : 0;
+
+    const presentCount = schedules
+      ? schedules.filter((data) =>
+          (data.attendance_status === "Working" ||
+            data.attendance_status === "Present") &&
+          status === "Semua"
+            ? true
+            : data.employee.account.status == status
+        ).length
+      : 0;
+
+    const lateCount = schedules
+      ? schedules.filter((data) =>
+          data.attendance_status === "Late" && status === "Semua"
+            ? true
+            : data.employee.account.status == status
+        ).length
+      : 0;
+
+    const absenCount = schedules
+      ? schedules.filter((data) =>
+          data.attendance_status === "belum hadir" && status === "Semua"
+            ? true
+            : data.employee.account.status == status
+        ).length
+      : 0;
+
+    setTotalPresent((presentCount * 100) / totalEmployee);
+    setTotalLate((lateCount * 100) / totalEmployee);
+    setTotalAbsen((absenCount * 100) / totalEmployee);
+  }, [schedules]);
+  // 🔚 END RING
   return (
     <section className="bg-white rounded-sm shadow-sm p-4">
       <div className="flex justify-between mb-1 -mt-3 mb-3">
@@ -51,9 +94,9 @@ export const RecapAttendance: React.FC<RecapAttendanceProps> = ({
               </Text>
             }
             sections={[
-              { value: 50, color: "#8FD14F" },
-              { value: 40, color: "yellow" },
-              { value: 10, color: "grey" },
+              { value: totalPresent, color: "#8FD14F" },
+              { value: totalAbsen, color: "grey" },
+              { value: totalLate, color: "yellow" },
             ]}
           />
           <div>

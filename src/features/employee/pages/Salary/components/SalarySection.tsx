@@ -158,7 +158,12 @@ export const SalarySection: React.FC<SalarySectionProps> = ({ salary }) => {
           <div className="col-span-7 mt-1 text-end">
             <Text size="13px">
               {salary != undefined &&
-                ` Rp. ${new Intl.NumberFormat("id-ID").format(salary.amount)}`}
+                ` Rp. ${new Intl.NumberFormat("id-ID").format(
+                  salary.amount -
+                    salary.bonus +
+                    salary.cash_advance +
+                    salary.salary_deduction
+                )}`}
             </Text>
           </div>
         </div>
@@ -192,7 +197,7 @@ export const SalarySection: React.FC<SalarySectionProps> = ({ salary }) => {
               {" "}
               {salary != undefined &&
                 ` Rp. ${new Intl.NumberFormat("id-ID").format(
-                  salary.amount + salary.bonus
+                  salary.amount + salary.cash_advance + salary.salary_deduction
                 )}`}
             </Text>
           </div>
@@ -270,11 +275,7 @@ export const SalarySection: React.FC<SalarySectionProps> = ({ salary }) => {
             <Text size="13px">
               {" "}
               {salary != undefined &&
-                ` Rp. ${new Intl.NumberFormat("id-ID").format(
-                  salary.amount +
-                    salary.bonus -
-                    (salary.salary_deduction + salary.cash_advance)
-                )}`}
+                ` Rp. ${new Intl.NumberFormat("id-ID").format(salary.amount)}`}
             </Text>
           </div>
         </div>

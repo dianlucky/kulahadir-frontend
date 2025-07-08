@@ -22,7 +22,7 @@ import {
   useGetTaskByDay,
 } from "../api";
 import { useForm } from "@mantine/form";
-import { IconPencil, IconTrash } from "@tabler/icons-react";
+import { IconEye, IconPencil, IconTrash } from "@tabler/icons-react";
 import { WeeklyTaskSection } from "../components";
 import { useDisclosure } from "@mantine/hooks";
 import { useGetAllEmployee } from "../../Employee";
@@ -30,6 +30,8 @@ import { useGetAllEmployee } from "../../Employee";
 export const DailyTaskPage: React.FC = () => {
   const [opened, { toggle }] = useDisclosure(false);
   const [weeklyTask, { toggle: toggleWeeklyTask }] = useDisclosure(false);
+  const [dailyTaskTable, { toggle: toggleDailyTaskTable }] =
+    useDisclosure(false);
   const [successAdd, setSuccessAdd] = useState(false);
   const [successDelete, setSuccessDelete] = useState(false);
   const [isDelete, setDelete] = useState(false);
@@ -101,8 +103,10 @@ export const DailyTaskPage: React.FC = () => {
       task_name: "",
     },
     validate: {
-      task_name: (value: string) => (value.length < 10 ? "Minimal 10 karakter" : null),
-      task_code: (value: string) => (value.length < 2 ? "Minimal 2 karakter" : null),
+      task_name: (value: string) =>
+        value.length < 10 ? "Minimal 10 karakter" : null,
+      task_code: (value: string) =>
+        value.length < 2 ? "Minimal 2 karakter" : null,
     },
   });
   const mutationAddLateRequest = useCreateDailyTask();
@@ -248,32 +252,44 @@ export const DailyTaskPage: React.FC = () => {
       <div className="grid lg:grid-cols-12 gap-6">
         <div className="col-span-9">
           <section className="bg-white shadow-lg p-6 rounded-lg">
-            <div className="flex">
+            <div className="flex justify-between">
               <div>
                 <div className="text-dark font-semibold cursor-pointer text-lg">
                   Daftar tugas
                 </div>
               </div>
+              <div className="mr-1">
+                <Button
+                  color="blue"
+                  className="shadow-lg"
+                  size="xs"
+                  onClick={toggleDailyTaskTable}
+                >
+                  <IconEye size={20} color="white" />
+                </Button>
+              </div>
             </div>
-            <div className="mt-3">
-              <Table
-                striped
-                highlightOnHover
-                withTableBorder
-                withColumnBorders
-                className="text-dark font-semibold cursor-pointer text-sm"
-              >
-                <Table.Thead>
-                  <Table.Tr>
-                    <Table.Th className="font-semibold">No</Table.Th>
-                    <Table.Th className="font-semibold">Kode tugas</Table.Th>
-                    <Table.Th className="font-semibold">Nama tugas</Table.Th>
-                    <Table.Th className="font-semibold">Aksi</Table.Th>
-                  </Table.Tr>
-                </Table.Thead>
-                <Table.Tbody>{rows}</Table.Tbody>
-              </Table>
-            </div>
+            <Collapse in={dailyTaskTable}>
+              <div className="mt-3">
+                <Table
+                  striped
+                  highlightOnHover
+                  withTableBorder
+                  withColumnBorders
+                  className="text-dark font-semibold cursor-pointer text-sm"
+                >
+                  <Table.Thead>
+                    <Table.Tr>
+                      <Table.Th className="font-semibold">No</Table.Th>
+                      <Table.Th className="font-semibold">Kode tugas</Table.Th>
+                      <Table.Th className="font-semibold">Nama tugas</Table.Th>
+                      <Table.Th className="font-semibold">Aksi</Table.Th>
+                    </Table.Tr>
+                  </Table.Thead>
+                  <Table.Tbody>{rows}</Table.Tbody>
+                </Table>
+              </div>
+            </Collapse>
           </section>
           {!LoadingTaskEmployee && (
             <section>
@@ -373,6 +389,13 @@ export const DailyTaskPage: React.FC = () => {
                       ]}
                       {...formCreateTaskEmployee.getInputProps("day")}
                     />
+                    <Select
+                      withAsterisk
+                      label="Pegawai"
+                      placeholder="Pegawai"
+                      data={selectEmployee}
+                      {...formCreateTaskEmployee.getInputProps("employee_id")}
+                    />
                     <MultiSelect
                       withAsterisk
                       label="Kode tugas"
@@ -380,13 +403,6 @@ export const DailyTaskPage: React.FC = () => {
                       data={selectTaskCode}
                       value={selectedCode}
                       onChange={setSelectedCode}
-                    />
-                    <Select
-                      withAsterisk
-                      label="Pegawai"
-                      placeholder="Pegawai"
-                      data={selectEmployee}
-                      {...formCreateTaskEmployee.getInputProps("employee_id")}
                     />
                     <div className="flex justify-center mt-3">
                       <Button type="submit" fullWidth>

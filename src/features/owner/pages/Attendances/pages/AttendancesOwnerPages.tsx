@@ -49,7 +49,9 @@ export const AttendancesOwnerPages: React.FC = () => {
           <CalendarSection setDate={setDate} />
         </div>
         <div className="-mt-2 mx-6 mb-20">
-          {!LoadingAttendances && <EmployeeSection attendances={attendances} />}
+          {!LoadingAttendances && (
+            <EmployeeSection attendances={attendances} date={date} />
+          )}
         </div>
       </div>
     </main>

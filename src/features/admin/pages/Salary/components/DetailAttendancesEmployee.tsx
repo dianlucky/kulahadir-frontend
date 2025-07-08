@@ -36,13 +36,11 @@ export const DetailAttendancesEmployee: React.FC<
 
   // GET SCHEDULES
   const [schedules, setSchedules] = useState<ScheduleType[]>([]);
-  const {
-    data: DataSchedules,
-    refetch: RefetchSchedules,
-  } = useGetScheduleByMonthEmployeeId(
-    format(new Date(selectedDate), "yyyy-MM", { locale: id }),
-    selectedEmployee?.id
-  );
+  const { data: DataSchedules, refetch: RefetchSchedules } =
+    useGetScheduleByMonthEmployeeId(
+      format(new Date(selectedDate), "yyyy-MM", { locale: id }),
+      selectedEmployee?.id
+    );
   useEffect(() => {
     if (DataSchedules) {
       setSchedules(DataSchedules);
@@ -141,7 +139,11 @@ export const DetailAttendancesEmployee: React.FC<
             </div>
             <div className="col-span-4">
               {salary != undefined && (
-                <SalaryCardAdmin salary={salary} schedules={schedules} />
+                <SalaryCardAdmin
+                  refetchSalary={RefetchSalary}
+                  salary={salary}
+                  schedules={schedules}
+                />
               )}
               {salary == undefined && (
                 <div className="bg-white shadow-sm p-4 rounded-xl">

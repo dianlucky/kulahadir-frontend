@@ -39,8 +39,12 @@ export const AttendanceRecapCard: React.FC = () => {
           >
             <div className="p-2 bg-transparent text-green-600 text-2xl rounded-xl font-bold w-full h-full text-center ">
               {
-                schedules.filter((data) => data.attendance_status == "Present")
-                  .length
+                schedules.filter(
+                  (data) =>
+                    data.attendance_status == "Present" ||
+                    data.attendance_status == "Late" ||
+                    data.attendance_status == "Working"
+                ).length
               }
             </div>
             <div className="text-xs -mt-1 ml-6">Hadir</div>

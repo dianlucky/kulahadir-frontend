@@ -30,8 +30,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { WorkerDetailSchedule } from "../components";
 
 const BaseURL = import.meta.env.VITE_API_URL;
-const DEFAULT_IMAGE =
-  "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-7.png";
+const DEFAULT_IMAGE = "/images/profile-default.png";
 
 export const SchedulePageAdmin: React.FC = () => {
   const [loading, { toggle }] = useDisclosure();
@@ -68,6 +67,10 @@ export const SchedulePageAdmin: React.FC = () => {
     }
   }, [DataWorkingEmployee, worker]);
   // console.log("Data Working Employee :", workingEmployee);
+
+  // GET EMPLOYEES
+  // const [employees, setEmployees]
+  // END FOR GET EMPLOYEES
 
   // CREATE SCHEDULES
   const mutationCreateSchedules = useCreateSchedule();
@@ -201,36 +204,6 @@ export const SchedulePageAdmin: React.FC = () => {
                 </Text>
               </div>
               <Divider className="mt-2" />
-              {/* {workingEmployee
-              ? workingEmployee.map((employee, index) => (
-                  <div className="mt-2" key={index}>
-                    <div className="grid grid-cols-12">
-                      <div className="col-span-1">
-                        <Image
-                          radius="200"
-                          src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-7.png"
-                          style={{
-                            width: "25px",
-                            height: "25px",
-                            objectFit: "cover",
-                          }}
-                        />
-                      </div>
-                      <div className="col-span-10 ml-2 mt-1">
-                        <Text truncate="end" size="sm">
-                          {employee.employee.name}
-                        </Text>
-                      </div>
-                      <div className="col-span-1">
-                        <UnstyledButton>
-                          <IconPencil size={21} color="#f03e3e" />{" "}
-                        </UnstyledButton>
-                      </div>
-                    </div>
-                    <Divider className="mt-2" />
-                  </div>
-                ))
-              : ""} */}
               {workingEmployee.length == 0 && (
                 <div className="flex justify-center">
                   <div className="text-center mt-10">
@@ -310,21 +283,21 @@ export const SchedulePageAdmin: React.FC = () => {
               <IconUsers />
             </div>
             <Divider />
-            <div className="grid grid-cols-12 w-full gap-2 mt-2">
+            <div className="grid grid-cols-2 w-full gap-4 mt-2">
               {workingEmployee.length != 0 &&
                 workingEmployee.map((data, index) => (
-                  <div className="col-span-6 w-full" key={index}>
+                  <div className="w-full" key={index}>
                     <Indicator
                       color={data.status == "on" ? `green` : `red`}
                       inline
-                      size={10}
+                      size={12}
                       position="top-start"
-                      offset={10}
+                      offset={8}
                     >
-                      <div className="bg-white shadow-sm p-3 rounded-lg w-full">
-                        <div className="grid grid-cols-12">
+                      <div className="bg-white shadow-sm hover:shadow-md p-4 rounded-xl max-w-full border border-gray-200 transition-all duration-200">
+                        <div className="max-w-md grid grid-cols-12 ">
                           <div className="col-span-2">
-                            <div className="bg-white-500 rounded-full p-1 w-10 h-10 overflow-hidden">
+                            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-100">
                               <Image
                                 src={
                                   data.employee?.profile_pic
@@ -332,42 +305,46 @@ export const SchedulePageAdmin: React.FC = () => {
                                     : DEFAULT_IMAGE
                                 }
                                 alt="Foto Profil"
-                                className="w-full h-full object-fill rounded-full"
+                                className="w-full h-full object-cover"
                               />
                             </div>
                           </div>
-                          <div className="col-span-6">
-                            <Text fw={"bold"} size="sm" truncate="end" mb={-2}>
+
+                          <div className="col-span-8">
+                            <Text
+                              fw={600}
+                              size="sm"
+                              className="text-gray-900 truncate leading-tight"
+                            >
                               {data.employee.name}
                             </Text>
-                            <Text size="xs" mt={-2}>
+                            <Text size="xs" className="text-gray-500 mt-1">
                               {data.employee.account.status}
                             </Text>
                           </div>
-                          <div className="col-span-4">
-                            <div className="grid grid-cols-2 gap-1">
-                              <div className="col-span-1"></div>
-                              <div className="col-span-1">
-                                <Tooltip
-                                  label="Ubah jadwal"
-                                  withArrow
-                                  transitionProps={{
-                                    transition: "fade-up",
-                                    duration: 300,
-                                  }}
-                                >
-                                  <Button
-                                    size="compact-sm"
-                                    color="yellow"
-                                    onClick={() => {
-                                      openWorkerDelete(), setWorker(data);
-                                    }}
-                                  >
-                                    <IconPencil size={18} color="white" />
-                                  </Button>
-                                </Tooltip>
-                              </div>
-                            </div>
+
+                          {/* Right side: Action Button */}
+                          <div className="col-span-2">
+                            <Tooltip
+                              label="Ubah jadwal"
+                              withArrow
+                              transitionProps={{
+                                transition: "fade-up",
+                                duration: 300,
+                              }}
+                            >
+                              <Button
+                                size="sm"
+                                color="yellow"
+                                variant="filled"
+                                className="min-w-[40px] h-10"
+                                onClick={() => {
+                                  openWorkerDelete(), setWorker(data);
+                                }}
+                              >
+                                <IconPencil size={18} />
+                              </Button>
+                            </Tooltip>
                           </div>
                         </div>
                       </div>

@@ -1,18 +1,41 @@
+import { useDeleteSalary } from "@/features/owner/pages/Salaries";
 import { SalaryType, ScheduleType } from "@/types";
-import { Divider, Text } from "@mantine/core";
-import { IconCalendarCheck } from "@tabler/icons-react";
+import { Button, Divider, Modal, Text } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { showNotification } from "@mantine/notifications";
+import { IconTrash } from "@tabler/icons-react";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import React from "react";
 interface SalaryCardAdminProps {
   salary: SalaryType;
   schedules?: ScheduleType[];
+  refetchSalary: () => void;
 }
 
 export const SalaryCardAdmin: React.FC<SalaryCardAdminProps> = ({
   salary,
   schedules,
+  refetchSalary,
 }) => {
+  // DELETE SALARY
+  const [opened, { open, close }] = useDisclosure(false);
+  const deleteSalaryMutation = useDeleteSalary();
+  const handleDeleteSalary = async (id: number | undefined) => {
+    deleteSalaryMutation.mutateAsync(id, {
+      onSuccess: (data) => {
+        console.log("Success Delete:", data);
+        showNotification({
+          message: "Berhasil menghapus data gaji pegawai",
+          color: "green",
+          position: "bottom-right",
+        });
+        refetchSalary();
+        close();
+      },
+    });
+  };
+  // END FOR DELETE SALARY
   return (
     <>
       <div className="bg-white shadow-sm p-4">
@@ -20,8 +43,10 @@ export const SalaryCardAdmin: React.FC<SalaryCardAdminProps> = ({
           <div className="text-dark font-semibold cursor-pointer text-sm">
             Slip gaji pegawai
           </div>
-          <div>
-            <IconCalendarCheck size={20} />
+          <div className="flex justify-between gap-1 -mt-1">
+            <Button size="compact-xs" color="red" onClick={open}>
+              <IconTrash size={18} />
+            </Button>
           </div>
         </div>
         <Divider />
@@ -254,6 +279,33 @@ export const SalaryCardAdmin: React.FC<SalaryCardAdminProps> = ({
             </div>
           </div>
         </div>
+        {/* DELETE SALARY MODAL */}
+        <Modal opened={opened} onClose={close} withCloseButton={false}>
+          <div className="px-1">
+            <div className="text-center">
+              <Text fw={500} size="md">
+                Apakah anda yakin ingin menghapus data gaji
+              </Text>
+              <Text fw={700} size="md" c={"red"}>
+                {salary.employee.name} ||{" "}
+                {format(salary.date, "MMMM yyyy", { locale: id })}
+              </Text>
+            </div>
+            <div className="flex gap-2 mt-4">
+              <Button fullWidth color="grey" onClick={() => close()}>
+                Tidak
+              </Button>
+              <Button
+                fullWidth
+                color="blue"
+                onClick={() => handleDeleteSalary(salary.id)}
+              >
+                Ya
+              </Button>
+            </div>
+          </div>
+        </Modal>
+        {/* END FOR DELETE SALARY MODAL */}
       </div>
     </>
   );

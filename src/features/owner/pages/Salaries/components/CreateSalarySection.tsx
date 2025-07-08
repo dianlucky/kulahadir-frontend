@@ -52,7 +52,8 @@ export const CreateSalarySection: React.FC<CreateSalarySectionProps> = ({
       schedules.filter(
         (data) =>
           data.attendance_status == "Present" ||
-          (data.attendance_status == "Late" && data.status == "on")
+          data.attendance_status == "Late" ||
+          (data.attendance_status == "Working" && data.status == "on")
       ).length * SALARY_PER_DAY
     );
   }, [cashAdvances, schedules]);
@@ -82,8 +83,7 @@ export const CreateSalarySection: React.FC<CreateSalarySectionProps> = ({
       amount:
         totalSalary +
         formCreate.values.bonus -
-        formCreate.values.salary_deduction +
-        totalCashAdvance,
+        (formCreate.values.salary_deduction + totalCashAdvance),
       employee_id: employee.id,
     };
 
@@ -174,7 +174,9 @@ export const CreateSalarySection: React.FC<CreateSalarySectionProps> = ({
                   schedules.filter(
                     (data) =>
                       data.attendance_status == "Present" ||
-                      (data.attendance_status == "Late" && data.status == "on")
+                      data.attendance_status == "Late" ||
+                      (data.attendance_status == "Working" &&
+                        data.status == "on")
                   ).length
                 }{" "}
                 hari

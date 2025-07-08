@@ -57,11 +57,13 @@ export const WeeklyTaskSection: React.FC<WeeklyTaskSectionProps> = ({
               Tugas mingguan pegawai
             </div>
           </div>
-          <Popover.Target>
-            <Button size="xs" onClick={() => setOpened((prev) => !prev)}>
-              <IconAdjustments color="white" />
-            </Button>
-          </Popover.Target>
+          <div>
+            <Popover.Target>
+              <Button size="xs" onClick={() => setOpened((prev) => !prev)}>
+                <IconAdjustments color="white" />
+              </Button>
+            </Popover.Target>
+          </div>
         </div>
         <Popover.Dropdown>
           <div className="mt-2">

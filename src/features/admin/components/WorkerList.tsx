@@ -126,7 +126,7 @@ export const WorkerList: React.FC<WorkerListProps> = ({
                       </div>
                       <div className="ml-2 mt-1">
                         <Text size="11px" fw={600}>
-                          {data.attendance
+                          {data.attendance?.check_out
                             ? format(data.attendance.check_out, "HH:mm", {
                                 locale: id,
                               })

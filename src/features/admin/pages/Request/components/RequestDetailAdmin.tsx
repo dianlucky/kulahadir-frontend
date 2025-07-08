@@ -1,6 +1,6 @@
 import { useUpdateLeaveRequestById } from "@/features/employee/pages/LeaveRequest";
 import { LeaveRequestType } from "@/types";
-import { Badge, Button, Divider, Text } from "@mantine/core";
+import { Badge, Button, Divider, Image, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
@@ -14,6 +14,9 @@ interface RequestDetailAdminProps {
 type UpdateStatusRequest = {
   status: string;
 };
+
+const BaseURL = import.meta.env.VITE_API_URL;
+const DEFAULT_IMAGE = "/images/spash.png";
 
 export const RequestDetailAdmin: React.FC<RequestDetailAdminProps> = ({
   selectedRequest,
@@ -85,6 +88,28 @@ export const RequestDetailAdmin: React.FC<RequestDetailAdminProps> = ({
           <div className="col-span-12">
             <div className="mt-2">
               <Text fw={"bold"} size="sm">
+                Hari & Tanggal:
+              </Text>
+              <Image
+                radius="md"
+                h={200}
+                style={{
+                  justifyContent: "center",
+                  padding: "10",
+                  width: "90% ",
+                }}
+                fit="contain"
+                src={
+                  selectedRequest?.attachment
+                    ? `${BaseURL}/uploads/attachments/${selectedRequest.attachment}`
+                    : DEFAULT_IMAGE
+                }
+              />
+            </div>
+          </div>
+          <div className="col-span-12">
+            <div className="mt-2">
+              <Text fw={"bold"} size="sm">
                 Alasan:
               </Text>
               <Text size="sm" mt={-5}>
@@ -92,28 +117,30 @@ export const RequestDetailAdmin: React.FC<RequestDetailAdminProps> = ({
               </Text>
             </div>
           </div>
-          <div className="col-span-12 mt-3">
-            <div className="grid grid-cols-12 gap-2">
-              <div className="col-span-6">
-                <Button
-                  color="red"
-                  fullWidth
-                  onClick={() => handleUpdateLeaveRequest("rejected")}
-                >
-                  Tolak
-                </Button>
-              </div>
-              <div className="col-span-6">
-                <Button
-                  color="blue"
-                  fullWidth
-                  onClick={() => handleUpdateLeaveRequest("accepted")}
-                >
-                  Terima
-                </Button>
+          {selectedRequest?.status == "pending" && (
+            <div className="col-span-12 mt-3">
+              <div className="grid grid-cols-12 gap-2">
+                <div className="col-span-6">
+                  <Button
+                    color="red"
+                    fullWidth
+                    onClick={() => handleUpdateLeaveRequest("rejected")}
+                  >
+                    Tolak
+                  </Button>
+                </div>
+                <div className="col-span-6">
+                  <Button
+                    color="blue"
+                    fullWidth
+                    onClick={() => handleUpdateLeaveRequest("accepted")}
+                  >
+                    Terima
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

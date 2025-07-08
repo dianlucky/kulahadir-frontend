@@ -74,7 +74,7 @@ export const RequestList: React.FC<RequestListProps> = ({ leaveRequests }) => {
                 <Text size="xs" fw={500}>
                   Tanggal pengajuan:{" "}
                   {data?.created_at
-                    ? format(data?.created_at, "EEEE, dd MMM yyyy", {
+                    ? format(data?.created_at, "EEEE, dd MMMM yyyy", {
                         locale: id,
                       })
                     : "-"}

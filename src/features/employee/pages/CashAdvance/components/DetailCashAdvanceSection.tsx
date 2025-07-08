@@ -55,7 +55,7 @@ export const DetailCashAdvanceSection: React.FC<DetailCashAdvanceProps> = ({
           </Text>
           <Text fw={700} size="md" mt={-4}>
             {cashAdvance &&
-              format(cashAdvance.date, "EEEE, dd MMM yyyy", { locale: id })}
+              format(cashAdvance.date, "EEEE, dd MMMM yyyy", { locale: id })}
           </Text>
         </div>
         <div className="col-span-12 mt-2">

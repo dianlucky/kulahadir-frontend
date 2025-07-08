@@ -60,7 +60,8 @@ export const AttendanceMonthlyDetail: React.FC<
         ? schedules.filter(
             (data) =>
               data.attendance_status == "Present" ||
-              (data.attendance_status == "Late" && data.status == "on")
+              data.attendance_status == "Late" ||
+              (data.attendance_status == "Working" && data.status == "on")
           ).length
         : 0) * 40000
     );
@@ -117,7 +118,7 @@ export const AttendanceMonthlyDetail: React.FC<
       <div className="bg-white shadow-sm p-4 mt-2">
         <div className="flex justify-between mb-1">
           <div className="text-dark font-semibold cursor-pointer text-sm">
-            Detail Kehadiran & bon
+            Detail Kehadiran & kasbon
           </div>
           <div>
             <IconCalendarCheck size={20} />
@@ -146,7 +147,8 @@ export const AttendanceMonthlyDetail: React.FC<
                   schedules?.filter(
                     (data) =>
                       data.attendance_status == "Present" ||
-                      data.attendance_status == "Late"
+                      data.attendance_status == "Late" ||
+                      data.attendance_status == "Working"
                   ).length
                 }{" "}
                 hari
@@ -253,7 +255,8 @@ export const AttendanceMonthlyDetail: React.FC<
                           schedules?.filter(
                             (data) =>
                               data.attendance_status == "Present" ||
-                              data.attendance_status == "Late"
+                              data.attendance_status == "Late" ||
+                              data.attendance_status == "Working"
                           ).length
                         }{" "}
                         hari

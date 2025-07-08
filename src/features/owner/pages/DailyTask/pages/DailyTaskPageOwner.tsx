@@ -4,16 +4,42 @@ import { useNavigate } from "react-router-dom";
 import { DailyTaskMenu, TodayTaskSection } from "../components";
 import { DailyTaskEmployeeType } from "@/types";
 import { useGetDailyTaskEmployeeByDate } from "../api/getDailyTaskEmployee";
-import { format } from "date-fns";
+import { format, subDays } from "date-fns";
+import { toZonedTime } from "date-fns-tz";
 
 export const DailyTaskPageOwner: React.FC = () => {
   const navigate = useNavigate();
 
+  // DATE FORMATTER TIME
+  const getEffectiveDate = () => {
+    const makassarTime = toZonedTime(new Date(), "Asia/Makassar");
+    const hour = makassarTime.getHours();
+
+    if (hour < 3) {
+      const yesterday = subDays(makassarTime, 1);
+      return format(yesterday, "yyyy-MM-dd");
+    }
+
+    return format(makassarTime, "yyyy-MM-dd");
+  };
+  const formattedDate = getEffectiveDate();
+  // END FOR DATE FORMATTER TIME
+
+  // DATEPICKER STATE
+  const [selectedDate, setSelectedDate] = useState<Date | null>(
+    new Date(formattedDate)
+  );
+  // ENDFOR DATEPICKER STATE
+
   // GET DAILY TASK EMPLOYEE
   const [dailyTask, setDailyTask] = useState<DailyTaskEmployeeType[]>([]);
-  const { data: DataDailyTask } = useGetDailyTaskEmployeeByDate(
-    format(new Date(), "yyyy-MM-dd")
-  );
+  const { data: DataDailyTask, isLoading: LoadingDailyTaskEmployee } =
+    useGetDailyTaskEmployeeByDate(
+      format(
+        new Date(selectedDate ? selectedDate : formattedDate),
+        "yyyy-MM-dd"
+      )
+    );
   useEffect(() => {
     if (DataDailyTask) {
       setDailyTask(DataDailyTask);
@@ -46,7 +72,13 @@ export const DailyTaskPageOwner: React.FC = () => {
         <DailyTaskMenu />
       </section>
       <section className="mt-4 px-5 mb-20">
-        <TodayTaskSection dailyTask={dailyTask} />
+        <TodayTaskSection
+          dailyTask={dailyTask}
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+          formattedDate={formattedDate}
+          LoadingDailyTaskEmployee={LoadingDailyTaskEmployee}
+        />
       </section>
     </main>
   );

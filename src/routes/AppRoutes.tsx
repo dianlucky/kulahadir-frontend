@@ -212,6 +212,18 @@ const { HistoryCashAdvancePageOwner } = lazyImport(
   () => import("@/features/owner/pages/History/"),
   "HistoryCashAdvancePageOwner"
 );
+const { WarehouseInventoryPage } = lazyImport(
+  () => import("@/features/owner/pages/Warehouse/"),
+  "WarehouseInventoryPage"
+);
+const { CategoryPage } = lazyImport(
+  () => import("@/features/owner/pages/Warehouse/pages/Category"),
+  "CategoryPage"
+);
+const { ItemPage } = lazyImport(
+  () => import("@/features/owner/pages/Warehouse/pages/Item"),
+  "ItemPage"
+);
 
 export const AppRoutes: React.FC = () => {
   // const role: string = "admin";
@@ -317,6 +329,15 @@ export const AppRoutes: React.FC = () => {
             </Route>
             <Route path="task-employee-data">
               <Route index element={<TaskEmployeePage />} />
+            </Route>
+            <Route path="warehouse-inventory">
+              <Route index element={<WarehouseInventoryPage />} />
+              <Route path="category">
+                <Route index element={<CategoryPage />} />
+              </Route>
+              <Route path="item">
+                <Route index element={<ItemPage />} />
+              </Route>
             </Route>
           </Route>
         ) : (

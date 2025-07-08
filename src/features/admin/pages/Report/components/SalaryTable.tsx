@@ -11,6 +11,8 @@ import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { downloadFile, useGetAllSalary } from "../api";
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 export const SalaryTable: React.FC = () => {
   const [opened, setOpened] = useState<boolean>(false);
   // FILTER STATE
@@ -64,7 +66,7 @@ export const SalaryTable: React.FC = () => {
   // HANDLE DOWNLOAD
   const handleDownloadPDF = () => {
     downloadFile(
-      `http://localhost:3000/api/salaries/pdf?status=${status}&month=${format(
+      `${BASE_URL}/salaries/pdf?status=${status}&month=${format(
         month ? month : new Date(),
         "yyyy-MM"
       )}`,
@@ -75,8 +77,18 @@ export const SalaryTable: React.FC = () => {
   };
 
   const handleDownloadExcel = () => {
+    console.log(
+      "URL :",
+      `${BASE_URL}/salaries/excel?status=${status}&month=${format(
+        month ? month : new Date(),
+        "yyyy-MM"
+      )}`
+    );
     downloadFile(
-      `http://localhost:3000/api/employees/excel?status=${status}`,
+      `${BASE_URL}/salaries/excel?status=${status}&month=${format(
+        month ? month : new Date(),
+        "yyyy-MM"
+      )}`,
       "laporan-pegawai.xlsx"
     );
   };

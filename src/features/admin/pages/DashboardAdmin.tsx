@@ -3,6 +3,7 @@ import {
   Button,
   Divider,
   Indicator,
+  Loader,
   Popover,
   Select,
   Text,
@@ -43,8 +44,11 @@ export const DashboardAdmin: React.FC = () => {
 
   // GET SCHEDULES
   const [schedules, setSchedules] = useState<ScheduleType[]>([]);
-  const { data: DataSchedules, refetch: RefetchSchedules } =
-    useGetScheduleByDate(date);
+  const {
+    data: DataSchedules,
+    refetch: RefetchSchedules,
+    isLoading: LoadingSchedules,
+  } = useGetScheduleByDate(date);
   useEffect(() => {
     if (DataSchedules) {
       setSchedules(DataSchedules);
@@ -229,7 +233,16 @@ export const DashboardAdmin: React.FC = () => {
                   <CalendarSection setDate={setDate} />
                 </div>
                 <div className="col-span-8 mt-2">
-                  <WorkerList schedules={schedules} attendances={attendances} />
+                  {LoadingSchedules ? (
+                    <div className="mt-30 ml-50">
+                      <Loader color="yellow" type="dots" />
+                    </div>
+                  ) : (
+                    <WorkerList
+                      schedules={schedules}
+                      attendances={attendances}
+                    />
+                  )}
                 </div>
               </div>
               <Button

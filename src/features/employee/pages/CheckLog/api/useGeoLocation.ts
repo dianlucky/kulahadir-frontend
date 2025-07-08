@@ -5,12 +5,10 @@ import { Geolocation } from "@capacitor/geolocation";
 const ATTENDANCE_LAT = -3.7931785830447957;
 const ATTENDANCE_LNG = 114.77492278802839;
 
-
 // // LOKASI RUMAH
 // const ATTENDANCE_LAT = -3.7666287056605525;
 // const ATTENDANCE_LNG = 114.75752145767268;
-const ATTENDANCE_RADIUS_METERS = 200000; // normalnya 150
-
+const ATTENDANCE_RADIUS_METERS = 200; // normalnya 200
 
 function calculateDistance(
   lat1: number,

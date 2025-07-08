@@ -6,24 +6,37 @@ import {
 } from "../components";
 import { AttendanceType, DailyTaskEmployeeType, ScheduleType } from "@/types";
 import { useGetScheduleByDateEmployeeId } from "../../schedule/api";
-import { format } from "date-fns";
+import { format, subDays } from "date-fns";
 import { useGetAttendanceByScheduleId } from "../../History";
 import {
   useGeoLocation,
   useGetDailyTaskEmployeeByDateEmployeeId,
 } from "../api";
 import { useAuth } from "@/features/auth";
+import { toZonedTime } from "date-fns-tz";
 
 export const CheckLogPage: React.FC = () => {
   const { creds } = useAuth();
+
+  // DATE FORMATTER TIME
+  const getEffectiveDate = () => {
+    const makassarTime = toZonedTime(new Date(), "Asia/Makassar");
+    const hour = makassarTime.getHours();
+
+    if (hour < 3) {
+      const yesterday = subDays(makassarTime, 1);
+      return format(yesterday, "yyyy-MM-dd");
+    }
+
+    return format(makassarTime, "yyyy-MM-dd");
+  };
+  // END FOR DATE FORMATTER TIME
   //=========================================//
   // GET SCHEDULE BY DATE
+  const formattedDate = getEffectiveDate();
   const [schedule, setSchedule] = useState<ScheduleType>();
   const { data: DataSchedule, refetch: RefetchSchedule } =
-    useGetScheduleByDateEmployeeId(
-      creds?.employee_id,
-      format(new Date(), "yyyy-MM-dd")
-    );
+    useGetScheduleByDateEmployeeId(creds?.employee_id, formattedDate);
   useEffect(() => {
     if (DataSchedule) {
       setSchedule(DataSchedule);
@@ -68,7 +81,7 @@ export const CheckLogPage: React.FC = () => {
     isLoading: LoadingDailyTaskEmployee,
     refetch: RefetchDailyTaskEmployee,
   } = useGetDailyTaskEmployeeByDateEmployeeId(
-    format(new Date(), "yyyy-MM-dd"),
+    formattedDate,
     creds?.employee_id
   );
   useEffect(() => {
@@ -78,8 +91,6 @@ export const CheckLogPage: React.FC = () => {
   }, [DataDailyTaskEmployee]);
   // END FOR GET DAILY TASK
   //=========================================//
-
-  console.log("Daily task: ", dailyTask);
 
   return (
     <main>

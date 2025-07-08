@@ -1,20 +1,25 @@
 import { SalaryType, ScheduleType } from "@/types";
-import { Button, Divider, Text } from "@mantine/core";
-import { IconDownload } from "@tabler/icons-react";
+import { Button, Divider, Modal, Text } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { IconDownload, IconTrash } from "@tabler/icons-react";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { useEffect, useState } from "react";
+import { useDeleteSalary } from "../api";
+import { showNotification } from "@mantine/notifications";
 
 interface PayslipSectionProps {
   salary: SalaryType;
   schedules: ScheduleType[];
+  refetchSalary: () => void;
 }
 
 export const PayslipSection: React.FC<PayslipSectionProps> = ({
   salary,
   schedules,
+  refetchSalary,
 }) => {
   // const [opened, { open, close }] = useDisclosure(false);
   const [totalAttendanceSalary, setTotalAttendanceSalary] = useState<number>(0);
@@ -24,7 +29,8 @@ export const PayslipSection: React.FC<PayslipSectionProps> = ({
       schedules.filter(
         (data) =>
           data.attendance_status == "Present" ||
-          data.attendance_status == "Late"
+          data.attendance_status == "Late" ||
+          data.attendance_status == "Working"
       ).length * 40000
     );
   }, [salary, schedules]);
@@ -64,6 +70,25 @@ export const PayslipSection: React.FC<PayslipSectionProps> = ({
     pdf.save(`slip-gaji-${Date.now()}.pdf`);
   };
   // END FOR HANDLE DOWNLOAD SALARY
+
+  // DELETE SALARY
+  const [opened, { open, close }] = useDisclosure(false);
+  const deleteSalaryMutation = useDeleteSalary();
+  const handleDeleteSalary = async (id: number | undefined) => {
+    deleteSalaryMutation.mutateAsync(id, {
+      onSuccess: (data) => {
+        console.log("Success Delete:", data);
+        showNotification({
+          message: "Berhasil menghapus data gaji pegawai",
+          color: "green",
+          position: "top-center",
+        });
+        refetchSalary();
+        close();
+      },
+    });
+  };
+  // END FOR DELETE SALARY
   return (
     // <section
     //   id="salary-slip"
@@ -318,6 +343,16 @@ export const PayslipSection: React.FC<PayslipSectionProps> = ({
           >
             <IconDownload className="w-4 h-4" />
           </Button>
+          <Button
+            size="compact-sm"
+            color="red"
+            ml={2}
+            onClick={() => {
+              open();
+            }}
+          >
+            <IconTrash size={20} />
+          </Button>
         </div>
       </div>
       <Divider />
@@ -416,7 +451,12 @@ export const PayslipSection: React.FC<PayslipSectionProps> = ({
           <div className="col-span-7 mt-1 text-end">
             <Text size="13px">
               {salary != undefined &&
-                ` Rp. ${new Intl.NumberFormat("id-ID").format(salary.amount)}`}
+                ` Rp. ${new Intl.NumberFormat("id-ID").format(
+                  salary.amount -
+                    salary.bonus +
+                    salary.cash_advance +
+                    salary.salary_deduction
+                )}`}
             </Text>
           </div>
         </div>
@@ -450,7 +490,7 @@ export const PayslipSection: React.FC<PayslipSectionProps> = ({
               {" "}
               {salary != undefined &&
                 ` Rp. ${new Intl.NumberFormat("id-ID").format(
-                  salary.amount + salary.bonus
+                  salary.amount + salary.cash_advance + salary.salary_deduction
                 )}`}
             </Text>
           </div>
@@ -528,11 +568,7 @@ export const PayslipSection: React.FC<PayslipSectionProps> = ({
             <Text size="13px">
               {" "}
               {salary != undefined &&
-                ` Rp. ${new Intl.NumberFormat("id-ID").format(
-                  salary.amount +
-                    salary.bonus -
-                    (salary.salary_deduction + salary.cash_advance)
-                )}`}
+                ` Rp. ${new Intl.NumberFormat("id-ID").format(salary.amount)}`}
             </Text>
           </div>
         </div>
@@ -564,12 +600,40 @@ export const PayslipSection: React.FC<PayslipSectionProps> = ({
                 })}
             </Text>
             <Text size="xs" m={6} fs={"italic"}>
-              Hafiz Anshari{" "}
+              M. Hafiz Anshari{" "}
             </Text>
             <Text size="xs">(Owner Kulakita)</Text>
           </div>
         </div>
       </div>
+
+      {/* DELETE SALARY MODAL */}
+      <Modal opened={opened} onClose={close} withCloseButton={false}>
+        <div className="px-1">
+          <div className="text-center">
+            <Text fw={500} size="md">
+              Apakah anda yakin ingin menghapus data gaji
+            </Text>
+            <Text fw={700} size="md" c={"red"}>
+              {salary.employee.name} ||{" "}
+              {format(salary.date, "MMMM yyyy", { locale: id })}
+            </Text>
+          </div>
+          <div className="flex gap-2 mt-4">
+            <Button fullWidth color="grey" onClick={() => close()}>
+              Tidak
+            </Button>
+            <Button
+              fullWidth
+              color="blue"
+              onClick={() => handleDeleteSalary(salary.id)}
+            >
+              Ya
+            </Button>
+          </div>
+        </div>
+      </Modal>
+      {/* END FOR DELETE SALARY MODAL */}
     </div>
   );
 };

@@ -1,6 +1,8 @@
 import { AttendanceType } from "@/types";
 import { Divider } from "@mantine/core";
 import { IconMap2 } from "@tabler/icons-react";
+import { Icon } from "leaflet";
+import markerImage from "/images/marker.png";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 interface LocationCardSectionProps {
   attendance: AttendanceType;
@@ -43,6 +45,14 @@ export const LocationCardSection: React.FC<LocationCardSectionProps> = ({
                     parseFloat(attendance.attendance_long),
                   ]
                 : [-3.793295021545682, 114.77480115323222]
+            }
+            icon={
+              new Icon({
+                iconUrl: markerImage,
+                iconSize: [32, 32],
+                iconAnchor: [16, 32],
+                popupAnchor: [0, -32],
+              })
             }
           >
             <Popup>

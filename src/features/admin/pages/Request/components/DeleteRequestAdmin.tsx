@@ -35,7 +35,7 @@ export const DeleteRequestAdmin: React.FC<DeleteRequestAdminProps> = ({
       <div>
         <div className="grid grid-cols-12">
           <div className="col-span-10 text-dark font-semibold cursor-pointer text-lg mb-2">
-            Hapus data pegawai
+            Hapus data pengajuan
           </div>
           <div className="col-span-1"></div>
           <div className="col-span-1">

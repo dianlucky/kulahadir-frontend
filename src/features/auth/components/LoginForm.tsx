@@ -1,6 +1,6 @@
 import { Button, PasswordInput, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { notifications } from "@mantine/notifications";
+import { notifications, showNotification } from "@mantine/notifications";
 import { IconLock, IconUser } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 
@@ -30,6 +30,19 @@ export const LoginForm: React.FC = () => {
       { data: form.values },
       {
         onError: ({ response, message }) => {
+          const status = response?.status;
+
+          // Jika error 401 (Unauthorized)
+          if (status === 401) {
+            showNotification({
+              message: "Username atau password salah",
+              color: "red",
+              position: "top-center",
+            });
+            return;
+          }
+
+          // Jika error dari validasi server (422, dsb.)
           if (response?.data.errors) {
             form.setErrors(response.data.errors);
           } else {
@@ -46,6 +59,11 @@ export const LoginForm: React.FC = () => {
           console.log(data);
           queryClient.setQueryData(["creds"], data.creds);
           storage.setToken(data.token);
+          // showNotification({
+          //   message: `Selamat datang ${data.creds.username}`,
+          //   color: "green",
+          //   position: "top-center",
+          // });
           navigate("/");
         },
       }

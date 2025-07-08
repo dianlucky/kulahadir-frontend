@@ -133,7 +133,9 @@ export const DailyTaskSection: React.FC<DailyTaskSectionProps> = ({
               handleUpdateStatus();
             }}
           >
-            Tandai selesai
+            {schedule?.attendance_status == "belum hadir"
+              ? `Anda belum CHECK-IN`
+              : `Tandai selesai`}
           </Button>
         </div>
       </section>

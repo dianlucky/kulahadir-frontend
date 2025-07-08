@@ -80,6 +80,9 @@ export const CalendarSection: React.FC<CalendarSectionProps> = ({
                 case "Late":
                   bgClass = "bg-yellow-400 text-white";
                   break;
+                case "Working":
+                  bgClass = "bg-green-500 text-white";
+                  break;
                 case "Leave":
                   bgClass = "bg-gray-400 text-white";
                   break;
