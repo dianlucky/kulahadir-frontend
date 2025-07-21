@@ -224,6 +224,39 @@ const { ItemPage } = lazyImport(
   () => import("@/features/owner/pages/Warehouse/pages/Item"),
   "ItemPage"
 );
+const { DetailItemPage } = lazyImport(
+  () => import("@/features/owner/pages/Warehouse/pages/Item"),
+  "DetailItemPage"
+);
+const { UpdateItemPage } = lazyImport(
+  () => import("@/features/owner/pages/Warehouse/pages/Item"),
+  "UpdateItemPage"
+);
+const { HistoryItemPage } = lazyImport(
+  () => import("@/features/owner/pages/Warehouse/pages/Item"),
+  "HistoryItemPage"
+);
+const { IncomingStockPage } = lazyImport(
+  () => import("@/features/owner/pages/Warehouse/pages/IncomingStock"),
+  "IncomingStockPage"
+);
+const { AddIncomingStock } = lazyImport(
+  () => import("@/features/owner/pages/Warehouse/pages/IncomingStock"),
+  "AddIncomingStock"
+);
+const { OutgoingStockPage } = lazyImport(
+  () => import("@/features/owner/pages/Warehouse/pages/OutgoingStock"),
+  "OutgoingStockPage"
+);
+const { AddOutgoingStock } = lazyImport(
+  () => import("@/features/owner/pages/Warehouse/pages/OutgoingStock"),
+  "AddOutgoingStock"
+);
+
+const { FrozenInventoryPage } = lazyImport(
+  () => import("@/features/owner/pages/Frozen/"),
+  "FrozenInventoryPage"
+);
 
 export const AppRoutes: React.FC = () => {
   // const role: string = "admin";
@@ -337,6 +370,37 @@ export const AppRoutes: React.FC = () => {
               </Route>
               <Route path="item">
                 <Route index element={<ItemPage />} />
+                <Route path="detail" element={<DetailItemPage />} />
+                <Route path="update" element={<UpdateItemPage />} />
+                <Route path="history" element={<HistoryItemPage />} />
+              </Route>
+              <Route path="incoming">
+                <Route index element={<IncomingStockPage />} />
+                <Route path="add" element={<AddIncomingStock />} />
+              </Route>
+              <Route path="outgoing">
+                <Route index element={<OutgoingStockPage />} />
+                <Route path="add" element={<AddOutgoingStock />} />
+              </Route>
+            </Route>
+            <Route path="frozen-inventory">
+              <Route index element={<FrozenInventoryPage />} />
+              <Route path="category">
+                <Route index element={<CategoryPage />} />
+              </Route>
+              <Route path="item">
+                <Route index element={<ItemPage />} />
+                <Route path="detail" element={<DetailItemPage />} />
+                <Route path="update" element={<UpdateItemPage />} />
+                <Route path="history" element={<HistoryItemPage />} />
+              </Route>
+              <Route path="incoming">
+                <Route index element={<IncomingStockPage />} />
+                <Route path="add" element={<AddIncomingStock />} />
+              </Route>
+              <Route path="outgoing">
+                <Route index element={<OutgoingStockPage />} />
+                <Route path="add" element={<AddOutgoingStock />} />
               </Route>
             </Route>
           </Route>

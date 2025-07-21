@@ -1,9 +1,9 @@
-import { RecapAttendanceCard } from "@/features/employee";
 import { IconChevronLeft } from "@tabler/icons-react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { MenuSection } from "../components";
+import { DetailItemSection } from "../components";
 
-export const WarehouseInventoryPage: React.FC = () => {
+export const DetailItemPage: React.FC = () => {
   const navigate = useNavigate();
   return (
     <>
@@ -21,18 +21,13 @@ export const WarehouseInventoryPage: React.FC = () => {
             />
           </div>
           <div className="font-semibold text-brown">
-            <h2 className="font-semibold">Kelola Stok Gudang</h2>
+            <h2 className="font-semibold">Detail barang</h2>
           </div>
           <div></div>
         </div>
       </section>
-      <section className="mt-18">
-        <div>
-          <RecapAttendanceCard />
-        </div>
-        <div className="mt-2 px-6">
-          <MenuSection type="warehouse-inventory" />
-        </div>
+      <section className="mt-1 px-6">
+        <DetailItemSection />
       </section>
     </>
   );

@@ -6,7 +6,6 @@ const BaseURL = import.meta.env.VITE_API_URL;
 
 
 const logFormData = (formData: FormData) => {
-  console.log("FormData contents:");
   for (const [key, value] of formData.entries()) {
     console.log(`${key}:`, value);
   }

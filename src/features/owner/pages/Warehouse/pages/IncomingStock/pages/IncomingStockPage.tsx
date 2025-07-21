@@ -1,9 +1,10 @@
-import { RecapAttendanceCard } from "@/features/employee";
-import { IconChevronLeft } from "@tabler/icons-react";
+import { UnstyledButton } from "@mantine/core";
+import { IconChevronLeft, IconPlus } from "@tabler/icons-react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { MenuSection } from "../components";
+import { HistoryIncomingSection } from "../components";
 
-export const WarehouseInventoryPage: React.FC = () => {
+export const IncomingStockPage: React.FC = () => {
   const navigate = useNavigate();
   return (
     <>
@@ -21,17 +22,20 @@ export const WarehouseInventoryPage: React.FC = () => {
             />
           </div>
           <div className="font-semibold text-brown">
-            <h2 className="font-semibold">Kelola Stok Gudang</h2>
+            <h2 className="font-semibold ">Kelola stok masuk</h2>
           </div>
-          <div></div>
+          <div>
+            <div className="mr-2">
+              <UnstyledButton onClick={()=> navigate('/warehouse-inventory/incoming/add')}>
+                <IconPlus size={22} />
+              </UnstyledButton>
+            </div>
+          </div>
         </div>
       </section>
-      <section className="mt-18">
-        <div>
-          <RecapAttendanceCard />
-        </div>
-        <div className="mt-2 px-6">
-          <MenuSection type="warehouse-inventory" />
+      <section>
+        <div className="mt-2 px-7">
+          <HistoryIncomingSection />
         </div>
       </section>
     </>

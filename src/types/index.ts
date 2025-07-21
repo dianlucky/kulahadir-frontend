@@ -46,7 +46,6 @@ export type DailyTaskEmployeeType = {
   date: Date;
 
   task_employee: TaskEmployeeType;
-  
 };
 
 export type EmployeeType = {
@@ -121,4 +120,10 @@ export type NotificationType = {
   created_at: Date;
   employee_id: number;
   employee: EmployeeType;
+};
+
+export type CategoryType = {
+  id: number;
+  code: string;
+  name: string;
 };

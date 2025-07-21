@@ -1,1 +1,2 @@
-export * from './CategoryData'
+export * from "./CategoryData";
+export * from "./CategorySkeleton";

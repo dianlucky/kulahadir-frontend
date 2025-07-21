@@ -7,32 +7,36 @@ import {
 } from "@tabler/icons-react";
 import React from "react";
 
-export const MenuSection: React.FC = () => {
+interface MenuSectionProps {
+  type: string;
+}
+
+export const MenuSection: React.FC<MenuSectionProps> = ({ type }) => {
   return (
     <>
       <MenuList
         navigations={[
           {
             title: "Kelola Kategori",
-            href: "/warehouse-inventory/category",
+            href: `/${type}/category`,
             icon: IconCategory,
             color: "bg-brown",
           },
           {
             title: "Kelola Barang",
-            href: "/warehouse-inventory/item",
+            href: `/${type}/item`,
             icon: IconArchiveFilled,
             color: "bg-brown",
           },
           {
             title: "Kelola Stok Masuk",
-            href: "/warehouse-inventory/stock-in",
+            href: `/${type}/incoming`,
             icon: IconStackPush,
             color: "bg-brown",
           },
           {
             title: "Kelola Stok Keluar",
-            href: "/warehouse-inventory/stock-out",
+            href: `/${type}/outgoing`,
             icon: IconStackPop,
             color: "bg-brown",
           },

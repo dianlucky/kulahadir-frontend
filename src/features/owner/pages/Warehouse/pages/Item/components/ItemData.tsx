@@ -6,13 +6,16 @@ import {
   Select,
   Text,
   TextInput,
+  UnstyledButton,
 } from "@mantine/core";
 import { IconAdjustments, IconDownload, IconSearch } from "@tabler/icons-react";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const DEFAULT_IMAGE = "/images/splash.png";
 
 export const ItemData: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <>
       <section className="bg-white mx-auto max-w-sm w-full shadow-lg rounded-md relative p-4">
@@ -51,8 +54,9 @@ export const ItemData: React.FC = () => {
                   />
                 </div>
                 <div className="mt-2 flex justify-between gap-2">
-                    <Button fullWidth size="xs" color="grey">Kembali</Button>
-                    <Button fullWidth size="xs">Simpan</Button>
+                  <Button fullWidth size="xs">
+                    Simpan
+                  </Button>
                 </div>
               </Popover.Dropdown>
             </Popover>
@@ -63,7 +67,10 @@ export const ItemData: React.FC = () => {
           </div>
         </div>
         <div>
-          <div className="grid grid-cols-12">
+          <UnstyledButton
+            className="w-full grid grid-cols-12"
+            onClick={() => navigate("/warehouse-inventory/item/detail")}
+          >
             <div className="col-span-2 flex justify-center">
               <Image radius="10px" h={35} w={35} src={DEFAULT_IMAGE} />
             </div>
@@ -82,20 +89,20 @@ export const ItemData: React.FC = () => {
                 4
               </Text>
             </div>
-          </div>
+          </UnstyledButton>
           <div className="px-2">
             <Divider my={10} />
           </div>
         </div>
         <div>
-          <div className="grid grid-cols-12">
+          <UnstyledButton className="w-full grid grid-cols-12">
             <div className="col-span-2 flex justify-center">
               <Image radius="10px" h={35} w={35} src={DEFAULT_IMAGE} />
             </div>
             <div className="col-span-8 text-left">
               <Text size="sm" truncate="end" fw={700}>
                 {" "}
-                Sirup Mawar
+                Sirup Mangga
               </Text>
               <Text size="xs" truncate="end" fw={400} mt={-4}>
                 {" "}
@@ -104,23 +111,23 @@ export const ItemData: React.FC = () => {
             </div>
             <div className="col-span-2 text-center my-auto">
               <Text size="xl" fw={700}>
-                17
+                4
               </Text>
             </div>
-          </div>
+          </UnstyledButton>
           <div className="px-2">
             <Divider my={10} />
           </div>
         </div>
         <div>
-          <div className="grid grid-cols-12">
+          <UnstyledButton className="w-full grid grid-cols-12">
             <div className="col-span-2 flex justify-center">
               <Image radius="10px" h={35} w={35} src={DEFAULT_IMAGE} />
             </div>
             <div className="col-span-8 text-left">
               <Text size="sm" truncate="end" fw={700}>
                 {" "}
-                Bubuk Matcha
+                Sirup Mangga
               </Text>
               <Text size="xs" truncate="end" fw={400} mt={-4}>
                 {" "}
@@ -129,10 +136,10 @@ export const ItemData: React.FC = () => {
             </div>
             <div className="col-span-2 text-center my-auto">
               <Text size="xl" fw={700}>
-                3
+                4
               </Text>
             </div>
-          </div>
+          </UnstyledButton>
           <div className="px-2">
             <Divider my={10} />
           </div>
