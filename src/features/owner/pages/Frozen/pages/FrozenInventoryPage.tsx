@@ -1,11 +1,13 @@
 import { IconChevronLeft } from "@tabler/icons-react";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { MenuSection } from "../../Warehouse";
 import { RecapAttendanceCard } from "@/features/employee";
 
 export const FrozenInventoryPage: React.FC = () => {
   const navigate = useNavigate();
+  // const location = useLocation();
+
   return (
     <>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>

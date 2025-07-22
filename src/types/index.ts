@@ -127,3 +127,15 @@ export type CategoryType = {
   code: string;
   name: string;
 };
+
+export type ItemType = {
+  id: number;
+  code: string;
+  name: string;
+  stock: number;
+  image: string;
+  category_id: number;
+  category?: CategoryType;
+};
+
+

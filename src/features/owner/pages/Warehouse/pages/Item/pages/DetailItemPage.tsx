@@ -1,10 +1,26 @@
 import { IconChevronLeft } from "@tabler/icons-react";
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { DetailItemSection } from "../components";
+import { ItemType } from "@/types";
+import { useGetItemById } from "../api";
 
 export const DetailItemPage: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const itemId = location.state.data.id as number;
+
+  // GET ITEM
+  const [item, setItem] = useState<ItemType>();
+  const { data: DataItem, isLoading: LoadingItem } = useGetItemById(itemId);
+  useEffect(() => {
+    if (DataItem) {
+      setItem(DataItem);
+    } else {
+      setItem(undefined);
+    }
+  }, [DataItem]);
+  // END FOR GET ITEM
   return (
     <>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
@@ -27,7 +43,7 @@ export const DetailItemPage: React.FC = () => {
         </div>
       </section>
       <section className="mt-1 px-6">
-        <DetailItemSection />
+        <DetailItemSection item={item} LoadingItem={LoadingItem} />
       </section>
     </>
   );

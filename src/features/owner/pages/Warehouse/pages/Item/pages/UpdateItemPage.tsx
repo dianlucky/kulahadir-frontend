@@ -1,10 +1,13 @@
 import { IconChevronLeft } from "@tabler/icons-react";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { UpdateItemform } from "../components";
+import { ItemType } from "@/types";
 
 export const UpdateItemPage: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const item = location.state.item as ItemType;
   return (
     <>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
@@ -27,7 +30,7 @@ export const UpdateItemPage: React.FC = () => {
         </div>
       </section>
       <section className="mt-1 px-6">
-        <UpdateItemform />
+        <UpdateItemform item={item} />
       </section>
     </>
   );

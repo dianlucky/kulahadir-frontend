@@ -138,7 +138,6 @@ export const FormEditBiodata: React.FC<FormEditBiodataProps> = ({
       },
     });
   };
-
   // END OF UPDATE EMPLOYEE
 
   // console.log(file);
