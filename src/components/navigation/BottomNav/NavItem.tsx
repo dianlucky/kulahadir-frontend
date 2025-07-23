@@ -14,14 +14,6 @@ export const NavItem: React.FC<Navigation> = ({
 }) => {
   const isActive =
     href === "/" ? currentPath === "/" : currentPath.startsWith(href);
-  console.log(
-    "currentPath:",
-    JSON.stringify(currentPath),
-    "href:",
-    JSON.stringify(href),
-    "isActive:",
-    isActive
-  );
 
   const Icon = icon;
 

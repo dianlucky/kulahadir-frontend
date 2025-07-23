@@ -138,4 +138,21 @@ export type ItemType = {
   category?: CategoryType;
 };
 
+export type DetailIncomingType = {
+  id: number;
+  amount: number;
+  created_at: Date;
+  incoming_id: number;
+  item_id: number;
+  item: ItemType;
+  employee_id: number;
+  employee: EmployeeType;
+};
 
+export type IncomingDataType = {
+  id: number;
+  created_at: Date;
+  employee_id: number;
+  employee: EmployeeType;
+  details: DetailIncomingType[];
+};

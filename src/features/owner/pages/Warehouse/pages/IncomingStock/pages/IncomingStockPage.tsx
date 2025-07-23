@@ -1,11 +1,34 @@
 import { UnstyledButton } from "@mantine/core";
 import { IconChevronLeft, IconPlus } from "@tabler/icons-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HistoryIncomingSection } from "../components";
+import { IncomingDataType } from "@/types";
+import { useGetIncomingByDate } from "../api";
+import { format } from "date-fns";
+import { id } from "date-fns/locale";
 
 export const IncomingStockPage: React.FC = () => {
   const navigate = useNavigate();
+  // DATE FILTER HANDLER
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  // END FOR DATE FILTER HANDLER
+  // GET INCOMING DATA
+  const [incomingData, setIncomingData] = useState<IncomingDataType[]>([]);
+  const { data: DataIncoming, isLoading: LoadingIncoming } =
+    useGetIncomingByDate(
+      format(selectedDate ?? new Date(), "yyyy-MM-dd", { locale: id })
+    );
+  useEffect(() => {
+    if (DataIncoming) {
+      setIncomingData(DataIncoming);
+    } else {
+      setIncomingData([]);
+    }
+  });
+  // GET INCOMING DATA
+
+  // console.log("Incoming data: ", incomingData);
   return (
     <>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
@@ -26,7 +49,9 @@ export const IncomingStockPage: React.FC = () => {
           </div>
           <div>
             <div className="mr-2">
-              <UnstyledButton onClick={()=> navigate('/warehouse-inventory/incoming/add')}>
+              <UnstyledButton
+                onClick={() => navigate("/warehouse-inventory/incoming/add")}
+              >
                 <IconPlus size={22} />
               </UnstyledButton>
             </div>
@@ -35,7 +60,12 @@ export const IncomingStockPage: React.FC = () => {
       </section>
       <section>
         <div className="mt-2 px-7">
-          <HistoryIncomingSection />
+          <HistoryIncomingSection
+            setSelectedDate={setSelectedDate}
+            incomingData={incomingData}
+            LoadingIncomingData={LoadingIncoming}
+            selectedDate={selectedDate}
+          />
         </div>
       </section>
     </>
