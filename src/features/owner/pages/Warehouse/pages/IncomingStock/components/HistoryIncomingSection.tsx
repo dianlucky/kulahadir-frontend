@@ -90,10 +90,7 @@ export const HistoryIncomingSection: React.FC<HistoryIncomingProps> = ({
                     )}
                   </div>
                 </div>
-                <div className="flex gap-1">
-                  {/* <Button size="compact-xs" color="yellow">
-                    <IconPencil size={14} />
-                  </Button> */}
+                <div className="">
                   <Button
                     size="compact-xs"
                     color="blue"

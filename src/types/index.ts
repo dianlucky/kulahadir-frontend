@@ -156,3 +156,22 @@ export type IncomingDataType = {
   employee: EmployeeType;
   details: DetailIncomingType[];
 };
+
+export type DetailOutgoingType = {
+  id: number;
+  amount: number;
+  created_at: Date;
+  outgoing_id: number;
+  item_id: number;
+  item: ItemType;
+  employee_id: number;
+  employee: EmployeeType;
+};
+
+export type OutgoingDataType = {
+  id: number;
+  created_at: Date;
+  employee_id: number;
+  employee: EmployeeType;
+  details: DetailOutgoingType[];
+};
