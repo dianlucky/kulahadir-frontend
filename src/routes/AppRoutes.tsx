@@ -244,6 +244,10 @@ const { AddIncomingStock } = lazyImport(
   () => import("@/features/owner/pages/Warehouse/pages/IncomingStock"),
   "AddIncomingStock"
 );
+const { DetailIncomingStock } = lazyImport(
+  () => import("@/features/owner/pages/Warehouse/pages/IncomingStock"),
+  "DetailIncomingStock"
+);
 const { OutgoingStockPage } = lazyImport(
   () => import("@/features/owner/pages/Warehouse/pages/OutgoingStock"),
   "OutgoingStockPage"
@@ -363,6 +367,7 @@ export const AppRoutes: React.FC = () => {
             <Route path="task-employee-data">
               <Route index element={<TaskEmployeePage />} />
             </Route>
+            {/* ITEM ROUTES PATH */}
             <Route path="warehouse-inventory">
               <Route index element={<WarehouseInventoryPage />} />
               <Route path="category">
@@ -377,12 +382,14 @@ export const AppRoutes: React.FC = () => {
               <Route path="incoming">
                 <Route index element={<IncomingStockPage />} />
                 <Route path="add" element={<AddIncomingStock />} />
+                <Route path="detail" element={<DetailIncomingStock />} />
               </Route>
               <Route path="outgoing">
                 <Route index element={<OutgoingStockPage />} />
                 <Route path="add" element={<AddOutgoingStock />} />
               </Route>
             </Route>
+            {/* FROZEN ROUTES PATH  */}
             <Route path="frozen-inventory">
               <Route index element={<FrozenInventoryPage />} />
               <Route path="category">
@@ -397,6 +404,7 @@ export const AppRoutes: React.FC = () => {
               <Route path="incoming">
                 <Route index element={<IncomingStockPage />} />
                 <Route path="add" element={<AddIncomingStock />} />
+                <Route path="detail" element={<DetailIncomingStock />} />
               </Route>
               <Route path="outgoing">
                 <Route index element={<OutgoingStockPage />} />

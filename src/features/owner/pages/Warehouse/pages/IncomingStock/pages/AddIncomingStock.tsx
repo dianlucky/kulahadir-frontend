@@ -45,7 +45,7 @@ export const AddIncomingStock: React.FC = () => {
           <div></div>
         </div>
       </section>
-      <div className="mx-5 mt-2">
+      <div className="mx-5 mt-2 mb-20">
         {/* <FormIncomingSection /> */}
         <IncomingStockSection items={items} LoadingItems={LoadingItems} />
       </div>

@@ -1,10 +1,15 @@
 import { IncomingDataType } from "@/types";
 import { Button, Divider, Popover, Skeleton, Text } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
-import { IconArrowBigDownFilled, IconCalendar, IconPencil, IconTrash } from "@tabler/icons-react";
+import {
+  IconArrowBigDownFilled,
+  IconCalendar,
+  IconInfoCircle,
+  } from "@tabler/icons-react";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface HistoryIncomingProps {
   setSelectedDate: React.Dispatch<React.SetStateAction<Date | null>>;
@@ -19,6 +24,8 @@ export const HistoryIncomingSection: React.FC<HistoryIncomingProps> = ({
   LoadingIncomingData,
   selectedDate,
 }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
   return (
     <>
       <section className="bg-white mx-auto max-w-sm w-full shadow-lg rounded-md relative p-4">
@@ -87,13 +94,26 @@ export const HistoryIncomingSection: React.FC<HistoryIncomingProps> = ({
                   {/* <Button size="compact-xs" color="yellow">
                     <IconPencil size={14} />
                   </Button> */}
-                  <Button size="compact-xs" color="red">
-                    <IconTrash size={14} />
+                  <Button
+                    size="compact-xs"
+                    color="blue"
+                    onClick={() => {
+                      navigate(
+                        `/${
+                          location.pathname.includes("frozen")
+                            ? `frozen`
+                            : `warehouse`
+                        }-inventory/incoming/detail`,
+                        { state: { data } }
+                      );
+                    }}
+                  >
+                    <IconInfoCircle size={17} color="white" />
                   </Button>
                 </div>
               </div>
-              {data.details.map((item) => (
-                <div className="grid grid-cols-12">
+              {data.details.map((item, index) => (
+                <div className="grid grid-cols-12" key={index}>
                   <div className="col-span-6 mt-1">
                     {LoadingIncomingData ? (
                       <Skeleton height={10} width="50%" />
