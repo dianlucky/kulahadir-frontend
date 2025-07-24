@@ -13,6 +13,7 @@ export const AddIncomingStock: React.FC = () => {
   const { data: DataItems, isLoading: LoadingItems } = useGetByCategory(
     location.pathname.includes("frozen") ? "Frozen" : "!Frozen"
   );
+
   useEffect(() => {
     if (DataItems) {
       setItems(DataItems);
@@ -20,6 +21,8 @@ export const AddIncomingStock: React.FC = () => {
       setItems([]);
     }
   }, [DataItems]);
+  console.log(items);
+
   // END FOR GET ALL ITEM
   return (
     <>

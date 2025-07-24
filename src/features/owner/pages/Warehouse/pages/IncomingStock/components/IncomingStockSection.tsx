@@ -51,14 +51,14 @@ export const IncomingStockSection: React.FC<IncomingStockSectionProps> = ({
   const [incomingList, setIncomingList] = useState<
     { item_id: number; amount: number }[]
   >([]);
-  incomingList.map((data) => console.log("Data :", data));
+  incomingList.map((data) => console.log("Data Amount:", data));
   const createIncomingItem = useCreateIncomingItem();
   const createIncomingDetail = useCreateIncomingDetail();
 
   const handleSubmitToBackend = async () => {
     if (incomingList.length === 0) return;
 
-    const employee_id = creds?.employee_id ?? 1; // Ganti sesuai dengan user login
+    const employee_id = creds?.employee_id ?? 1;
 
     try {
       // Step 1: Create incoming item
@@ -121,7 +121,13 @@ export const IncomingStockSection: React.FC<IncomingStockSectionProps> = ({
                 <UnstyledButton
                   className="w-full grid grid-cols-12"
                   onClick={() => {
-                    open(), setCount(0), setSelectedItem(item);
+                    const matched = incomingList.find(
+                      (incoming) => incoming.item_id === item.id
+                    );
+                    setCount(0);
+                    if (matched) setCount(matched.amount);
+                    setSelectedItem(item);
+                    open();
                   }}
                 >
                   <div className="col-span-2 flex justify-center">
@@ -225,7 +231,7 @@ export const IncomingStockSection: React.FC<IncomingStockSectionProps> = ({
                 <div className="col-span-4 my-auto">
                   <UnstyledButton
                     size="xl"
-                    disabled={count ? (count < 1 ? true : false) : true}
+                    disabled={count <= 0}
                     onClick={() => setCount((count ?? 0) - 1)}
                   >
                     <IconSquareChevronLeftFilled size={40} color="#4B352A" />
@@ -260,7 +266,7 @@ export const IncomingStockSection: React.FC<IncomingStockSectionProps> = ({
                         );
                         if (existingIndex !== -1) {
                           const updated = [...prev];
-                          updated[existingIndex].amount += count;
+                          updated[existingIndex].amount = count; // Ganti dari += count jadi set langsung
                           return updated;
                         }
                         return [

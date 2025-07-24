@@ -1,7 +1,7 @@
 import { IncomingDataType } from "@/types";
 import { Button, Divider, Popover, Skeleton, Text } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
-import { IconArrowBigDownFilled, IconCalendar } from "@tabler/icons-react";
+import { IconArrowBigDownFilled, IconCalendar, IconPencil, IconTrash } from "@tabler/icons-react";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import React from "react";
@@ -59,7 +59,7 @@ export const HistoryIncomingSection: React.FC<HistoryIncomingProps> = ({
         {incomingData.map((data, index) => (
           <div key={index}>
             <div className=" px-3">
-              <div className="col-span-12">
+              <div className="col-span-12 flex justify-between">
                 <div>
                   {LoadingIncomingData ? (
                     <Skeleton height={10} width="80%" />
@@ -82,6 +82,14 @@ export const HistoryIncomingSection: React.FC<HistoryIncomingProps> = ({
                       </div>
                     )}
                   </div>
+                </div>
+                <div className="flex gap-1">
+                  {/* <Button size="compact-xs" color="yellow">
+                    <IconPencil size={14} />
+                  </Button> */}
+                  <Button size="compact-xs" color="red">
+                    <IconTrash size={14} />
+                  </Button>
                 </div>
               </div>
               {data.details.map((item) => (
