@@ -16,6 +16,10 @@ import {
   IconSquareChevronRightFilled,
 } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
+import { useCreateIncomingDetail, useCreateIncomingItem } from "../api";
+import { useAuth } from "@/features/auth";
+import { showNotification } from "@mantine/notifications";
+import { useNavigate } from "react-router-dom";
 
 const DEFAULT_IMAGE = "/images/splash.png";
 const BaseURL = import.meta.env.VITE_API_URL;
@@ -29,6 +33,8 @@ export const IncomingStockSection: React.FC<IncomingStockSectionProps> = ({
   items,
   LoadingItems,
 }) => {
+  const { creds } = useAuth();
+  const navigate = useNavigate();
   const [opened, { open, close }] = useDisclosure(false);
   const [finalStock, setFinalStock] = useState<number>(0);
   const [selectedItem, setSelectedItem] = useState<ItemType | null>(null);
@@ -38,12 +44,57 @@ export const IncomingStockSection: React.FC<IncomingStockSectionProps> = ({
       setFinalStock(selectedItem.stock + count);
     }
   }, [count, selectedItem]);
-  console.log("Stok awal :", selectedItem?.stock);
-  console.log("Count :", count);
-  console.log("Stok akhir :", finalStock);
   // SEARCH INPUT
   const [search, setSearch] = useState<string | null>("");
   // END FOR SEARCH INPUT
+
+  const [incomingList, setIncomingList] = useState<
+    { item_id: number; amount: number }[]
+  >([]);
+  incomingList.map((data) => console.log("Data :", data));
+  const createIncomingItem = useCreateIncomingItem();
+  const createIncomingDetail = useCreateIncomingDetail();
+
+  const handleSubmitToBackend = async () => {
+    if (incomingList.length === 0) return;
+
+    const employee_id = creds?.employee_id ?? 1; // Ganti sesuai dengan user login
+
+    try {
+      // Step 1: Create incoming item
+      const incoming = await createIncomingItem.mutateAsync({ employee_id });
+      console.log("Response incoming item :", incoming.data);
+      const incoming_id = incoming.data.id;
+
+      // Step 2: Loop each item and create incoming detail
+      for (const item of incomingList) {
+        await createIncomingDetail.mutateAsync({
+          employee_id,
+          item_id: item.item_id,
+          incoming_id,
+          amount: item.amount,
+        });
+      }
+
+      // Reset state
+      setIncomingList([]);
+      setSelectedItem(null);
+      setCount(0);
+      showNotification({
+        message: "Berhasil menambahkan data",
+        color: "green",
+        position: "top-center",
+      });
+      navigate(-1);
+    } catch (err) {
+      console.error(err);
+      showNotification({
+        message: "Gagal menambahkan data!",
+        color: "red",
+        position: "top-center",
+      });
+    }
+  };
   return (
     <>
       <section className="bg-white shadow-md rounded-lg p-2">
@@ -101,7 +152,7 @@ export const IncomingStockSection: React.FC<IncomingStockSectionProps> = ({
                       <Skeleton height={10} width="20%" mt={16} />
                     ) : (
                       <Text size="xs" truncate="end" fw={400} mt={-4}>
-                        {item.stock}
+                        {item.code}
                       </Text>
                     )}
                   </div>
@@ -111,9 +162,29 @@ export const IncomingStockSection: React.FC<IncomingStockSectionProps> = ({
                         <Skeleton height={23} width="40%" />
                       </div>
                     ) : (
-                      <Text size="xl" fw={700}>
-                        {item.stock}
-                      </Text>
+                      <div>
+                        {(() => {
+                          const matchedIncoming = incomingList.find(
+                            (incoming) => incoming.item_id === item.id
+                          );
+                          if (!matchedIncoming)
+                            return (
+                              <Text size="xl" fw={700}>
+                                {item.stock}
+                              </Text>
+                            );
+                          return (
+                            <div>
+                              <Text size="md" fw={700}>
+                                {item.stock}
+                              </Text>
+                              <Text size="sm" c="green" fw={600} mt={-4} mr={4}>
+                                +{matchedIncoming.amount}
+                              </Text>
+                            </div>
+                          );
+                        })()}
+                      </div>
                     )}
                   </div>
                 </UnstyledButton>
@@ -142,16 +213,12 @@ export const IncomingStockSection: React.FC<IncomingStockSectionProps> = ({
                   size="sm"
                   disabled
                   value={selectedItem?.stock ?? 0}
-                  // key={form.key("task_code")}
-                  // {...form.getInputProps("task_code")}
                 />
                 <TextInput
                   label="Stok akhir"
                   size="sm"
                   disabled
                   value={finalStock ?? 0}
-                  // key={form.key("task_code")}
-                  // {...form.getInputProps("task_code")}
                 />
               </div>
               <div className="grid grid-cols-12 text-center">
@@ -182,7 +249,29 @@ export const IncomingStockSection: React.FC<IncomingStockSectionProps> = ({
                 <Button fullWidth size="sm" color="gray" onClick={close}>
                   Batal
                 </Button>
-                <Button fullWidth size="sm" onClick={close}>
+                <Button
+                  fullWidth
+                  size="sm"
+                  onClick={() => {
+                    if (selectedItem && count > 0) {
+                      setIncomingList((prev) => {
+                        const existingIndex = prev.findIndex(
+                          (i) => i.item_id === selectedItem.id
+                        );
+                        if (existingIndex !== -1) {
+                          const updated = [...prev];
+                          updated[existingIndex].amount += count;
+                          return updated;
+                        }
+                        return [
+                          ...prev,
+                          { item_id: selectedItem.id, amount: count },
+                        ];
+                      });
+                    }
+                    close();
+                  }}
+                >
                   Simpan
                 </Button>
               </div>
@@ -191,7 +280,12 @@ export const IncomingStockSection: React.FC<IncomingStockSectionProps> = ({
         </div>
       </section>
       <div className="fixed bottom-22 right-4 z-10 w-32">
-        <Button size="sm" fullWidth>
+        <Button
+          size="sm"
+          disabled={incomingList.length == 0 ? true : false}
+          fullWidth
+          onClick={handleSubmitToBackend}
+        >
           Simpan
         </Button>
       </div>
