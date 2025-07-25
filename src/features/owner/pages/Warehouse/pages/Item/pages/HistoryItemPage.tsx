@@ -17,33 +17,23 @@ export const HistoryItemPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const item = location.state.item as ItemType;
-  const [value, setValue] = useState<[Date | null, Date | null]>([null, null]);
+  const [transactionType, setTransactionType] = useState("Semua");
+  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
+    null,
+    null,
+  ]);
   // GET INCOMING DATA
-  const [incomingData, setIncomingData] = useState<DetailIncomingType[]>([]);
   const { data: DataIncoming, isLoading: LoadingIncoming } =
     useGetIncomingDetailByItemId(item.id);
   // END FOR GET INCOMING DATA
 
   // GET OUTGOING DATA
-  const [outgoingData, setOutgoingData] = useState<DetailOutgoingType[]>([]);
   const { data: DataOutgoing, isLoading: LoadingOutgoing } =
     useGetOutgoingDetailByItemId(item.id);
   // END FOR GET OUTGOING DATA
   // MERGE ARRAY TO TRANSACTION DATA
   const [transactionData, setTransactionData] = useState<TransactionType[]>([]);
   useEffect(() => {
-    if (DataIncoming) {
-      setIncomingData(DataIncoming);
-    } else {
-      setIncomingData([]);
-    }
-
-    if (DataOutgoing) {
-      setOutgoingData(DataOutgoing);
-    } else {
-      setOutgoingData([]);
-    }
-
     const incomingTransformed: TransactionType[] = (DataIncoming ?? []).map(
       (data: DetailIncomingType) => ({
         id: data.id,
@@ -80,6 +70,26 @@ export const HistoryItemPage: React.FC = () => {
 
     setTransactionData(merged);
   }, [DataIncoming, DataOutgoing]);
+
+  const filteredTransactions = transactionData.filter((data) => {
+    // Filter jenis transaksi
+    if (transactionType === "Stok masuk" && data.type !== "incoming")
+      return false;
+    if (transactionType === "Stok keluar" && data.type !== "outgoing")
+      return false;
+
+    // Filter tanggal
+    const [startDate, endDate] = dateRange;
+    if (startDate && endDate) {
+      const createdAt = new Date(data.created_at);
+      // Reset jam jadi 00:00 agar lebih akurat
+      const start = new Date(startDate.setHours(0, 0, 0, 0));
+      const end = new Date(endDate.setHours(23, 59, 59, 999));
+      return createdAt >= start && createdAt <= end;
+    }
+
+    return true; // Jika tidak ada filter tanggal, tampilkan semua
+  });
   // END FOR MERGE ARRAY TO TRANSACTION DATA
 
   console.log("Data TransactionData :", transactionData);
@@ -123,6 +133,8 @@ export const HistoryItemPage: React.FC = () => {
                     checkIconPosition="right"
                     comboboxProps={{ withinPortal: false }}
                     data={["Semua", "Stok masuk", "Stok keluar"]}
+                    value={transactionType}
+                    onChange={(value) => setTransactionType(value ?? "Semua")}
                   />
                 </div>
                 <div>
@@ -131,8 +143,8 @@ export const HistoryItemPage: React.FC = () => {
                     label="Pilih tanggal"
                     placeholder="Pilih tanggal"
                     size="xs"
-                    value={value}
-                    onChange={setValue}
+                    value={dateRange}
+                    onChange={setDateRange}
                   />
                 </div>
                 <div className="mt-2 flex justify-between gap-2">
@@ -145,8 +157,12 @@ export const HistoryItemPage: React.FC = () => {
           </div>
         </div>
       </section>
-      <section className="mt-1 px-6">
-        <HistoryItemSection />
+      <section className="mt-1 px-6 mb-20">
+        <HistoryItemSection
+          transactionData={filteredTransactions}
+          LoadingIncoming={LoadingIncoming}
+          LoadingOutgoing={LoadingOutgoing}
+        />
       </section>
     </>
   );
