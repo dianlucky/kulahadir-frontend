@@ -1,10 +1,27 @@
 import { IconChevronLeft } from "@tabler/icons-react";
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { OutgoingStockSection } from "../components";
+import { ItemType } from "@/types";
+import { useGetByCategory } from "../../Item/api";
 
 export const AddOutgoingStock: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  // GET ALL ITEM
+  const [items, setItems] = useState<ItemType[]>([]);
+  const { data: DataItems, isLoading: LoadingItems } = useGetByCategory(
+    location.pathname.includes("frozen") ? "Frozen" : "!Frozen"
+  );
+  useEffect(() => {
+    if (DataItems) {
+      setItems(DataItems);
+    } else {
+      setItems([]);
+    }
+  }, [DataItems]);
+  // END FOR GET ALL ITEM
+
   return (
     <>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
@@ -27,7 +44,7 @@ export const AddOutgoingStock: React.FC = () => {
         </div>
       </section>
       <div className="mx-6 mt-2">
-        <OutgoingStockSection />
+        <OutgoingStockSection items={items} LoadingItems={LoadingItems} />
       </div>
     </>
   );

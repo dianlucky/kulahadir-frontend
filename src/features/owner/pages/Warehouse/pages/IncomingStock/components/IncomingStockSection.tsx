@@ -51,7 +51,7 @@ export const IncomingStockSection: React.FC<IncomingStockSectionProps> = ({
   const [incomingList, setIncomingList] = useState<
     { item_id: number; amount: number }[]
   >([]);
-  incomingList.map((data) => console.log("Data Amount:", data));
+  
   const createIncomingItem = useCreateIncomingItem();
   const createIncomingDetail = useCreateIncomingDetail();
 
@@ -63,7 +63,6 @@ export const IncomingStockSection: React.FC<IncomingStockSectionProps> = ({
     try {
       // Step 1: Create incoming item
       const incoming = await createIncomingItem.mutateAsync({ employee_id });
-      console.log("Response incoming item :", incoming.data);
       const incoming_id = incoming.data.id;
 
       // Step 2: Loop each item and create incoming detail

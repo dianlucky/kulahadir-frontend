@@ -9,8 +9,8 @@ import { format } from "date-fns";
 import { id } from "date-fns/locale";
 
 export const OutgoingStockPage: React.FC = () => {
-  const navigate = useNavigate();
   const location = useLocation();
+  const navigate = useNavigate();
 
   // DATE FILTER HANDLER
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());

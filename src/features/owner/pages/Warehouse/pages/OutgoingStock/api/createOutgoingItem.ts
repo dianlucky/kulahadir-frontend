@@ -4,12 +4,12 @@ import axios from "axios";
 
 const BaseURL = import.meta.env.VITE_API_URL;
 
-type CreateIncomingItemPost = {
+type CreateOutgoingDataPost = {
   employee_id: number;
 };
 
-export const postIncomingItem = async (data: CreateIncomingItemPost) => {
-  const response = await axios.post(`${BaseURL}/incoming-items/`, data, {
+export const postOugoingItem = async (data: CreateOutgoingDataPost) => {
+  const response = await axios.post(`${BaseURL}/outgoing-items/`, data, {
     headers: {
       Authorization: `Bearer ${storage.getToken()}`,
     },
@@ -17,9 +17,9 @@ export const postIncomingItem = async (data: CreateIncomingItemPost) => {
   return response.data;
 };
 
-export const useCreateIncomingItem = () => {
+export const useCreateOutgoingItem = () => {
   return useMutation({
-    mutationFn: postIncomingItem,
+    mutationFn: postOugoingItem,
     onMutate: async () => {},
     onError: (error) => {
       console.log("Error :", error);
