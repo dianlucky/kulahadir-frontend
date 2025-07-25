@@ -22,3 +22,22 @@ export const useGetDetailByIncomingId = (incomingId: number) => {
     queryFn: () => getDetailByIncomingId(incomingId),
   });
 };
+
+export async function getDetailByItemId(itemId: number) {
+  const res = await axios.get(
+    `${BaseURL}/incoming-details/by-itemId?itemId=${itemId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${storage.getToken()}`,
+      },
+    }
+  );
+  return res.data.data;
+}
+
+export const useGetIncomingDetailByItemId = (itemId: number) => {
+  return useQuery({
+    queryKey: ["incoming-details", itemId],
+    queryFn: () => getDetailByItemId(itemId),
+  });
+};

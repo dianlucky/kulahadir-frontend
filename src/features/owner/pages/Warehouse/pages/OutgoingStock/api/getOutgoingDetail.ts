@@ -4,9 +4,9 @@ import axios from "axios";
 
 const BaseURL = import.meta.env.VITE_API_URL;
 
-export async function getDetailByIncomingId(incomingId: number) {
+export async function getDetailByOutgoingId(outgoingId: number) {
   const res = await axios.get(
-    `${BaseURL}/incoming-details/by-incomingId?incomingId=${incomingId}`,
+    `${BaseURL}/outgoing-details/by-outgoingId?outgoingId=${outgoingId}`,
     {
       headers: {
         Authorization: `Bearer ${storage.getToken()}`,
@@ -16,9 +16,28 @@ export async function getDetailByIncomingId(incomingId: number) {
   return res.data.data;
 }
 
-export const useGetDetailByIncomingId = (incomingId: number) => {
+export const useGetDetailByOutgoingId = (outgoingId: number) => {
   return useQuery({
-    queryKey: ["incoming-details", incomingId],
-    queryFn: () => getDetailByIncomingId(incomingId),
+    queryKey: ["incoming-details", outgoingId],
+    queryFn: () => getDetailByOutgoingId(outgoingId),
+  });
+};
+
+export async function getDetailByItemId(itemId: number) {
+  const res = await axios.get(
+    `${BaseURL}/outgoing-details/by-itemId?itemId=${itemId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${storage.getToken()}`,
+      },
+    }
+  );
+  return res.data.data;
+}
+
+export const useGetOutgoingDetailByItemId = (itemId: number) => {
+  return useQuery({
+    queryKey: ["incoming-details", itemId],
+    queryFn: () => getDetailByItemId(itemId),
   });
 };

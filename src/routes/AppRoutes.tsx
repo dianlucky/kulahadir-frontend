@@ -256,6 +256,10 @@ const { AddOutgoingStock } = lazyImport(
   () => import("@/features/owner/pages/Warehouse/pages/OutgoingStock"),
   "AddOutgoingStock"
 );
+const { DetailOutgoingStock } = lazyImport(
+  () => import("@/features/owner/pages/Warehouse/pages/OutgoingStock"),
+  "DetailOutgoingStock"
+);
 
 const { FrozenInventoryPage } = lazyImport(
   () => import("@/features/owner/pages/Frozen/"),
@@ -387,6 +391,7 @@ export const AppRoutes: React.FC = () => {
               <Route path="outgoing">
                 <Route index element={<OutgoingStockPage />} />
                 <Route path="add" element={<AddOutgoingStock />} />
+                <Route path="detail" element={<DetailOutgoingStock />} />
               </Route>
             </Route>
             {/* FROZEN ROUTES PATH  */}

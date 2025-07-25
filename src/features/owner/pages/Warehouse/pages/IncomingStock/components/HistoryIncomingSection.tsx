@@ -126,7 +126,7 @@ export const HistoryIncomingSection: React.FC<HistoryIncomingProps> = ({
                         <Skeleton height={10} width="10%" />
                       </div>
                     ) : (
-                      <Text size="md" fw={500}>
+                      <Text size="md" fw={600} mr={10}>
                         {item.amount}
                       </Text>
                     )}

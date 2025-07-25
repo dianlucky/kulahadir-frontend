@@ -1,13 +1,88 @@
 import { IconAdjustments, IconChevronLeft } from "@tabler/icons-react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { HistoryItemSection } from "../components";
 import { Button, Popover, Select } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  DetailIncomingType,
+  DetailOutgoingType,
+  ItemType,
+  TransactionType,
+} from "@/types";
+import { useGetIncomingDetailByItemId } from "../../IncomingStock";
+import { useGetOutgoingDetailByItemId } from "../../OutgoingStock";
 
 export const HistoryItemPage: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const item = location.state.item as ItemType;
   const [value, setValue] = useState<[Date | null, Date | null]>([null, null]);
+  // GET INCOMING DATA
+  const [incomingData, setIncomingData] = useState<DetailIncomingType[]>([]);
+  const { data: DataIncoming, isLoading: LoadingIncoming } =
+    useGetIncomingDetailByItemId(item.id);
+  // END FOR GET INCOMING DATA
+
+  // GET OUTGOING DATA
+  const [outgoingData, setOutgoingData] = useState<DetailOutgoingType[]>([]);
+  const { data: DataOutgoing, isLoading: LoadingOutgoing } =
+    useGetOutgoingDetailByItemId(item.id);
+  // END FOR GET OUTGOING DATA
+  // MERGE ARRAY TO TRANSACTION DATA
+  const [transactionData, setTransactionData] = useState<TransactionType[]>([]);
+  useEffect(() => {
+    if (DataIncoming) {
+      setIncomingData(DataIncoming);
+    } else {
+      setIncomingData([]);
+    }
+
+    if (DataOutgoing) {
+      setOutgoingData(DataOutgoing);
+    } else {
+      setOutgoingData([]);
+    }
+
+    const incomingTransformed: TransactionType[] = (DataIncoming ?? []).map(
+      (data: DetailIncomingType) => ({
+        id: data.id,
+        amount: data.amount,
+        created_at: data.created_at,
+        item_id: data.item_id,
+        item: data.item,
+        employee_id: data.employee_id,
+        employee: data.employee,
+        type: "incoming",
+      })
+    );
+
+    const outgoingTransformed: TransactionType[] = (DataOutgoing ?? []).map(
+      (data: DetailOutgoingType) => ({
+        id: data.id,
+        amount: data.amount,
+        created_at: data.created_at,
+        item_id: data.item_id,
+        item: data.item,
+        employee_id: data.employee_id,
+        employee: data.employee,
+        type: "outgoing",
+      })
+    );
+
+    const merged = [...incomingTransformed, ...outgoingTransformed];
+
+    // (Optional) urutkan berdasarkan tanggal terbaru
+    merged.sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
+
+    setTransactionData(merged);
+  }, [DataIncoming, DataOutgoing]);
+  // END FOR MERGE ARRAY TO TRANSACTION DATA
+
+  console.log("Data TransactionData :", transactionData);
   return (
     <>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
