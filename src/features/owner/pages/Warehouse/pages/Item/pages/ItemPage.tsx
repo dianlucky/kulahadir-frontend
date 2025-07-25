@@ -51,20 +51,6 @@ export const ItemPage: React.FC = () => {
   }, [DataItems]);
   // END FOR GET ITEM DATA
 
-  // GET CATEGORIES
-  const [categories, setCategories] = useState<CategoryType[]>([]);
-  const { data: DataCategories } = useGetAllCategory();
-  useEffect(() => {
-    if (DataCategories) {
-      setCategories(DataCategories);
-    }
-  });
-  const selectCategory = categories.map((category) => ({
-    value: category.id.toString(),
-    label: category.name,
-  }));
-  // END FOR GET CATEGORIES
-
   // IMAGE UPLOAD HANDLER
   // const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string>(DEFAULT_IMAGE);
@@ -84,13 +70,46 @@ export const ItemPage: React.FC = () => {
     setPreview(DEFAULT_IMAGE);
   };
   // END FOR IMAGE UPLOAD HANDLER
+
+  // GET CATEGORIES
+  const [frozenCategoryId, setFrozenCategoryId] = useState<string>("");
+  const [categories, setCategories] = useState<CategoryType[]>([]);
+  const { data: DataCategories } = useGetAllCategory();
+  useEffect(() => {
+    if (DataCategories) {
+      setCategories(DataCategories);
+
+      if (location.pathname.includes("frozen")) {
+        const frozenCategory = DataCategories.find(
+          (category: any) => category.name.toLowerCase() === "frozen"
+        );
+        if (frozenCategory) {
+          setFrozenCategoryId(frozenCategory.id.toString());
+          formCreate.setFieldValue("category_id", frozenCategoryId);
+        }
+      }
+    }
+  }, [DataCategories]);
+  const selectCategory = categories
+    .filter((category) => {
+      if (location.pathname.includes("frozen")) {
+        return category.name.toLowerCase() === "frozen";
+      }
+      return true; // kalau bukan frozen, tampilkan semua
+    })
+    .map((category) => ({
+      value: category.id.toString(),
+      label: category.name,
+    }));
+  // END FOR GET CATEGORIES
+
   // CREATE ITEM
   const formCreate = useForm({
     validateInputOnChange: true,
     initialValues: {
       code: "",
       name: "",
-      category_id: "",
+      category_id: frozenCategoryId ?? "",
       stock: 0 as number,
       image: null as File | null,
     },
@@ -149,6 +168,7 @@ export const ItemPage: React.FC = () => {
     });
   };
   // END FOR CREATE ITEM
+
   return (
     <>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>

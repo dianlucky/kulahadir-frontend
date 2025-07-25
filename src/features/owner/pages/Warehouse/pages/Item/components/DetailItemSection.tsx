@@ -1,8 +1,11 @@
 import { ItemType } from "@/types";
 import { Button, Divider, Image, Modal, Skeleton, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { showNotification } from "@mantine/notifications";
 import { IconTrash } from "@tabler/icons-react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useDeleteTempItem } from "../api";
+import { AxiosError } from "axios";
 
 interface DetailItemSectionProps {
   item?: ItemType;
@@ -17,6 +20,37 @@ export const DetailItemSection: React.FC<DetailItemSectionProps> = ({
 }) => {
   const navigate = useNavigate();
   const [opened, { open, close }] = useDisclosure(false);
+  const {pathname} = useLocation()
+
+  // DELETE ITEM
+  const deleteItemMutation = useDeleteTempItem();
+  const deleteCategory = async (id: number | undefined) => {
+    deleteItemMutation.mutateAsync(id, {
+      onSuccess: (data: any) => {
+        console.log("Sukses :", data);
+        showNotification({
+          message: "Kategori berhasil dihapus",
+          color: "green",
+          position: "top-center",
+        });
+        close();
+        navigate(-1);
+      },
+      onError: (error) => {
+        const axiosError = error as AxiosError<{ errors: string }>;
+        const errorMessage =
+          axiosError?.response?.data?.errors ||
+          "Gagal menghapus kategori. Silakan coba lagi.";
+        close();
+        showNotification({
+          message: errorMessage,
+          color: "red",
+          position: "top-center",
+        });
+      },
+    });
+  };
+  // END FOR DELETE ITEM
   return (
     <>
       <div className="bg-white rounded-xl shadow-md p-2">
@@ -100,7 +134,12 @@ export const DetailItemSection: React.FC<DetailItemSectionProps> = ({
             disabled={LoadingItem}
             size="sm"
             onClick={() =>
-              navigate("/warehouse-inventory/item/update", { state: { item } })
+              navigate(
+                `/${
+                  pathname.includes("frozen") ? `frozen` : `warehouse`
+                }-inventory/item/update`,
+                { state: { item } }
+              )
             }
           >
             Edit
@@ -110,7 +149,12 @@ export const DetailItemSection: React.FC<DetailItemSectionProps> = ({
             disabled={LoadingItem}
             size="sm"
             onClick={() =>
-              navigate("/warehouse-inventory/item/history", { state: { item } })
+              navigate(
+                `/${
+                  pathname.includes("frozen") ? `frozen` : `warehouse`
+                }-inventory/item/history`,
+                { state: { item } }
+              )
             }
           >
             Riwayat
@@ -134,11 +178,11 @@ export const DetailItemSection: React.FC<DetailItemSectionProps> = ({
                 color="yellow"
                 size="sm"
                 fullWidth
-                //   onClick={() => {
-                //     deleteDailyTask(selectedTask?.id);
-                //   }}
+                onClick={() => {
+                  deleteCategory(item?.id);
+                }}
               >
-                Ya! Hapus barang
+                Ya! Hapus
               </Button>
             </div>
           </div>

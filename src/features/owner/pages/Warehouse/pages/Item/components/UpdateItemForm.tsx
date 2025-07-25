@@ -3,7 +3,7 @@ import { Button, Image, Select, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import React, { useEffect, useState } from "react";
 import { useUpdateItemById } from "../api";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { showNotification } from "@mantine/notifications";
 import { useGetAllCategory } from "../../Category";
 
@@ -23,6 +23,7 @@ const BaseURL = import.meta.env.VITE_API_URL;
 
 export const UpdateItemform: React.FC<UpdateItemFormSection> = ({ item }) => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   // GET CATEGORIES
   const [categories, setCategories] = useState<CategoryType[]>([]);
@@ -31,12 +32,19 @@ export const UpdateItemform: React.FC<UpdateItemFormSection> = ({ item }) => {
     if (DataCategories) {
       setCategories(DataCategories);
     }
-  });
+  }, [DataCategories]);
 
-  const selectCategory = categories.map((category) => ({
-    value: category.id.toString(),
-    label: category.name,
-  }));
+  const selectCategory = categories
+    .filter((category) => {
+      if (pathname.includes("frozen")) {
+        return category.name.toLowerCase() === "frozen";
+      }
+      return true; // kalau bukan frozen, tampilkan semua
+    })
+    .map((category) => ({
+      value: category.id.toString(),
+      label: category.name,
+    }));
   // END FOR GET CATEGORIES
 
   // UPDATE ITEMS

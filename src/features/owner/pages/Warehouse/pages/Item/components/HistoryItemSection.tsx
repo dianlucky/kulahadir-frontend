@@ -1,13 +1,15 @@
 import { TransactionType } from "@/types";
-import { Divider, Skeleton, Text } from "@mantine/core";
+import { Divider, Image, Skeleton, Text } from "@mantine/core";
 import {
   IconArrowBigDownFilled,
   IconArrowBigUpFilled,
-  IconArrowRight,
 } from "@tabler/icons-react";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import React from "react";
+
+const BaseURL = import.meta.env.VITE_API_URL;
+const DEFAULT_IMAGE = "/images/profile-default.png";
 
 interface HistroyItemSectionProps {
   transactionData: TransactionType[];
@@ -66,6 +68,21 @@ export const HistoryItemSection: React.FC<HistroyItemSectionProps> = ({
                 </div>
               </div>
               <div className="col-span-6 text-end mt-3">
+                <div className="flex justify-end">
+                  <Image
+                    radius="10px"
+                    h={20}
+                    w={20}
+                    src={
+                      data.employee.profile_pic
+                        ? `${BaseURL}/uploads/employees/${data.employee?.profile_pic}`
+                        : DEFAULT_IMAGE
+                    }
+                  />
+                  <Text size="xs" fw={400} truncate="end">
+                    {data.employee.name}
+                  </Text>
+                </div>
                 <Text size="lg" fw={600}>
                   {data.amount}
                 </Text>

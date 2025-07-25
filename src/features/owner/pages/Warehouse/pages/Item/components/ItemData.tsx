@@ -10,8 +10,8 @@ import {
   UnstyledButton,
 } from "@mantine/core";
 import { IconAdjustments, IconDownload, IconSearch } from "@tabler/icons-react";
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface ItemDataSection {
   items: ItemType[];
@@ -23,6 +23,7 @@ const BaseURL = import.meta.env.VITE_API_URL;
 export const ItemData: React.FC<ItemDataSection> = ({ items }) => {
   const navigate = useNavigate();
   const [opened, setOpened] = useState(false);
+  const {pathname} = useLocation()
 
   // SEARCH INPUT
   const [search, setSearch] = useState<string | null>("");
@@ -118,14 +119,36 @@ export const ItemData: React.FC<ItemDataSection> = ({ items }) => {
             </Button>
           </div>
         </div>
+        {sortedItems.length == 0 && (
+          <div className="my-10">
+            <div className="flex justify-center">
+              <Image
+                radius="10px"
+                h={120}
+                w={120}
+                src={"/images/not-found.svg"}
+              />
+            </div>
+            <div className="text-center mt-1">
+              <Text size="sm" fw={600}>
+                Data barang tidak ditemukan
+              </Text>
+            </div>
+          </div>
+        )}
         {sortedItems.map((data, index) => (
           <div key={index}>
             <UnstyledButton
               className="w-full grid grid-cols-12"
               onClick={() =>
-                navigate("/warehouse-inventory/item/detail", {
-                  state: { data },
-                })
+                navigate(
+                  `/${
+                    pathname.includes("frozen") ? `frozen` : `warehouse`
+                  }-inventory/item/detail`,
+                  {
+                    state: { data },
+                  }
+                )
               }
             >
               <div className="col-span-2 flex justify-center">
