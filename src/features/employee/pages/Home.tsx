@@ -153,9 +153,9 @@ export const Home: React.FC = () => {
                 color: "bg-brown",
               },
               {
-                title: "Data kehadiran",
-                href: "/employee-attendances",
-                icon: IconHandStop,
+                title: "Data Jadwal",
+                href: "/employee-schedule",
+                icon: IconCalendar,
                 color: "bg-brown",
               },
               {

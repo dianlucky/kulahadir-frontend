@@ -81,7 +81,7 @@ export const EmployeeScheduleList: React.FC<EmployeeScheduleListProps> = ({
             />
           </div>
           {workingEmployees
-            .filter((data) => data.employee.account.status == "Pegawai tetap")
+            .filter((data) => data.employee.account.status != "Part time")
             .map((data, index) => (
               <button
                 className="w-full"
