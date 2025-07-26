@@ -174,7 +174,7 @@ export const ItemData: React.FC<ItemDataSection> = ({ items }) => {
                 </Text>
               </div>
               <div className="col-span-2 text-center my-auto">
-                <Text size="xl" fw={700}>
+                <Text size="xl" fw={700} c={data.stock <= 0 ? `red` : `dark`}>
                   {data.stock}
                 </Text>
               </div>

@@ -85,16 +85,22 @@ export const Home: React.FC = () => {
                 icon: IconCalendar,
                 color: "bg-brown",
               },
-              {
-                title: "Pengajuan izin",
-                href: "/leave-request",
-                icon: IconClipboardPlus,
-                color: "bg-brown",
-              },
+              // {
+              //   title: "Pengajuan izin",
+              //   href: "/leave-request",
+              //   icon: IconClipboardPlus,
+              //   color: "bg-brown",
+              // },
               {
                 title: "Pengajuan kasbon",
                 href: "/cash-advance-request",
                 icon: IconCashRegister,
+                color: "bg-brown",
+              },
+              {
+                title: "Jadwal Cuti",
+                href: "/  paid-leave",
+                icon: IconCalendarCancel,
                 color: "bg-brown",
               },
               {

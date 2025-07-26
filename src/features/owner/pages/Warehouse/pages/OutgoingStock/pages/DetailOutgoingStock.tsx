@@ -50,7 +50,7 @@ export const DetailOutgoingStock: React.FC = () => {
         </div>
       </section>
       <section>
-        <div className="mt-2 px-5">
+        <div className="mt-2 px-5 mb-20">
           <DetailOutgoingSection
             outgoingData={outgoingData}
             details={details}

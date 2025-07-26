@@ -8,6 +8,7 @@ const BaseURL = import.meta.env.VITE_API_URL;
 type UpdateAccountRequest = {
   username?: string;
   password?: string;
+  status?: string;
 };
 
 async function updateAccountById(

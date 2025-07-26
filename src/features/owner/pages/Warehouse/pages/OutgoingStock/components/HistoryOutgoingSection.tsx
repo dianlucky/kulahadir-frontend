@@ -1,5 +1,5 @@
 import { OutgoingDataType } from "@/types";
-import { Button, Divider, Popover, Skeleton, Text } from "@mantine/core";
+import { Button, Divider, Image, Popover, Skeleton, Text } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import {
   IconArrowBigUpFilled,
@@ -62,6 +62,23 @@ export const HistoryOutgoingSection: React.FC<HistoryOutgoingProps> = ({
           </Popover>
         </div>
         <Divider size="xs" className="mb-2" />
+        {outgoingData.length == 0 && (
+          <div className="my-10">
+            <div className="flex justify-center">
+              <Image
+                radius="10px"
+                h={120}
+                w={120}
+                src={"/images/not-found.svg"}
+              />
+            </div>
+            <div className="text-center mt-1">
+              <Text size="sm" fw={600}>
+                Data tidak ditemukan
+              </Text>
+            </div>
+          </div>
+        )}
         {outgoingData.map((data, index) => (
           <div key={index}>
             <div className=" px-3">

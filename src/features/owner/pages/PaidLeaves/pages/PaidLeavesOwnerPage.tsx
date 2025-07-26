@@ -9,9 +9,11 @@ import {
   useGetScheduleByMonthAll,
 } from "@/features/admin/pages/Schedule";
 import { id } from "date-fns/locale";
+import { useAuth } from "@/features/auth";
 
 export const PaidLeavesOwnerPage: React.FC = () => {
   const navigate = useNavigate();
+  const { creds } = useAuth();
   const [date, setDate] = useState<string | undefined>(
     format(new Date(), "yyyy-MM-dd")
   );
@@ -56,14 +58,20 @@ export const PaidLeavesOwnerPage: React.FC = () => {
             />
           </div>
           <div className="font-semibold text-brown">
-            <h2 className="font-semibold">Data cuti pegawai</h2>
+            <h2 className="font-semibold">
+              Data cuti {creds?.level == "Owner" ? `pegawai` : ""}
+            </h2>
           </div>
           <div></div>
         </div>
       </section>
       <div>
         <div className="mt-2 mx-6">
-          <CalendarSection setDate={setDate} indicatorOff={indicatorOff} />
+          <CalendarSection
+            setDate={setDate}
+            indicatorOff={indicatorOff}
+            RefetchIndicator={RefetchIndicator}
+          />
         </div>
         <div className="-mt-2 mx-6 mb-20">
           <EmployeePaidLeaveList

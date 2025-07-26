@@ -34,6 +34,7 @@ export const OutgoingStockSection: React.FC<OutgoingStockSectionProps> = ({
 }) => {
   const { creds } = useAuth();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [opened, { open, close }] = useDisclosure(false);
   const [finalStock, setFinalStock] = useState<number>(0);
   const [selectedItem, setSelectedItem] = useState<ItemType | null>(null);
@@ -58,13 +59,12 @@ export const OutgoingStockSection: React.FC<OutgoingStockSectionProps> = ({
     if (outgoingList.length === 0) return;
 
     const employee_id = creds?.employee_id ?? 1;
+    setIsLoading(true); // mulai loading
 
     try {
-      // Step 1: Create incoming item
       const outgoing = await createOutgoingItem.mutateAsync({ employee_id });
       const outgoing_id = outgoing.data.id;
 
-      // Step 2: Loop each item and create incoming detail
       for (const item of outgoingList) {
         await createOutgoingDetail.mutateAsync({
           employee_id,
@@ -91,6 +91,8 @@ export const OutgoingStockSection: React.FC<OutgoingStockSectionProps> = ({
         color: "red",
         position: "top-center",
       });
+    } finally {
+      setIsLoading(false); // selesai loading
     }
   };
   return (
@@ -229,6 +231,7 @@ export const OutgoingStockSection: React.FC<OutgoingStockSectionProps> = ({
                 <div className="col-span-4 my-auto">
                   <UnstyledButton
                     size="xl"
+                    disabled={count <= 0}
                     onClick={() => setCount((count ?? 0) - 1)}
                   >
                     <IconSquareChevronLeftFilled size={40} color="#4B352A" />
@@ -282,90 +285,6 @@ export const OutgoingStockSection: React.FC<OutgoingStockSectionProps> = ({
             </div>
           </Drawer>
         </div>
-        {/* <div className="mt-4">
-          <div>
-            <UnstyledButton className="w-full grid grid-cols-12" onClick={open}>
-              <div className="col-span-2 flex justify-center">
-                <Image radius="10px" h={35} w={35} src={DEFAULT_IMAGE} />
-              </div>
-              <div className="col-span-8 text-left">
-                <Text size="sm" truncate="end" fw={700}>
-                  {" "}
-                  Sirup Mangga
-                </Text>
-                <Text size="xs" truncate="end" fw={400} mt={-4}>
-                  {" "}
-                  B01
-                </Text>
-              </div>
-              <div className="col-span-2 text-center my-auto">
-                <Text size="xl" fw={700}>
-                  4
-                </Text>
-              </div>
-            </UnstyledButton>
-            <div className="px-2">
-              <Divider my={10} />
-            </div>
-            <Drawer
-              opened={opened}
-              onClose={close}
-              position="bottom"
-              withCloseButton={false}
-              size={"xs"}
-            >
-              <div className="p-3">
-                <div className="text-center">
-                  <Text size="md" fw={500}>
-                    Sirup mangga
-                  </Text>
-                  <Divider my={7} />
-                </div>
-                <div className="flex gap-2 mb-4">
-                  <TextInput label="Stok awal" size="sm" disabled value={5} />
-                  <TextInput
-                    label="Stok akhir"
-                    size="sm"
-                    disabled
-                    value={count ?? 0}
-                  />
-                </div>
-                <div className="grid grid-cols-12 text-center">
-                  <div className="col-span-4 my-auto">
-                    <UnstyledButton
-                      size="xl"
-                      onClick={() => setCount((count ?? 0) - 1)}
-                    >
-                      <IconSquareChevronLeftFilled size={40} color="#4B352A" />
-                    </UnstyledButton>
-                  </div>
-                  <div className="col-span-4">
-                    <Text size={"60px"} c={"red"} fw={700}>
-                      {count}
-                    </Text>
-                  </div>
-                  <div className="col-span-4 my-auto">
-                    <UnstyledButton
-                      size="xl"
-                      onClick={() => setCount((count ?? 0) + 1)}
-                      disabled={count ? (count < 1 ? true : false) : true}
-                    >
-                      <IconSquareChevronRightFilled size={40} color="#4B352A" />
-                    </UnstyledButton>
-                  </div>
-                </div>
-                <div className="flex justify-between gap-2 mt-8 -mx-3">
-                  <Button fullWidth size="sm" color="gray" onClick={close}>
-                    Batal
-                  </Button>
-                  <Button fullWidth size="sm" onClick={close}>
-                    Simpan
-                  </Button>
-                </div>
-              </div>
-            </Drawer>
-          </div>
-        </div> */}
       </section>
       <div className="fixed bottom-22 right-4 z-10 w-32">
         <Button
@@ -373,6 +292,7 @@ export const OutgoingStockSection: React.FC<OutgoingStockSectionProps> = ({
           disabled={outgoingList.length == 0 ? true : false}
           fullWidth
           onClick={handleSubmitToBackend}
+          loading={isLoading}
         >
           Simpan
         </Button>

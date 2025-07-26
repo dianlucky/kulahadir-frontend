@@ -2,6 +2,7 @@ import {
   useGetScheduleByDateStatus,
   useUpdateScheduleByDateEmployeeId,
 } from "@/features/admin/pages/Schedule";
+import { useAuth } from "@/features/auth";
 import { ScheduleType } from "@/types";
 import {
   Button,
@@ -13,7 +14,9 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { showNotification } from "@mantine/notifications";
 import { IconTrash, IconUsers } from "@tabler/icons-react";
+import { AxiosError } from "axios";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { useEffect, useState } from "react";
@@ -32,13 +35,15 @@ export const EmployeePaidLeaveList: React.FC<EmployeePaidLeaveListProps> = ({
   refetchPaidLeaveDaily,
   schedulesOff,
 }) => {
-  const mutationUpdateWorker = useUpdateScheduleByDateEmployeeId();
-  const [employeeId, setEmployeeId] = useState<string | null>();
+  const { creds } = useAuth();
+  // const [employeeId, setEmployeeId] = useState<string | null>();
 
-  // DELETE EMPLOYEE PAIDLEAVE
   const [modalDelete, { open: openDelete, close: closeDelete }] =
     useDisclosure(false);
   const [selectedEmployee, setSelectedEmployee] = useState<ScheduleType>();
+
+  // DELETE EMPLOYEE PAIDLEAVE
+  const mutationUpdateWorker = useUpdateScheduleByDateEmployeeId();
   const handleDeletePaidLeave = async () => {
     const removeWorkerData = {
       date: date,
@@ -51,57 +56,50 @@ export const EmployeePaidLeaveList: React.FC<EmployeePaidLeaveListProps> = ({
         console.log("Success:", data);
         refetchSchedule();
         refetchPaidLeaveDaily();
+        showNotification({
+          message: "Berhasil menghapus cuti",
+          color: "green",
+          position: "top-center",
+        });
         closeDelete();
       },
     });
   };
   // END FOR DELETE EMPLOYEE PAIDLEAVE
 
-  // // GET EMPLOYEE
-  // const [schedulesOff, setScheduleOff] = useState<ScheduleType[]>([]);
-  // const { data: DataScheduleOff } = useGetScheduleByDateStatus(date, "off");
-  // useEffect(() => {
-  //   if (DataScheduleOff) {
-  //     setScheduleOff(DataScheduleOff);
-  //   }
-  // }, [DataScheduleOff]);
-  // // END FOR GET EMPLOYEE
-
-  // SELECT EMPLOYEE
-  const [schedulesOn, setSchedulesOn] = useState<ScheduleType[]>([]);
-  const { data: DataSchedulesOn } = useGetScheduleByDateStatus(date, "on");
-  useEffect(() => {
-    if (DataSchedulesOn) {
-      setSchedulesOn(DataSchedulesOn);
-    }
-  }, [DataSchedulesOn]);
-  const selectEmployee = schedulesOn.map((data) => ({
-    value: data.employee.id.toString(),
-    label: data.employee.name,
-  }));
-  // END FOR SELECT EMPLOYEE
-
   // UPDATE WORKER
   const [opened, { open, close }] = useDisclosure(false);
   const handleAddPaidLeave = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (!employeeId) {
-      console.error("Employee ID is not selected");
-      return;
-    }
 
     const removeWorkerData = {
       date: date,
-      employee_id: parseInt(employeeId),
+      employee_id: creds?.employee_id,
       status: "off",
     };
 
     await mutationUpdateWorker.mutateAsync(removeWorkerData, {
-      onSuccess: (data: ScheduleType) => {
-        console.log("Success:", data);
+      onSuccess: () => {
         refetchSchedule();
         refetchPaidLeaveDaily();
+        showNotification({
+          message: "Berhasil mengajukan cuti",
+          color: "red",
+          position: "top-center",
+        });
         close();
+      },
+      onError: (error) => {
+        const axiosError = error as AxiosError<{ errors: string }>;
+        const errorMessage =
+          axiosError?.response?.data?.errors ||
+          "Gagal menghapus kategori. Silakan coba lagi.";
+        close();
+        showNotification({
+          message: errorMessage,
+          color: "red",
+          position: "top-center",
+        });
       },
     });
   };
@@ -155,16 +153,30 @@ export const EmployeePaidLeaveList: React.FC<EmployeePaidLeaveListProps> = ({
                       </Text>
                     </div>
                   </div>
-                  <div className="col-span-1 ml-2 mt-3">
-                    <Button
-                      color="red"
-                      size="compact-sm"
-                      onClick={() => {
-                        openDelete(), setSelectedEmployee(data);
-                      }}
-                    >
-                      <IconTrash size={22} />
-                    </Button>
+                  <div className="col-span-1"></div>
+                  <div className="col-span-1 my-auto">
+                    {creds?.level == "Owner" && (
+                      <Button
+                        color="red"
+                        size="compact-xs"
+                        onClick={() => {
+                          openDelete(), setSelectedEmployee(data);
+                        }}
+                      >
+                        <IconTrash size={15} />
+                      </Button>
+                    )}
+                    {creds?.employee_id == data.employee_id && (
+                      <Button
+                        color="red"
+                        size="compact-xs"
+                        onClick={() => {
+                          openDelete(), setSelectedEmployee(data);
+                        }}
+                      >
+                        <IconTrash size={15} />
+                      </Button>
+                    )}
                   </div>
                 </div>
                 <Divider size={"sm"} />
@@ -172,17 +184,17 @@ export const EmployeePaidLeaveList: React.FC<EmployeePaidLeaveListProps> = ({
             ))}
 
           {/* Tombol Tambah Pegawai */}
-          <div className="mt-2 px-1">
-            <Button fullWidth size="sm" onClick={open}>
-              Tambahkan pegawai
-            </Button>
-          </div>
+          {/* <div className="mt-2 px-1">
+              <Button fullWidth size="sm" onClick={open}>
+                Tambahkan pegawai
+              </Button>
+            </div> */}
         </>
       )}
       {schedulesOff.length == 0 && (
         <div className="p-4 rounded-xl">
           <div className="mt-2 px-3 py-2">
-            <div className="flex justify-center">
+            <div className="flex justify-center ml-4">
               <Image
                 src="/images/not-found.svg"
                 style={{
@@ -190,31 +202,37 @@ export const EmployeePaidLeaveList: React.FC<EmployeePaidLeaveListProps> = ({
                 }}
               />
             </div>
-            <div className="flex justify-center">
-              <Text fw={700} size="md">
-                Ups!
-              </Text>
-            </div>
-            <div className="flex justify-center -mt-1">
+            <div className="flex justify-center mt-1">
               <Text fw={700} size="sm">
-                Tidak ada pegawai yang libur
+                Tidak ada pegawai yang cuti
               </Text>
             </div>
-            <div className="flex justify-center -mt-1">
-              <Text fw={400} size="xs"></Text>
-            </div>
-          </div>
-          <div className="mt-2 px-1">
-            <Button fullWidth size="sm" onClick={open} color="yellow">
-              Tambahkan pegawai
-            </Button>
+            {creds?.level == "Pegawai" && (
+              <div className="flex justify-center mt-2">
+                <Button size="compact-sm" onClick={open} color="yellow">
+                  Saya ingin cuti
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       )}
-      <Modal opened={opened} onClose={close} title="Tambah pegawai">
+      <Modal opened={opened} onClose={close} title="Konfirmasi cuti pegawai">
         <form onSubmit={handleAddPaidLeave}>
           <div className="p-2">
-            <div className="">
+            <div className="text-center w-full">
+              <Text size="sm" fw={600}>
+                Apakah anda yakin ingin mengajukan cuti pada hari
+              </Text>
+              <Text size="sm" fw={600} c={"blue"}>
+                "
+                {format(new Date(date ?? ""), "EEEE, dd MMMM yyyy", {
+                  locale: id,
+                })}
+                "
+              </Text>
+            </div>
+            {/* <div className="">
               <TextInput
                 label="Tanggal"
                 disabled
@@ -228,7 +246,7 @@ export const EmployeePaidLeaveList: React.FC<EmployeePaidLeaveListProps> = ({
                 onChange={setEmployeeId}
                 required={true}
               />
-            </div>
+            </div> */}
             <div className="mt-4 flex justify-between gap-2">
               <Button
                 onClick={() => {
@@ -237,10 +255,10 @@ export const EmployeePaidLeaveList: React.FC<EmployeePaidLeaveListProps> = ({
                 fullWidth
                 color={"grey"}
               >
-                Kembali
+                Batal
               </Button>
               <Button fullWidth type="submit">
-                Simpan
+                Ya! Ajukan
               </Button>
             </div>
           </div>
@@ -250,19 +268,18 @@ export const EmployeePaidLeaveList: React.FC<EmployeePaidLeaveListProps> = ({
       <Modal
         opened={modalDelete}
         onClose={closeDelete}
-        title="Hapus cuti pegawai"
+        title="Konfirmasi hapus cuti"
       >
         <div className="p-2">
           <div className="text-center">
             <Text fw={700} size="sm">
-              Apakah anda yakin ingin menghapus cuti untuk pegawai ini?
+              Apakah anda yakin ingin membatalkan cuti anda pada hari
             </Text>
             <Text fw={700} size="sm" c={"red"}>
-              "{selectedEmployee?.employee.name} |{" "}
-              {selectedEmployee &&
-                format(selectedEmployee?.date, "EEEE, dd MMMM yyyy", {
-                  locale: id,
-                })}
+              "
+              {format(new Date(date ?? ""), "EEEE, dd MMMM yyyy", {
+                locale: id,
+              })}
               "
             </Text>
           </div>

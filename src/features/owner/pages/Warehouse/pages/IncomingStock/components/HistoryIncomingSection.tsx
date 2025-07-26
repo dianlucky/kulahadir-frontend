@@ -1,11 +1,11 @@
 import { IncomingDataType } from "@/types";
-import { Button, Divider, Popover, Skeleton, Text } from "@mantine/core";
+import { Button, Divider, Image, Popover, Skeleton, Text } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import {
   IconArrowBigDownFilled,
   IconCalendar,
   IconInfoCircle,
-  } from "@tabler/icons-react";
+} from "@tabler/icons-react";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import React from "react";
@@ -63,6 +63,23 @@ export const HistoryIncomingSection: React.FC<HistoryIncomingProps> = ({
           </Popover>
         </div>
         <Divider size="xs" className="mb-2" />
+        {incomingData.length == 0 && (
+          <div className="my-10">
+            <div className="flex justify-center">
+              <Image
+                radius="10px"
+                h={120}
+                w={120}
+                src={"/images/not-found.svg"}
+              />
+            </div>
+            <div className="text-center mt-1">
+              <Text size="sm" fw={600}>
+                Data tidak ditemukan
+              </Text>
+            </div>
+          </div>
+        )}
         {incomingData.map((data, index) => (
           <div key={index}>
             <div className=" px-3">

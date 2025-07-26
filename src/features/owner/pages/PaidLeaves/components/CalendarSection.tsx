@@ -8,11 +8,13 @@ import { useState } from "react";
 interface CalendarSectionProps {
   setDate: React.Dispatch<React.SetStateAction<string | undefined>>;
   indicatorOff: ScheduleType[];
+  RefetchIndicator: () => {};
 }
 
 export const CalendarSection: React.FC<CalendarSectionProps> = ({
   setDate,
   indicatorOff,
+  RefetchIndicator,
 }) => {
   const [dateValue, setDateValue] = useState<Date | null>(new Date());
   const handleDateChange = (value: Date | null) => {
@@ -21,6 +23,7 @@ export const CalendarSection: React.FC<CalendarSectionProps> = ({
       const formatted = format(value, "yyyy-MM-dd"); // hasil: "2025-05-27"
       setDate(formatted);
     }
+    RefetchIndicator;
   };
 
   return (

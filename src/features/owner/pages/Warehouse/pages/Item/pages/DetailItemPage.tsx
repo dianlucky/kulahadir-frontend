@@ -42,7 +42,7 @@ export const DetailItemPage: React.FC = () => {
           <div></div>
         </div>
       </section>
-      <section className="mt-1 px-6">
+      <section className="mt-1 px-6 mb-20">
         <DetailItemSection item={item} LoadingItem={LoadingItem} />
       </section>
     </>

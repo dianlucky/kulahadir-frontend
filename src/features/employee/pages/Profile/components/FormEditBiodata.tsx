@@ -3,6 +3,7 @@ import {
   Divider,
   Image,
   NumberInput,
+  Select,
   Text,
   TextInput,
 } from "@mantine/core";
@@ -13,6 +14,7 @@ import { useState } from "react";
 import { useUpdateAccountById, useUpdateEmployeeById } from "../api";
 import { AccountType, EmployeeType } from "@/types";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/features/auth";
 const DEFAULT_IMAGE = "/images/profile-default.png";
 
 const BaseURL = import.meta.env.VITE_API_URL;
@@ -24,12 +26,14 @@ interface FormEditBiodataProps {
 type UpdateAccountRequest = {
   username?: string;
   password?: string;
+  status?: string;
 };
 
 export const FormEditBiodata: React.FC<FormEditBiodataProps> = ({
   employee,
 }) => {
   const navigate = useNavigate();
+  const { creds } = useAuth();
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string>(
     employee?.profile_pic
@@ -60,6 +64,7 @@ export const FormEditBiodata: React.FC<FormEditBiodataProps> = ({
     initialValues: {
       username: employee?.account?.username || "",
       password: "",
+      status: employee?.account?.status || "",
     },
     validate: {
       username: (value: string) =>
@@ -77,6 +82,7 @@ export const FormEditBiodata: React.FC<FormEditBiodataProps> = ({
     const updateAccountData: UpdateAccountRequest = {
       username: formUpdate.values.username,
       password: formUpdate.values.password,
+      status: formUpdate.values.status,
     };
 
     if ((formUpdate.values.password ?? "").trim() !== "") {
@@ -161,6 +167,7 @@ export const FormEditBiodata: React.FC<FormEditBiodataProps> = ({
           <div className="px-5 pb-5">
             <div>
               <TextInput
+                withAsterisk
                 label="username"
                 size="sm"
                 key={formUpdate.key("username")}
@@ -169,6 +176,7 @@ export const FormEditBiodata: React.FC<FormEditBiodataProps> = ({
             </div>
             <div>
               <TextInput
+                withAsterisk
                 label="password"
                 size="sm"
                 placeholder="optional"
@@ -176,6 +184,26 @@ export const FormEditBiodata: React.FC<FormEditBiodataProps> = ({
                 {...formUpdate.getInputProps("password")}
               />
             </div>
+            {creds?.level == "Owner" && (
+              <div>
+                <Select
+                  withAsterisk
+                  allowDeselect={false}
+                  label="Status"
+                  placeholder="status"
+                  mt={8}
+                  data={[
+                    { value: "Pegawai tetap", label: "Pegawai tetap" },
+                    { value: "Part time", label: "Part time" },
+                    { value: "Pengelola Gudang", label: "Pengelola Gudang" },
+                    { value: "Pengelola Frozen", label: "Pengelola Frozen" },
+                    { value: "Tidak Aktif", label: "Tidak Aktif" },
+                  ]}
+                  {...formUpdate.getInputProps("status")}
+                />
+              </div>
+            )}
+
             <div className="w-full mt-4">
               <Button fullWidth size="sm" type="submit">
                 Simpan perubahan akun

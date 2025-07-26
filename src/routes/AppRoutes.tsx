@@ -276,6 +276,9 @@ export const AppRoutes: React.FC = () => {
           <Route element={<HomeLayout />}>
             <Route index element={<Home />} />
             <Route path="schedule" element={<SchedulePage />} />
+            <Route path="paid-leave">
+              <Route index element={<PaidLeavesOwnerPage />} />
+            </Route>
             <Route path="leave-request">
               <Route index element={<LeaveRequestPage />} />
               <Route path="add" element={<CreateLeaveRequestPage />} />

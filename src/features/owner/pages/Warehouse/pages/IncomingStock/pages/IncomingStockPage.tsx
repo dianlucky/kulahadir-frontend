@@ -47,7 +47,10 @@ export const IncomingStockPage: React.FC = () => {
             />
           </div>
           <div className="font-semibold text-brown">
-            <h2 className="font-semibold ">Kelola stok masuk</h2>
+            <h2 className="font-semibold ">
+              Kelola Stok Masuk{" "}
+              {location.pathname.includes("frozen") ? `Frozen` : `Gudang`}
+            </h2>
           </div>
           <div>
             <div className="mr-2">
@@ -69,7 +72,7 @@ export const IncomingStockPage: React.FC = () => {
         </div>
       </section>
       <section>
-        <div className="mt-2 px-7">
+        <div className="mt-2 px-7 mb-20">
           <HistoryIncomingSection
             setSelectedDate={setSelectedDate}
             incomingData={incomingData}

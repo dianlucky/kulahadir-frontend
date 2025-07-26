@@ -185,7 +185,7 @@ export const ItemPage: React.FC = () => {
             />
           </div>
           <div className="font-semibold text-brown">
-            <h2 className="font-semibold">Kelola Barang</h2>
+            <h2 className="font-semibold">Kelola Barang {category == "Frozen" ? `Frozen` : `Gudang`}</h2>
           </div>
           <div>
             <div className="mr-2">
@@ -197,7 +197,7 @@ export const ItemPage: React.FC = () => {
         </div>
       </section>
       <section>
-        <div className="mt-2 px-5">
+        <div className="mt-2 px-5 mb-20">
           {LoadingItems ? <CategorySkeleton /> : <ItemData items={items} />}
         </div>
       </section>

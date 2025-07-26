@@ -68,7 +68,7 @@ export const OutgoingStockPage: React.FC = () => {
         </div>
       </section>
       <section>
-        <div className="mt-2 px-7">
+        <div className="mt-2 px-7 mb-20">
           <HistoryOutgoingSection
             setSelectedDate={setSelectedDate}
             outgoingData={outgoingData}
