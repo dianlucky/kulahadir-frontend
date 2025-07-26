@@ -84,9 +84,12 @@ export const FormEditBiodata: React.FC<FormEditBiodataProps> = ({
 
     const updateAccountData: UpdateAccountRequest = {
       username: formUpdate.values.username,
-      password: formUpdate.values.password,
+      ...(formUpdate.values.password.trim() !== "" && {
+        password: formUpdate.values.password,
+      }),
       status: formUpdate.values.status,
     };
+    console.log("Data yang dikirim :", updateAccountData);
 
     if ((formUpdate.values.password ?? "").trim() !== "") {
       updateAccountData.password = formUpdate.values.password;
@@ -96,14 +99,14 @@ export const FormEditBiodata: React.FC<FormEditBiodataProps> = ({
       onSuccess: (data: AccountType) => {
         console.log("Success:", data);
         formUpdate.reset();
+        navigate(-1);
+        close();
         showNotification({
           message: "Berhasil mengupdate data",
           color: "green",
           position: "top-center",
         });
-        navigate(-1);
         RefetchEmployee();
-        close();
       },
     });
   };
@@ -153,6 +156,9 @@ export const FormEditBiodata: React.FC<FormEditBiodataProps> = ({
       onSuccess: (data: AccountType) => {
         console.log("Success:", data);
         formEmployee.reset();
+        navigate(-1);
+        RefetchEmployee();
+        close();
         setFile(null);
         setPreview(DEFAULT_IMAGE);
         showNotification({
@@ -160,9 +166,6 @@ export const FormEditBiodata: React.FC<FormEditBiodataProps> = ({
           color: "green",
           position: "top-center",
         });
-        navigate(-1);
-        RefetchEmployee();
-        close();
       },
     });
   };
