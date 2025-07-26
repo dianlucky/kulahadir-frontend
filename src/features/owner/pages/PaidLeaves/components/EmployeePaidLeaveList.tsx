@@ -1,25 +1,14 @@
-import {
-  useGetScheduleByDateStatus,
-  useUpdateScheduleByDateEmployeeId,
-} from "@/features/admin/pages/Schedule";
+import { useUpdateScheduleByDateEmployeeId } from "@/features/admin/pages/Schedule";
 import { useAuth } from "@/features/auth";
 import { ScheduleType } from "@/types";
-import {
-  Button,
-  Divider,
-  Image,
-  Modal,
-  Select,
-  Text,
-  TextInput,
-} from "@mantine/core";
+import { Button, Divider, Image, Modal, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import { IconTrash, IconUsers } from "@tabler/icons-react";
 import { AxiosError } from "axios";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const BaseURL = import.meta.env.VITE_API_URL;
 interface EmployeePaidLeaveListProps {
@@ -298,8 +287,9 @@ export const EmployeePaidLeaveList: React.FC<EmployeePaidLeaveListProps> = ({
               onClick={() => {
                 handleDeletePaidLeave();
               }}
+              color="red"
             >
-              Simpan
+              Hapus
             </Button>
           </div>
         </div>

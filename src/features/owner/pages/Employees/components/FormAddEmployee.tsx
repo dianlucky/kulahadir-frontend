@@ -175,8 +175,6 @@ export const FormAddEmployee: React.FC = () => {
                 label="Role"
                 placeholder="role"
                 data={[
-                  { value: "Admin", label: "Admin" },
-                  { value: "Owner", label: "Owner" },
                   { value: "Pegawai", label: "Pegawai" },
                 ]}
                 {...formAccount.getInputProps("level")}
@@ -191,8 +189,6 @@ export const FormAddEmployee: React.FC = () => {
                 data={[
                   { value: "Pegawai tetap", label: "Pegawai tetap" },
                   { value: "Part time", label: "Part time" },
-                  { value: "Owner", label: "Owner" },
-                  { value: "Admin", label: "Admin" },
                 ]}
                 {...formAccount.getInputProps("status")}
               />

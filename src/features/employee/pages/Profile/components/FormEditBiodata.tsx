@@ -15,12 +15,14 @@ import { useUpdateAccountById, useUpdateEmployeeById } from "../api";
 import { AccountType, EmployeeType } from "@/types";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/features/auth";
+import { showNotification } from "@mantine/notifications";
 const DEFAULT_IMAGE = "/images/profile-default.png";
 
 const BaseURL = import.meta.env.VITE_API_URL;
 
 interface FormEditBiodataProps {
-  employee: EmployeeType;
+  employee: EmployeeType | undefined;
+  RefetchEmployee: () => {};
 }
 
 type UpdateAccountRequest = {
@@ -31,6 +33,7 @@ type UpdateAccountRequest = {
 
 export const FormEditBiodata: React.FC<FormEditBiodataProps> = ({
   employee,
+  RefetchEmployee,
 }) => {
   const navigate = useNavigate();
   const { creds } = useAuth();
@@ -93,7 +96,13 @@ export const FormEditBiodata: React.FC<FormEditBiodataProps> = ({
       onSuccess: (data: AccountType) => {
         console.log("Success:", data);
         formUpdate.reset();
+        showNotification({
+          message: "Berhasil mengupdate data",
+          color: "green",
+          position: "top-center",
+        });
         navigate(-1);
+        RefetchEmployee();
         close();
       },
     });
@@ -105,7 +114,7 @@ export const FormEditBiodata: React.FC<FormEditBiodataProps> = ({
     validateInputOnChange: true,
     initialValues: {
       name: employee?.name || "",
-      birth_date: new Date(employee?.birth_date) || new Date(),
+      birth_date: employee?.birth_date ? new Date(employee.birth_date) : null,
       phone: employee?.phone || "",
       profile_pic: employee?.profile_pic || "",
     },
@@ -117,7 +126,7 @@ export const FormEditBiodata: React.FC<FormEditBiodataProps> = ({
     },
   });
 
-  const mutationUpdateEmployee = useUpdateEmployeeById(employee.id);
+  const mutationUpdateEmployee = useUpdateEmployeeById(employee?.id);
   const handleUpdateEmployee = async (
     event: React.FormEvent<HTMLFormElement>
   ) => {
@@ -125,7 +134,14 @@ export const FormEditBiodata: React.FC<FormEditBiodataProps> = ({
 
     const formData = new FormData();
     formData.append("name", formEmployee.values.name);
-    formData.append("birth_date", formEmployee.values.birth_date.toISOString());
+    if (formEmployee.values.birth_date) {
+      formData.append(
+        "birth_date",
+        formEmployee.values.birth_date.toISOString()
+      );
+    } else {
+      formData.append("birth_date", "");
+    }
     formData.append("phone", formEmployee.values.phone);
 
     // tambahkan file jika ada
@@ -139,7 +155,13 @@ export const FormEditBiodata: React.FC<FormEditBiodataProps> = ({
         formEmployee.reset();
         setFile(null);
         setPreview(DEFAULT_IMAGE);
+        showNotification({
+          message: "Berhasil mengupdate data",
+          color: "green",
+          position: "top-center",
+        });
         navigate(-1);
+        RefetchEmployee();
         close();
       },
     });

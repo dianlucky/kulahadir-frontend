@@ -8,7 +8,6 @@ import {
   IconUsers,
   IconCalendarCancel,
   IconHandStop,
-  IconClipboardPlus,
   IconListCheck,
   IconPackages,
   IconSnowflake,
@@ -76,7 +75,38 @@ export const Home: React.FC = () => {
       {/* Menu List => Berisi daftar menu pada sistem */}
 
       <section className="px-7 mt-5" style={{ marginBottom: "-110px" }}>
-        {creds?.level == "Pegawai" && (
+        {creds?.status == "Pegawai tetap" ||
+          (creds?.status == "Part time" && (
+            <MenuList
+              navigations={[
+                {
+                  title: "Jadwal bulanan",
+                  href: "/schedule",
+                  icon: IconCalendar,
+                  color: "bg-brown",
+                },
+                {
+                  title: "Pengajuan kasbon",
+                  href: "/cash-advance-request",
+                  icon: IconCashRegister,
+                  color: "bg-brown",
+                },
+                {
+                  title: "Jadwal Cuti",
+                  href: "/paid-leave",
+                  icon: IconCalendarCancel,
+                  color: "bg-brown",
+                },
+                {
+                  title: "Gaji",
+                  href: "/salary",
+                  icon: IconFileDollar,
+                  color: "bg-brown",
+                },
+              ]}
+            />
+          ))}
+        {creds?.status == "Pengelola Gudang" && (
           <MenuList
             navigations={[
               {
@@ -85,12 +115,6 @@ export const Home: React.FC = () => {
                 icon: IconCalendar,
                 color: "bg-brown",
               },
-              // {
-              //   title: "Pengajuan izin",
-              //   href: "/leave-request",
-              //   icon: IconClipboardPlus,
-              //   color: "bg-brown",
-              // },
               {
                 title: "Pengajuan kasbon",
                 href: "/cash-advance-request",
@@ -99,8 +123,14 @@ export const Home: React.FC = () => {
               },
               {
                 title: "Jadwal Cuti",
-                href: "/  paid-leave",
+                href: "/paid-leave",
                 icon: IconCalendarCancel,
+                color: "bg-brown",
+              },
+              {
+                title: "Stok Gudang",
+                href: "/warehouse-inventory",
+                icon: IconPackages,
                 color: "bg-brown",
               },
               {
@@ -113,7 +143,7 @@ export const Home: React.FC = () => {
           />
         )}
 
-        {creds?.level == "Owner" && (
+        {creds?.status == "Owner" && (
           <MenuList
             navigations={[
               {
@@ -122,13 +152,6 @@ export const Home: React.FC = () => {
                 icon: IconUsers,
                 color: "bg-brown",
               },
-              // {
-              //   title: "Jadwal pegawai",
-              //   href: "/employee-schedule",
-              //   icon: IconCalendar,
-              //   color: "bg-brown",
-              // },
-
               {
                 title: "Data kehadiran",
                 href: "/employee-attendances",
@@ -147,13 +170,6 @@ export const Home: React.FC = () => {
                 icon: IconCalendarCancel,
                 color: "bg-brown",
               },
-
-              // {
-              //   title: "Pengajuan izin / sakit",
-              //   href: "/employee-request",
-              //   icon: IconClipboardPlus,
-              //   color: "bg-brown",
-              // },
               {
                 title: "Permintaan kasbon",
                 href: "/employee-cash-advance",

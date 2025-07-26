@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { useNavigate } from "react-router-dom";
 interface BiodataCardProps {
-  employee: EmployeeType;
+  employee: EmployeeType | undefined;
 }
 
 export const BiodataCard: React.FC<BiodataCardProps> = ({ employee }) => {
@@ -61,7 +61,7 @@ export const BiodataCard: React.FC<BiodataCardProps> = ({ employee }) => {
         <div className="col-span-6 mt-2">
           <Text size="sm">Status pegawai:</Text>
           <Text size="sm" mt={-2} fw={"bold"}>
-            {employee.account.status}
+            {employee?.account.status}
           </Text>
         </div>
       </div>

@@ -3,13 +3,26 @@ import { IconChevronLeft } from "@tabler/icons-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BiodataCard } from "../components";
 import { EmployeeType } from "@/types";
+import { useEffect, useState } from "react";
+import { usegetEmployeeByAccountId } from "@/features/employee/pages/Profile";
 
 const BaseURL = import.meta.env.VITE_API_URL;
 
 export const DetailEmployeeOwnerPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const employee = location.state.data as EmployeeType;
+  const data = location.state.data as EmployeeType;
+  // GET EMPLOYEE
+  const [employee, setEmployee] = useState<EmployeeType>();
+  const { data: DataEmployee } = usegetEmployeeByAccountId(data.account_id);
+  useEffect(() => {
+    if (DataEmployee) {
+      setEmployee(DataEmployee);
+    } else {
+      setEmployee(undefined);
+    }
+  }, [DataEmployee]);
+  // END FOR GET EMPLOYEE
   return (
     <main>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
@@ -37,7 +50,11 @@ export const DetailEmployeeOwnerPage: React.FC = () => {
               radius="30px"
               h={40}
               w={40}
-              src={employee.profile_pic ? `${BaseURL}/uploads/employees/${employee.profile_pic}` : '/images/profile-default.png'}
+              src={
+                employee?.profile_pic
+                  ? `${BaseURL}/uploads/employees/${employee.profile_pic}`
+                  : "/images/profile-default.png"
+              }
             />
           </div>
           <div className="ml-3 my-auto">
@@ -45,7 +62,7 @@ export const DetailEmployeeOwnerPage: React.FC = () => {
               {employee?.name}
             </Text>
             <Text fw={300} size="xs" mt={-4}>
-              {employee.account.status}
+              {employee?.account.status}
             </Text>
           </div>
         </div>

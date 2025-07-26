@@ -2,12 +2,29 @@ import { IconChevronLeft } from "@tabler/icons-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FormEditBiodata } from "../components";
 import { EmployeeType } from "@/types";
+import { useEffect, useState } from "react";
+import { usegetEmployeeByAccountId } from "../api";
 
 export const BiodataEditPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const employee = location.state.employee as EmployeeType;
-  console.log("Employee : ", employee);
+  const data = location.state.employee as EmployeeType;
+
+  // GET EMPLOYEE
+  const [employee, setEmployee] = useState<EmployeeType>();
+  const {
+    data: DataEmployee,
+    refetch: RefetchEmployee,
+    // isLoading: LoadingEmployee,
+  } = usegetEmployeeByAccountId(data.account_id);
+  useEffect(() => {
+    if (DataEmployee) {
+      setEmployee(DataEmployee);
+    } else {
+      setEmployee(undefined);
+    }
+  }, [DataEmployee]);
+  // END FOR GET EMPLOYEE
   return (
     <main>
       <section className="w-full h-20 bg-brown rounded-b-3xl"></section>
@@ -31,7 +48,12 @@ export const BiodataEditPage: React.FC = () => {
       </section>
 
       <div className="mt-2 mx-6">
-        <FormEditBiodata employee={employee} />
+        {employee && (
+          <FormEditBiodata
+            employee={employee}
+            RefetchEmployee={RefetchEmployee}
+          />
+        )}
       </div>
     </main>
   );

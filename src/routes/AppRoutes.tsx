@@ -308,6 +308,51 @@ export const AppRoutes: React.FC = () => {
             <Route path="check-log">
               <Route index element={<CheckLogPage />} />
             </Route>
+            {/* ITEM ROUTES PATH */}
+            <Route path="warehouse-inventory">
+              <Route index element={<WarehouseInventoryPage />} />
+              <Route path="category">
+                <Route index element={<CategoryPage />} />
+              </Route>
+              <Route path="item">
+                <Route index element={<ItemPage />} />
+                <Route path="detail" element={<DetailItemPage />} />
+                <Route path="update" element={<UpdateItemPage />} />
+                <Route path="history" element={<HistoryItemPage />} />
+              </Route>
+              <Route path="incoming">
+                <Route index element={<IncomingStockPage />} />
+                <Route path="add" element={<AddIncomingStock />} />
+                <Route path="detail" element={<DetailIncomingStock />} />
+              </Route>
+              <Route path="outgoing">
+                <Route index element={<OutgoingStockPage />} />
+                <Route path="add" element={<AddOutgoingStock />} />
+                <Route path="detail" element={<DetailOutgoingStock />} />
+              </Route>
+            </Route>
+            {/* FROZEN ROUTES PATH  */}
+            <Route path="frozen-inventory">
+              <Route index element={<FrozenInventoryPage />} />
+              <Route path="category">
+                <Route index element={<CategoryPage />} />
+              </Route>
+              <Route path="item">
+                <Route index element={<ItemPage />} />
+                <Route path="detail" element={<DetailItemPage />} />
+                <Route path="update" element={<UpdateItemPage />} />
+                <Route path="history" element={<HistoryItemPage />} />
+              </Route>
+              <Route path="incoming">
+                <Route index element={<IncomingStockPage />} />
+                <Route path="add" element={<AddIncomingStock />} />
+                <Route path="detail" element={<DetailIncomingStock />} />
+              </Route>
+              <Route path="outgoing">
+                <Route index element={<OutgoingStockPage />} />
+                <Route path="add" element={<AddOutgoingStock />} />
+              </Route>
+            </Route>
           </Route>
         ) : (
           <Route path="development" element={<Development />} />
