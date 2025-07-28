@@ -7,7 +7,7 @@ import { LoadingScreen } from "../elements";
 
 export const AppLayout: React.FC = () => {
   const { creds } = useAuth();
-  if (!creds) return <Navigate to="/auth/login" replace />;
+  if (!creds) return <Navigate to="/login" replace />;
 
   return (
     <Suspense fallback={<LoadingScreen />}>

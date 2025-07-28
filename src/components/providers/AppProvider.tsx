@@ -44,7 +44,7 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
     <ErrorProvider>
       <QueryClientProvider client={queryClient}>
         <StyleProvider>
-          <Router basename="/kulakita">
+          <Router>
             <AuthProvider>
               {/* <OutletProvider> */}
               <HelmetProvider>

@@ -13,7 +13,6 @@ const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default defineConfig({
-  base: "/kulakita/",
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {

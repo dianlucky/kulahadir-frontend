@@ -9,7 +9,6 @@ import tailwindcss from "@tailwindcss/vite";
 var __filename = url.fileURLToPath(import.meta.url);
 var __dirname = path.dirname(__filename);
 export default defineConfig({
-    base: "/kulakita/",
     plugins: [react(), tailwindcss()],
     resolve: {
         alias: {
