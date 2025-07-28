@@ -9,7 +9,7 @@ import {
   TextInput,
   UnstyledButton,
 } from "@mantine/core";
-import { IconAdjustments, IconDownload, IconSearch } from "@tabler/icons-react";
+import { IconAdjustments, IconSearch } from "@tabler/icons-react";
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -23,7 +23,7 @@ const BaseURL = import.meta.env.VITE_API_URL;
 export const ItemData: React.FC<ItemDataSection> = ({ items }) => {
   const navigate = useNavigate();
   const [opened, setOpened] = useState(false);
-  const {pathname} = useLocation()
+  const { pathname } = useLocation();
 
   // SEARCH INPUT
   const [search, setSearch] = useState<string | null>("");
@@ -114,9 +114,9 @@ export const ItemData: React.FC<ItemDataSection> = ({ items }) => {
               </Popover.Dropdown>
             </Popover>
 
-            <Button size="compact-md" color="green" c={"white"}>
+            {/* <Button size="compact-md" color="green" c={"white"}>
               <IconDownload size={20} />
-            </Button>
+            </Button> */}
           </div>
         </div>
         {sortedItems.length == 0 && (

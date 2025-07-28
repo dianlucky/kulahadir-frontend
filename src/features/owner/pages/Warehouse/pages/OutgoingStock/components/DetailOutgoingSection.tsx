@@ -1,8 +1,4 @@
-import {
-  DetailIncomingType,
-  DetailOutgoingType,
-  OutgoingDataType,
-} from "@/types";
+import { DetailOutgoingType, OutgoingDataType } from "@/types";
 import {
   Button,
   Divider,

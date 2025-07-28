@@ -38,7 +38,7 @@ export const EmployeeSalaryList: React.FC<EmployeeSalaryListProps> = ({
             />
           </div>
           {employees
-            ?.filter((data) => data.employee.account.status == "Pegawai tetap")
+            ?.filter((data) => data.employee.account.status != "Part time")
             .map((data, index) => (
               <button
                 className="w-full"

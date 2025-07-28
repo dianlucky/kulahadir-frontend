@@ -1,8 +1,7 @@
 import { IconChevronLeft } from "@tabler/icons-react";
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { MenuSection } from "../../Warehouse";
-import { RecapAttendanceCard } from "@/features/employee";
+import { useNavigate } from "react-router-dom";
+import { GraphSection, MenuSection } from "../../Warehouse";
 
 export const FrozenInventoryPage: React.FC = () => {
   const navigate = useNavigate();
@@ -29,11 +28,11 @@ export const FrozenInventoryPage: React.FC = () => {
           <div></div>
         </div>
       </section>
-      <section className="mt-18">
-        <div>
-          <RecapAttendanceCard />
+      <section className="mt-2">
+        <div className="px-6">
+          <GraphSection />
         </div>
-        <div className="mt-2 px-6">
+        <div className="mt-3 px-6">
           <MenuSection type="frozen-inventory" />
         </div>
       </section>

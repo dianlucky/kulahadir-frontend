@@ -27,7 +27,7 @@ export const DetailSalaryOwnerPage: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<string>(
     format(new Date(), "yyyy-MM-dd", { locale: id })
   );
-  console.log("Data pegawai : ", selectedDate);
+  console.log(selectedDate);
 
   // GET SALARIES
   const [salary, setSalary] = useState<SalaryType>();

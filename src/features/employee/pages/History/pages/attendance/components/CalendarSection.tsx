@@ -5,6 +5,7 @@ import { IconCalendar } from "@tabler/icons-react";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import React, { useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
 interface CalendarSectionProps {
   setSelectedDate: React.Dispatch<React.SetStateAction<string>>;
   schedules: ScheduleType[];
@@ -14,7 +15,10 @@ export const CalendarSection: React.FC<CalendarSectionProps> = ({
   setSelectedDate,
   schedules,
 }) => {
-  const [value, setValue] = useState<Date | null>(new Date());
+  const { pathname } = useLocation();
+  const [value, setValue] = useState<Date | null>(
+    pathname.includes("salary") ? null : new Date()
+  );
   useEffect(() => {
     if (value) {
       setSelectedDate(format(value, "yyyy-MM-dd", { locale: id }));
@@ -141,7 +145,7 @@ export const CalendarSection: React.FC<CalendarSectionProps> = ({
           </div>
           <div className="col-span-2">
             <Text className="" size={"xs"} c="dimmed">
-              Libur
+              Cuti
             </Text>
           </div>
           <div className="col-span-1">

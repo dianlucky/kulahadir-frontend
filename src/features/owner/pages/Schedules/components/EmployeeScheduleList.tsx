@@ -5,6 +5,7 @@ import {
 import { ScheduleType } from "@/types";
 import { Button, Divider, Image, Modal, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { showNotification } from "@mantine/notifications";
 import { IconUsers } from "@tabler/icons-react";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
@@ -53,7 +54,12 @@ export const EmployeeScheduleList: React.FC<EmployeeScheduleListProps> = ({
     } catch (error) {
       console.error("Error creating schedules or tasks:", error);
     } finally {
-      setIsSubmitting(false); // Selesai loading
+      showNotification({
+        message: "Berhasil menambahkan jadwal pegawai",
+        color: "green",
+        position: "top-center",
+      });
+      setIsSubmitting(false);
     }
   };
   // END FOR CREATE SCHEDULE

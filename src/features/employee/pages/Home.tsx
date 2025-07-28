@@ -7,7 +7,6 @@ import {
   IconCashRegister,
   IconUsers,
   IconCalendarCancel,
-  IconHandStop,
   IconListCheck,
   IconPackages,
   IconSnowflake,
