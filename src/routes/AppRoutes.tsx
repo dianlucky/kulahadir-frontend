@@ -499,7 +499,7 @@ export const AppRoutes: React.FC = () => {
         <Route path="development" element={<Development />} />
       </Route>
       {/* Authentication Page */}
-      <Route path="/" element={<AuthLayout />}>
+      <Route path="/auth" element={<AuthLayout />}>
         <Route path="login" element={<Login />} />
       </Route>
     </Routes>
