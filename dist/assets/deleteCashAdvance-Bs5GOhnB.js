@@ -1,1 +1,0 @@
-import{d as a,e as s,s as t}from"./index-BOpnoju3.js";const o="https://dianlucky.my.id/api",n=async e=>(await s.delete(`${o}/cash-advances/${e}`,{headers:{Authorization:`Bearer ${t.getToken()}`}})).data,d=()=>a({mutationFn:e=>n(e),onError:e=>{console.log(e)}});export{d as u};
