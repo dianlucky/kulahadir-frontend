@@ -22,7 +22,7 @@ export const ProfilePage: React.FC = () => {
   return (
     <main>
       <section className="flex m-3 shadow-md rounded-xl gap-4 justify-center p-4 bg-white mt-15 ">
-        <div className="bg-slate-500 rounded-full w-16 h-16 overflow-hidden">
+        <div className="bg-white rounded-full w-16 h-16 overflow-hidden">
           <Image
             src={
               employee?.profile_pic
