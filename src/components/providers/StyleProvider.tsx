@@ -1,19 +1,20 @@
-import { MantineProvider, MantineThemeOverride } from '@mantine/core';
-import { ModalsProvider } from '@mantine/modals';
-import { Notifications } from '@mantine/notifications';
+import { MantineProvider, MantineThemeOverride } from "@mantine/core";
+import { ModalsProvider } from "@mantine/modals";
+import { Notifications } from "@mantine/notifications";
 
-import '@/styles/globals.css';
+import "@/styles/globals.css";
 // import '@/styles/index.css';
-import '@mantine/core/styles.css';
-import '@mantine/notifications/styles.css';
-import '@mantine/dates/styles.css';
+import "@mantine/core/styles.css";
+import "@mantine/notifications/styles.css";
+import "@mantine/dates/styles.css";
+import "@mantine/charts/styles.css";
 
-import { DateProvider } from './DateProvider';
+import { DateProvider } from "./DateProvider";
 
 const theme: MantineThemeOverride = {
-  fontFamily: 'Nunito, sans-serif',
+  fontFamily: "Nunito, sans-serif",
   headings: {
-    fontFamily: 'Nunito, sans-serif',
+    fontFamily: "Nunito, sans-serif",
   },
 };
 
@@ -35,7 +36,7 @@ export const StyleProvider: React.FC<Props> = ({ children }) => {
               },
             },
           }}
-          labels={{ confirm: 'Konfirmasi', cancel: 'Batal' }}
+          labels={{ confirm: "Konfirmasi", cancel: "Batal" }}
         >
           {children}
         </ModalsProvider>

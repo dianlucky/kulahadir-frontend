@@ -141,6 +141,42 @@ export const Home: React.FC = () => {
             ]}
           />
         )}
+        {creds?.status == "Pengelola Frozen" && (
+          <MenuList
+            navigations={[
+              {
+                title: "Jadwal bulanan",
+                href: "/schedule",
+                icon: IconCalendar,
+                color: "bg-brown",
+              },
+              {
+                title: "Pengajuan kasbon",
+                href: "/cash-advance-request",
+                icon: IconCashRegister,
+                color: "bg-brown",
+              },
+              {
+                title: "Jadwal Cuti",
+                href: "/paid-leave",
+                icon: IconCalendarCancel,
+                color: "bg-brown",
+              },
+              {
+                title: "Stok Frozen",
+                href: "/frozen-inventory",
+                icon: IconSnowflake,
+                color: "bg-brown",
+              },
+              {
+                title: "Gaji",
+                href: "/salary",
+                icon: IconFileDollar,
+                color: "bg-brown",
+              },
+            ]}
+          />
+        )}
 
         {creds?.status == "Owner" && (
           <MenuList

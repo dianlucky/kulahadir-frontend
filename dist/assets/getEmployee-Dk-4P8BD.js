@@ -1,1 +1,0 @@
-import{e as t,s as a,k as o}from"./index-DB885r8G.js";const s="https://dianlucky.my.id/api";async function n(e){return(await t.get(`${s}/employees/by-account?accountId=${e}`,{headers:{Authorization:`Bearer ${a.getToken()}`}})).data.data}const u=e=>o({queryKey:["employee-account-id"],queryFn:()=>n(e)});export{n as g,u};

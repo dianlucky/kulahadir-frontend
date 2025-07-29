@@ -1,7 +1,7 @@
 import { IconChevronLeft } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { DetailItemSection } from "../components";
+import { DetailItemSection, GraphItemSection } from "../components";
 import { ItemType } from "@/types";
 import { useGetItemById } from "../api";
 
@@ -42,8 +42,11 @@ export const DetailItemPage: React.FC = () => {
           <div></div>
         </div>
       </section>
-      <section className="mt-1 px-6 mb-20">
+      <section className="mt-1 px-6 mb-2">
         <DetailItemSection item={item} LoadingItem={LoadingItem} />
+      </section>
+      <section className="mt-1 px-6 mb-20">
+        <GraphItemSection />
       </section>
     </>
   );

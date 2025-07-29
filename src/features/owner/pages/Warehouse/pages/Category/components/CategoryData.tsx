@@ -20,6 +20,7 @@ import { useDeleteCategory, useUpdateCategory } from "../api";
 import { showNotification } from "@mantine/notifications";
 import { AxiosError } from "axios";
 import { useForm } from "@mantine/form";
+import { useLocation } from "react-router-dom";
 
 interface CategoryDataProps {
   categories: CategoryType[];
@@ -36,6 +37,7 @@ export const CategoryData: React.FC<CategoryDataProps> = ({
   RefetchCategories,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>();
+  const { pathname } = useLocation();
   const [opened, { open, close }] = useDisclosure(false);
   const [openedEdit, { open: openEdit, close: closeEdit }] =
     useDisclosure(false);
@@ -146,61 +148,72 @@ export const CategoryData: React.FC<CategoryDataProps> = ({
         </div>
         <Divider size="xs" className="mb-2" />
         {categories.length != 0 &&
-          categories.map((data, index) => (
-            <div key={index}>
-              <div className="grid grid-cols-12 px-2">
-                <div className="col-span-1 m-auto">
-                  <Text fw={700} size="md">
-                    {data.code}
-                  </Text>
+          categories
+            .filter((data) =>
+              pathname.includes("frozen")
+                ? data.name == "Frozen"
+                : data.name != "Frozen"
+            )
+            .map((data, index) => (
+              <div key={index}>
+                <div className="grid grid-cols-12 px-2">
+                  <div className="col-span-1 m-auto">
+                    <Text fw={700} size="md">
+                      {data.code}
+                    </Text>
+                  </div>
+                  <div className="col-span-1 ml-1">
+                    <div className="w-px h-full bg-gray-300 mx-4" />
+                  </div>
+                  <div className="col-span-8 ml-1 my-auto">
+                    <Text size="xs" lineClamp={2} truncate="end">
+                      {data.name}
+                    </Text>
+                  </div>
+                  <div className="col-span-2 ml-4 flex gap-1">
+                    <Menu
+                      shadow="xs"
+                      position="bottom-end"
+                      width={100}
+                      withArrow
+                    >
+                      <Menu.Target>
+                        <Button
+                          color="gray"
+                          disabled={data.name == "Frozen" ? true : false}
+                          size={"compact-xs"}
+                        >
+                          <IconChevronDown size={18} />
+                        </Button>
+                      </Menu.Target>
+                      <Menu.Dropdown>
+                        <Menu.Item
+                          onClick={() => {
+                            openEdit();
+                            setSelectedCategory(data);
+                          }}
+                          leftSection={<IconPencil size={14} />}
+                        >
+                          Edit
+                        </Menu.Item>
+                        <Menu.Item
+                          leftSection={<IconTrash size={14} />}
+                          onClick={() => {
+                            open();
+                            setSelectedCategory(data);
+                          }}
+                        >
+                          Hapus
+                        </Menu.Item>
+                      </Menu.Dropdown>
+                    </Menu>
+                  </div>
                 </div>
-                <div className="col-span-1 ml-1">
-                  <div className="w-px h-full bg-gray-300 mx-4" />
-                </div>
-                <div className="col-span-8 ml-1 my-auto">
-                  <Text size="xs" lineClamp={2} truncate="end">
-                    {data.name}
-                  </Text>
-                </div>
-                <div className="col-span-2 ml-4 flex gap-1">
-                  <Menu shadow="xs" position="bottom-end" width={100} withArrow>
-                    <Menu.Target>
-                      <Button
-                        color="gray"
-                        disabled={data.name == "Frozen" ? true : false}
-                        size={"compact-xs"}
-                      >
-                        <IconChevronDown size={18} />
-                      </Button>
-                    </Menu.Target>
-                    <Menu.Dropdown>
-                      <Menu.Item
-                        onClick={() => {
-                          openEdit();
-                          setSelectedCategory(data);
-                        }}
-                        leftSection={<IconPencil size={14} />}
-                      >
-                        Edit
-                      </Menu.Item>
-                      <Menu.Item
-                        leftSection={<IconTrash size={14} />}
-                        onClick={() => {
-                          open();
-                          setSelectedCategory(data);
-                        }}
-                      >
-                        Hapus
-                      </Menu.Item>
-                    </Menu.Dropdown>
-                  </Menu>
+                <div className="mt-2 mb-2">
+                  <Divider />
                 </div>
               </div>
-              <div className="mt-2 mb-2">
-                <Divider />
-              </div>
-            </div>
-          ))}
+            ))}
         {categories.length == 0 && (
           <div className="text-center">
             <Text size="xs" fw={300} fs={"italic"}>

@@ -1,1 +1,0 @@
-import{d as t,e as s,s as n}from"./index-DB885r8G.js";const o="https://dianlucky.my.id/api";async function r(e,a){return(await s.patch(`${o}/leaves/${e}`,a,{headers:{Authorization:`Bearer ${n.getToken()}`}})).data}const d=e=>t({mutationFn:a=>r(e,a)});export{d as u};
