@@ -35,7 +35,9 @@ export const HistoryIncomingSection: React.FC<HistoryIncomingProps> = ({
           ) : (
             <span className="text-sm font-bold text-brown">
               Barang masuk,{" "}
-              {format(new Date(), "EEEE, dd MMM yyyy", { locale: id })}
+              {format(selectedDate ?? new Date(), "EEEE, dd MMM yyyy", {
+                locale: id,
+              })}
             </span>
           )}
 

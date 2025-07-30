@@ -35,7 +35,9 @@ export const HistoryOutgoingSection: React.FC<HistoryOutgoingProps> = ({
           ) : (
             <span className="text-sm font-bold text-brown">
               Barang keluar,{" "}
-              {format(new Date(), "EEEE, dd MMM yyyy", { locale: id })}
+              {format(selectedDate ?? new Date(), "EEEE, dd MMM yyyy", {
+                locale: id,
+              })}
             </span>
           )}
           <Popover

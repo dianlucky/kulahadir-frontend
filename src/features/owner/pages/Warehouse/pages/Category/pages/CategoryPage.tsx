@@ -1,6 +1,6 @@
 import { IconChevronLeft, IconPlus } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { CategoryData, CategorySkeleton } from "../components";
 import {
   Button,
@@ -17,6 +17,7 @@ import { showNotification } from "@mantine/notifications";
 
 export const CategoryPage: React.FC = () => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const [opened, { open, close }] = useDisclosure(false);
 
   // GET ALL CATEGORY
@@ -100,9 +101,11 @@ export const CategoryPage: React.FC = () => {
           </div>
           <div>
             <div className="mr-2">
-              <UnstyledButton onClick={open}>
-                <IconPlus size={22} />
-              </UnstyledButton>
+              {pathname.includes("warehouse") && (
+                <UnstyledButton onClick={open}>
+                  <IconPlus size={22} />
+                </UnstyledButton>
+              )}
             </div>
           </div>
         </div>

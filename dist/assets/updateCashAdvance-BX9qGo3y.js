@@ -1,1 +1,0 @@
-import{d as e,e as t,s as n}from"./index-CR13SSJV.js";const o="https://dianlucky.my.id/api";async function r(a,s){return(await t.patch(`${o}/cash-advances/${a}`,s,{headers:{Authorization:`Bearer ${n.getToken()}`}})).data}const i=a=>e({mutationFn:s=>r(a,s)});export{i as u};

@@ -1,0 +1,1 @@
+import{e as a,s,k as t}from"./index-WTq-jBmO.js";const r="https://dianlucky.my.id/api";async function o(e){return(await a.get(`${r}/leaves/by-employee?employeeId=${e}`,{headers:{Authorization:`Bearer ${s.getToken()}`}})).data.data}const n=e=>t({queryKey:["schedule"],queryFn:()=>o(e)});export{o as g,n as u};
