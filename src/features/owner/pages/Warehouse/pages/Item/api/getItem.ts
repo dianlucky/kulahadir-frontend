@@ -54,3 +54,22 @@ export const useGetItemById = (itemId: number) => {
     queryFn: () => getItemById(itemId),
   });
 };
+
+export async function getItemStatsWeekly(itemId: number, date: string) {
+  const res = await axios.get(
+    `${BaseURL}/items/weekly-stats?itemId=${itemId}&startDateParams=${date}`,
+    {
+      headers: {
+        Authorization: `Bearer ${storage.getToken()}`,
+      },
+    }
+  );
+  return res.data.data;
+}
+
+export const useGetItemStatsWeekly = (itemId: number, date: string) => {
+  return useQuery({
+    queryKey: ["stats-weekly", itemId],
+    queryFn: () => getItemStatsWeekly(itemId, date),
+  });
+};

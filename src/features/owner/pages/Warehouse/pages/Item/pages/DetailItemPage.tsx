@@ -1,9 +1,14 @@
 import { IconChevronLeft } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { DetailItemSection, GraphItemSection } from "../components";
+import {
+  DetailItemSection,
+  DetailItemSkeleton,
+  GraphItemSection,
+} from "../components";
 import { ItemType } from "@/types";
 import { useGetItemById } from "../api";
+import { CategorySkeleton } from "../../Category";
 
 export const DetailItemPage: React.FC = () => {
   const navigate = useNavigate();
@@ -20,6 +25,7 @@ export const DetailItemPage: React.FC = () => {
       setItem(undefined);
     }
   }, [DataItem]);
+  console.log("Item", item);
   // END FOR GET ITEM
   return (
     <>
@@ -43,10 +49,14 @@ export const DetailItemPage: React.FC = () => {
         </div>
       </section>
       <section className="mt-1 px-6 mb-2">
-        <DetailItemSection item={item} LoadingItem={LoadingItem} />
+        {LoadingItem && item != undefined ? (
+          <DetailItemSkeleton />
+        ) : (
+          <DetailItemSection item={item} LoadingItem={LoadingItem} />
+        )}
       </section>
       <section className="mt-1 px-6 mb-20">
-        <GraphItemSection />
+        <GraphItemSection itemId={itemId} />
       </section>
     </>
   );

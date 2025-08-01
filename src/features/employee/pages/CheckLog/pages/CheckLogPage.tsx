@@ -27,7 +27,7 @@ export const CheckLogPage: React.FC = () => {
       const yesterday = subDays(makassarTime, 1);
       return format(yesterday, "yyyy-MM-dd");
     }
-
+    
     return format(makassarTime, "yyyy-MM-dd");
   };
   // END FOR DATE FORMATTER TIME

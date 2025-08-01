@@ -74,8 +74,7 @@ export const Home: React.FC = () => {
       {/* Menu List => Berisi daftar menu pada sistem */}
 
       <section className="px-7 mt-5" style={{ marginBottom: "-110px" }}>
-        {creds?.status == "Pegawai tetap" ||
-          (creds?.status == "Part time" && (
+        {creds?.status == "Pegawai tetap" && 
             <MenuList
               navigations={[
                 {
@@ -104,7 +103,7 @@ export const Home: React.FC = () => {
                 },
               ]}
             />
-          ))}
+          }
         {creds?.status == "Pengelola Gudang" && (
           <MenuList
             navigations={[

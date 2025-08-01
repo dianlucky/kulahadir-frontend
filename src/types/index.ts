@@ -186,3 +186,9 @@ export type TransactionType = {
   employee: EmployeeType;
   type: "incoming" | "outgoing";
 };
+
+export type ItemGraphType = {
+  date: string;
+  masuk: number;
+  keluar: number;
+};
