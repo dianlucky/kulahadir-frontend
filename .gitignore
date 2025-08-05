@@ -13,6 +13,7 @@ node_modules/
 
 # Build outputs
 # Hanya abaikan dist-ssr, dist tetap di-commit di branch deploy
+dist
 dist-ssr/
 
 # Local environment settings

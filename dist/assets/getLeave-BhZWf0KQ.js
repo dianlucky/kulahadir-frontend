@@ -1,1 +1,0 @@
-import{e,s as a,k as s}from"./index-WTq-jBmO.js";const t="https://dianlucky.my.id/api";async function r(){return(await e.get(`${t}/leaves`,{headers:{Authorization:`Bearer ${a.getToken()}`}})).data.data}const u=()=>s({queryKey:["leave-all"],queryFn:()=>r()});export{r as g,u};

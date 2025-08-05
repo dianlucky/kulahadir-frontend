@@ -192,3 +192,8 @@ export type ItemGraphType = {
   masuk: number;
   keluar: number;
 };
+
+export type MonthlyItemGraphType = {
+  name: string;
+  totalAmount: number;
+};

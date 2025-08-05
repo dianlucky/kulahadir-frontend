@@ -8,7 +8,6 @@ import {
 } from "../components";
 import { ItemType } from "@/types";
 import { useGetItemById } from "../api";
-import { CategorySkeleton } from "../../Category";
 
 export const DetailItemPage: React.FC = () => {
   const navigate = useNavigate();

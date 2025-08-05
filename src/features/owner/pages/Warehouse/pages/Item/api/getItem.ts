@@ -56,6 +56,10 @@ export const useGetItemById = (itemId: number) => {
 };
 
 export async function getItemStatsWeekly(itemId: number, date: string) {
+  console.log(
+    "URL :",
+    `${BaseURL}/items/weekly-stats?itemId=${itemId}&startDateParams=${date}`
+  );
   const res = await axios.get(
     `${BaseURL}/items/weekly-stats?itemId=${itemId}&startDateParams=${date}`,
     {

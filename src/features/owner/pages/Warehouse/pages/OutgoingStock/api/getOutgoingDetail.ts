@@ -41,3 +41,23 @@ export const useGetOutgoingDetailByItemId = (itemId: number) => {
     queryFn: () => getDetailByItemId(itemId),
   });
 };
+
+export async function getStatsOfOutgoingDataMonthly(month: string) {
+
+  const res = await axios.get(
+    `${BaseURL}/outgoing-details/monthly-stats?monthParams=${month}`,
+    {
+      headers: {
+        Authorization: `Bearer ${storage.getToken()}`,
+      },
+    }
+  );
+  return res.data.data;
+}
+
+export const useGetStatsOfOutgoingDataMonthly = (month: string) => {
+  return useQuery({
+    queryKey: ["stats-outgoing-monthly", month],
+    queryFn: () => getStatsOfOutgoingDataMonthly(month),
+  });
+};
