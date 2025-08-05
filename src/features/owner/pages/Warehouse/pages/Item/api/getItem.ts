@@ -77,3 +77,19 @@ export const useGetItemStatsWeekly = (itemId: number, date: string) => {
     queryFn: () => getItemStatsWeekly(itemId, date),
   });
 };
+
+export async function getCountItem(type: string) {
+  const res = await axios.get(`${BaseURL}/items/count?type=${type}`, {
+    headers: {
+      Authorization: `Bearer ${storage.getToken()}`,
+    },
+  });
+  return res.data.data;
+}
+
+export const useGetCountItem = (type: string) => {
+  return useQuery({
+    queryKey: ["count-item", type],
+    queryFn: () => getCountItem(type),
+  });
+};

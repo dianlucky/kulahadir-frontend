@@ -1,35 +1,33 @@
 import { Skeleton, Text } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useGetCountCategory } from "../../Category";
+import { useGetCountItem } from "../../Item/api";
 
-export const TotalCategorySection: React.FC = () => {
+export const TotalItemSection: React.FC = () => {
   const { pathname } = useLocation();
-  // Get Total Categories by pathname
-  const [totalCategory, setTotalCategory] = useState<number>(0);
-  const { data: DataTotalCategory, isLoading: LoadingTotalCategory } =
-    useGetCountCategory(pathname.includes("frozen") ? "Frozen" : "!Frozen");
+  const [totalItem, setTotalItem] = useState<number>(0);
+  const { data: DataTotalItem, isLoading: LoadingTotalItem } = useGetCountItem(
+    pathname.includes("frozen") ? "Frozen" : "!Frozen"
+  );
   useEffect(() => {
-    if (DataTotalCategory) {
-      setTotalCategory(DataTotalCategory);
+    if (DataTotalItem) {
+      setTotalItem(DataTotalItem);
     } else {
-      setTotalCategory(0);
+      setTotalItem(0);
     }
-  }, [DataTotalCategory]);
-  // End for Get Total Categories by pathname
-
+  }, [DataTotalItem]);
   return (
     <>
       <div className="bg-white shadow-md rounded-xl p-2">
         <div>
           <Text size="sm" fw={600}>
-            Total Kategori
+            Total Barang {pathname.includes("frozen") ? "Frozen" : "Gudang  "}
           </Text>
         </div>
         <div className="flex justify-center py-6">
-          {!LoadingTotalCategory ? (
+          {!LoadingTotalItem ? (
             <Text size={"70px"} fw={700} c={"#654433"}>
-              {totalCategory}
+              {totalItem}
             </Text>
           ) : (
             <Skeleton width={50} height={50} />

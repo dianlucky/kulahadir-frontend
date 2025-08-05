@@ -1,6 +1,7 @@
 import { IconChevronLeft } from "@tabler/icons-react";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { TotalCategorySection, TotalItemSection } from "../components";
 
 export const StatisticPage: React.FC = () => {
   const navigate = useNavigate();
@@ -35,7 +36,16 @@ export const StatisticPage: React.FC = () => {
         </div>
       </section>
       <section>
-        <div className="mt-2 px-5 mb-20"></div>
+        <div className="mt-2 px-5 mb-20">
+          <div className="grid grid-cols-12 gap-2">
+            <div className="col-span-6">
+              <TotalCategorySection />
+            </div>
+            <div className="col-span-6">
+              <TotalItemSection />
+            </div>
+          </div>
+        </div>
       </section>
     </>
   );
