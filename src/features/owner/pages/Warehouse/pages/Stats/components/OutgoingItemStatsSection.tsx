@@ -1,6 +1,7 @@
 import { Divider, Select, Text } from "@mantine/core";
 import React, { useState } from "react";
 import { AnnualOutgoingItemStats } from "./OutgoingItemStats/AnnualOutgoingItemStats";
+import { MonthlyOutgoingItemStats } from "./OutgoingItemStats/MonthlyOutgoingItemStats";
 
 export const OutgoingItemStatsSection: React.FC = () => {
   const [type, setType] = useState<string | null>("Tahunan");
@@ -24,7 +25,11 @@ export const OutgoingItemStatsSection: React.FC = () => {
         </div>
         <Divider my={8} />
         <div>
-          <AnnualOutgoingItemStats />
+          {type == "Tahunan" ? (
+            <AnnualOutgoingItemStats />
+          ) : (
+            <MonthlyOutgoingItemStats />
+          )}
         </div>
       </div>
     </>

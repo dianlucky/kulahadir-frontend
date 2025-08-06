@@ -4,9 +4,9 @@ import axios from "axios";
 
 const BaseURL = import.meta.env.VITE_API_URL;
 
-export async function getIncomingByDate(dateString: string) {
+export async function getIncomingByDate(type: string, dateString: string) {
   const res = await axios.get(
-    `${BaseURL}/incoming-items/by-date?dateString=${dateString}`,
+    `${BaseURL}/incoming-items/by-date?type=${type}&dateString=${dateString}`,
     {
       headers: {
         Authorization: `Bearer ${storage.getToken()}`,
@@ -16,9 +16,9 @@ export async function getIncomingByDate(dateString: string) {
   return res.data.data;
 }
 
-export const useGetIncomingByDate = (dateString: string) => {
+export const useGetIncomingByDate = (type: string, dateString: string) => {
   return useQuery({
-    queryKey: ["item", dateString],
-    queryFn: () => getIncomingByDate(dateString),
+    queryKey: ["incoming-item", type, dateString],
+    queryFn: () => getIncomingByDate(type, dateString),
   });
 };

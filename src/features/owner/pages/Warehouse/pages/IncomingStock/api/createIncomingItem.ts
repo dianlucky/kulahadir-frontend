@@ -6,6 +6,7 @@ const BaseURL = import.meta.env.VITE_API_URL;
 
 type CreateIncomingItemPost = {
   employee_id: number;
+  isFrozen: boolean;
 };
 
 export const postIncomingItem = async (data: CreateIncomingItemPost) => {

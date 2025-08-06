@@ -12,6 +12,8 @@ export const OutgoingStockPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const isFrozen = location.pathname.includes("frozen") as boolean;
+
   // DATE FILTER HANDLER
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   // END FOR DATE FILTER HANDLER
@@ -19,6 +21,7 @@ export const OutgoingStockPage: React.FC = () => {
   const [outgoingData, setOutgoingData] = useState<OutgoingDataType[]>([]);
   const { data: DataOutgoing, isLoading: LoadingOutgoing } =
     useGetOutgoingByDate(
+      isFrozen ? "Frozen" : "!Frozen",
       format(selectedDate ?? new Date(), "yyyy-MM-dd", { locale: id })
     );
   useEffect(() => {
@@ -28,6 +31,7 @@ export const OutgoingStockPage: React.FC = () => {
       setOutgoingData([]);
     }
   });
+  console.log("OutgoingData :", outgoingData);
   // GET INCOMING DATA
 
   return (

@@ -19,7 +19,7 @@ import React, { useEffect, useState } from "react";
 import { useCreateIncomingDetail, useCreateIncomingItem } from "../api";
 import { useAuth } from "@/features/auth";
 import { showNotification } from "@mantine/notifications";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const DEFAULT_IMAGE = "/images/splash.png";
 const BaseURL = import.meta.env.VITE_API_URL;
@@ -35,6 +35,8 @@ export const IncomingStockSection: React.FC<IncomingStockSectionProps> = ({
 }) => {
   const { creds } = useAuth();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const isFrozen = pathname.includes("frozen");
   const [opened, { open, close }] = useDisclosure(false);
   const [finalStock, setFinalStock] = useState<number>(0);
   const [selectedItem, setSelectedItem] = useState<ItemType | null>(null);
@@ -51,7 +53,7 @@ export const IncomingStockSection: React.FC<IncomingStockSectionProps> = ({
   const [incomingList, setIncomingList] = useState<
     { item_id: number; amount: number }[]
   >([]);
-  
+
   const createIncomingItem = useCreateIncomingItem();
   const createIncomingDetail = useCreateIncomingDetail();
 
@@ -62,7 +64,10 @@ export const IncomingStockSection: React.FC<IncomingStockSectionProps> = ({
 
     try {
       // Step 1: Create incoming item
-      const incoming = await createIncomingItem.mutateAsync({ employee_id });
+      const incoming = await createIncomingItem.mutateAsync({
+        employee_id,
+        isFrozen,
+      });
       const incoming_id = incoming.data.id;
 
       // Step 2: Loop each item and create incoming detail

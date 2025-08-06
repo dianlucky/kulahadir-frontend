@@ -17,7 +17,7 @@ import {
   IconSquareChevronRightFilled,
 } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useCreateOutgoingDetail, useCreateOutgoingItem } from "../api";
 import { showNotification } from "@mantine/notifications";
 
@@ -34,6 +34,11 @@ export const OutgoingStockSection: React.FC<OutgoingStockSectionProps> = ({
 }) => {
   const { creds } = useAuth();
   const navigate = useNavigate();
+
+  // To define the transaction is frozen or not
+  const { pathname } = useLocation();
+  const isFrozen = pathname.includes("frozen");
+
   const [isLoading, setIsLoading] = useState(false);
   const [opened, { open, close }] = useDisclosure(false);
   const [finalStock, setFinalStock] = useState<number>(0);
@@ -62,7 +67,10 @@ export const OutgoingStockSection: React.FC<OutgoingStockSectionProps> = ({
     setIsLoading(true); // mulai loading
 
     try {
-      const outgoing = await createOutgoingItem.mutateAsync({ employee_id });
+      const outgoing = await createOutgoingItem.mutateAsync({
+        employee_id,
+        isFrozen,
+      });
       const outgoing_id = outgoing.data.id;
 
       for (const item of outgoingList) {
