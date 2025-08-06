@@ -43,7 +43,6 @@ export const useGetOutgoingDetailByItemId = (itemId: number) => {
 };
 
 export async function getStatsOfOutgoingDataMonthly(month: string) {
-
   const res = await axios.get(
     `${BaseURL}/outgoing-details/monthly-stats?monthParams=${month}`,
     {
@@ -59,5 +58,54 @@ export const useGetStatsOfOutgoingDataMonthly = (month: string) => {
   return useQuery({
     queryKey: ["stats-outgoing-monthly", month],
     queryFn: () => getStatsOfOutgoingDataMonthly(month),
+  });
+};
+
+export async function getStatsOfOutgoingDataAnnually(
+  type: string,
+  year: string
+) {
+  const res = await axios.get(
+    `${BaseURL}/outgoing-details/annual-stats?type=${type}&yearParams=${year}`,
+    {
+      headers: {
+        Authorization: `Bearer ${storage.getToken()}`,
+      },
+    }
+  );
+  return res.data.data;
+}
+
+export const useGetStatsOfOutgoingDataAnnually = (
+  type: string,
+  year: string
+) => {
+  return useQuery({
+    queryKey: ["stats-outgoing-annually", year, type],
+    queryFn: () => getStatsOfOutgoingDataAnnually(type, year),
+  });
+};
+export async function getStatsOfOutgoingDataDailyByMonth(
+  type: string,
+  month: string
+) {
+  const res = await axios.get(
+    `${BaseURL}/outgoing-details/daily-month-stats?type=${type}&monthParams=${month}`,
+    {
+      headers: {
+        Authorization: `Bearer ${storage.getToken()}`,
+      },
+    }
+  );
+  return res.data.data;
+}
+
+export const useGetStatsOfOutgoingDataDailyByMonth = (
+  type: string,
+  month: string
+) => {
+  return useQuery({
+    queryKey: ["stats-outgoing-daily-byMonth", month, type],
+    queryFn: () => getStatsOfOutgoingDataDailyByMonth(type, month),
   });
 };

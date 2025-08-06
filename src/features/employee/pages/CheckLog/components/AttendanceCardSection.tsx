@@ -85,8 +85,8 @@ export const AttendanceCardSection: React.FC<AttendanceCardProps> = ({
         return;
       }
 
-      console.log("[CHECK-IN] Platform:", platform);
-      console.log("[CHECK-IN] Photo success");
+      // console.log("[CHECK-IN] Platform:", platform);
+      // console.log("[CHECK-IN] Photo success");
 
       // Konversi base64 ke File dengan cara yang lebih aman
       const base64Data = photo.base64String;
@@ -182,6 +182,7 @@ export const AttendanceCardSection: React.FC<AttendanceCardProps> = ({
   const KalselTimeZone = toZonedTime(new Date(), "Asia/Makassar");
   const KalselHour = KalselTimeZone.getHours();
   const KalselMinute = KalselTimeZone.getMinutes();
+  console.log("Jam kalsel : ", KalselHour);
 
   const isCheckOutTime = () => {
     const hour = KalselHour;
@@ -288,31 +289,23 @@ export const AttendanceCardSection: React.FC<AttendanceCardProps> = ({
           <Button
             size="sm"
             fullWidth
-            // disabled={
-            //   statusLocation ? false : schedule.status == "on" ? false : true
-            // }
             disabled={
-              schedule.status !== "on" || !statusLocation
-              // ||
-              // KalselHour < 15 ||
-              // KalselHour >= 23
+              schedule.status !== "on" ||
+              !statusLocation ||
+              (KalselHour <= 15 && KalselMinute < 45) ||
+              KalselHour >= 23
             }
             onClick={handleCheckIn}
           >
-            {/* {!statusLocation
-              ? `Anda berada diluar lokasi`
-              : schedule.status == "off"
-              ? `Anda sedang cuti`
-              : `CHECK-IN`} */}
             {schedule.status === "off"
               ? "Anda sedang cuti"
               : !statusLocation
               ? "Anda berada di luar lokasi kerja"
-              : // : KalselHour < 15
-                // ? "Check-in tersedia mulai jam 15.00 WIB"
-                // : KalselHour >= 23
-                // ? "Check-in sudah ditutup"
-                "CHECK-IN"}
+              : KalselHour <= 15 && KalselMinute < 45
+              ? "Check-in tersedia mulai jam 15.45 WIB"
+              : KalselHour >= 23
+              ? "Check-in sudah ditutup"
+              : "CHECK-IN"}
           </Button>
         )}
         {(schedule?.attendance_status === "Working" ||
@@ -335,9 +328,9 @@ export const AttendanceCardSection: React.FC<AttendanceCardProps> = ({
                 : dailyTask.filter((data) => data.status === "Belum").length !==
                   0
                 ? "Ada tugas yang belum selesai"
-                // : !isCheckOutTime()
-                // ? "Check-out tersedia pukul 23:30 - 03:00 WIB"
-                : "CHECK-OUT"}
+                : // : !isCheckOutTime()
+                  // ? "Check-out tersedia pukul 23:30 - 03:00 WIB"
+                  "CHECK-OUT"}
             </Button>
           )}
       </div>

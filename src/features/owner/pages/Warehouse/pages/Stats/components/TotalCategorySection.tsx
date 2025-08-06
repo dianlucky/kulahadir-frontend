@@ -21,7 +21,7 @@ export const TotalCategorySection: React.FC = () => {
   return (
     <>
       <div className="bg-white shadow-md rounded-xl p-2">
-        <div>
+        <div className="px-2">
           <Text size="sm" fw={600}>
             Total Kategori
           </Text>
