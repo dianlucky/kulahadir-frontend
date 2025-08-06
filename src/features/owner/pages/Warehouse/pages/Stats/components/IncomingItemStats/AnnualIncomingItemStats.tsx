@@ -1,22 +1,22 @@
-import { BarChart } from "@mantine/charts";
+import { AnnualTransactionStats, TransactionItemStats } from "@/types";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useGetStatsOfOutgoingDataAnnually } from "../../../OutgoingStock";
+import { useGetStatsOfIncomingDataAnnually } from "../../../IncomingStock";
 import { format } from "date-fns";
+import { BarChart } from "@mantine/charts";
 import { Skeleton } from "@mantine/core";
-import { AnnualTransactionStats, TransactionItemStats } from "@/types";
 
-const colorVariants = ["red.6"];
+const colorVariants = ["green.6"];
 
-export const AnnualOutgoingItemStats: React.FC = () => {
+export const AnnualIncomingItemStats: React.FC = () => {
   const { pathname } = useLocation();
   const isFrozen = pathname.includes("frozen");
 
-  //   Get annual stats for outgoing item data
+  //   Get annual stats for incoming item data
   const [barChartData, setBarChartData] = useState<any[]>([]); // Maafkan saya raja typescript saya mengunakan any 🙏
   const [annualData, setAnnualData] = useState<AnnualTransactionStats[]>([]);
   const { data: DataAnnual, isLoading: LoadingAnnual } =
-    useGetStatsOfOutgoingDataAnnually(
+    useGetStatsOfIncomingDataAnnually(
       isFrozen ? "Frozen" : "!Frozen",
       format(new Date(), "yyyy")
     );

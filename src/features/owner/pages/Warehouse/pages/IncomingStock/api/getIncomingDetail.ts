@@ -41,3 +41,57 @@ export const useGetIncomingDetailByItemId = (itemId: number) => {
     queryFn: () => getDetailByItemId(itemId),
   });
 };
+
+// Get stats of incoming data annually (sort per month)
+export async function getStatsOfIncomingDataAnnually(
+  type: string,
+  year: string
+) {
+  const res = await axios.get(
+    `${BaseURL}/incoming-details/annual-stats?type=${type}&yearParams=${year}`,
+    {
+      headers: {
+        Authorization: `Bearer ${storage.getToken()}`,
+      },
+    }
+  );
+  return res.data.data;
+}
+
+export const useGetStatsOfIncomingDataAnnually = (
+  type: string,
+  year: string
+) => {
+  return useQuery({
+    queryKey: ["stats-incoming-annually", year, type],
+    queryFn: () => getStatsOfIncomingDataAnnually(type, year),
+  });
+};
+// End block
+
+// Get stats incoming data daily by month (get daily)
+export async function getStatsOfIncomingDataDailyByMonth(
+  type: string,
+  month: string
+) {
+  const res = await axios.get(
+    `${BaseURL}/incoming-details/daily-month-stats?type=${type}&monthParams=${month}`,
+    {
+      headers: {
+        Authorization: `Bearer ${storage.getToken()}`,
+      },
+    }
+  );
+  return res.data.data;
+}
+
+export const useGetStatsOfIncomingDataDailyByMonth = (
+  type: string,
+  month: string
+) => {
+  return useQuery({
+    queryKey: ["stats-incoming-daily-byMonth", month, type],
+    queryFn: () => getStatsOfIncomingDataDailyByMonth(type, month),
+  });
+};
+// End block

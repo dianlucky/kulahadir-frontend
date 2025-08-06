@@ -2,6 +2,7 @@ import { IconChevronLeft } from "@tabler/icons-react";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
+  IncomingItemStatsSection,
   OutgoingItemStatsSection,
   TotalCategorySection,
   TotalItemSection,
@@ -51,6 +52,9 @@ export const StatisticPage: React.FC = () => {
           </div>
           <div className="mt-2">
             <OutgoingItemStatsSection />
+          </div>
+          <div className="mt-2">
+            <IncomingItemStatsSection />
           </div>
         </div>
       </section>

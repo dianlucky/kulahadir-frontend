@@ -198,18 +198,18 @@ export type MonthlyItemGraphType = {
   totalAmount: number;
 };
 
-export type OutgoingItemStats = {
+export type TransactionItemStats = {
   name: string;
   amount: number;
 };
 
-export type AnnualOutgoingStats = {
+export type AnnualTransactionStats = {
   month: string;
   totalAmount: number;
-  data: OutgoingItemStats[];
+  data: TransactionItemStats[];
 };
 
-export type MonthlyOutgoingStats = {
+export type MonthlyTransactionStats = {
   date: string;
-  data: OutgoingItemStats[];
+  data: TransactionItemStats[];
 };

@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import { MonthlyTransactionStats, TransactionItemStats } from "@/types";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useGetStatsOfOutgoingDataDailyByMonth } from "../../../OutgoingStock";
+import { useGetStatsOfIncomingDataDailyByMonth } from "../../../IncomingStock";
 import { format } from "date-fns";
 import { BarChart } from "@mantine/charts";
 import { Skeleton } from "@mantine/core";
-import { MonthlyTransactionStats, TransactionItemStats } from "@/types";
 
-const colorVariants = ["red.6"];
+const colorVariants = ["green.6"];
 
-export const MonthlyOutgoingItemStats: React.FC = () => {
+export const MonthlyIncomingItemStats: React.FC = () => {
   const { pathname } = useLocation();
   const isFrozen = pathname.includes("frozen");
 
@@ -16,7 +16,7 @@ export const MonthlyOutgoingItemStats: React.FC = () => {
   const [barChartData, setBarChartData] = useState<any[]>([]);
   const [monthlyData, setMonthlyData] = useState<MonthlyTransactionStats[]>([]);
   const { data: MonthlyData, isLoading: LoadingMonthlyData } =
-    useGetStatsOfOutgoingDataDailyByMonth(
+    useGetStatsOfIncomingDataDailyByMonth(
       isFrozen ? "Frozen" : "!Frozen",
       format(new Date(), "yyyy-MM")
     );

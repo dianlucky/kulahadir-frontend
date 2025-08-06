@@ -1,17 +1,18 @@
 import { Divider, Select, Text } from "@mantine/core";
 import React, { useState } from "react";
-import { AnnualOutgoingItemStats } from "./OutgoingItemStats/AnnualOutgoingItemStats";
-import { MonthlyOutgoingItemStats } from "./OutgoingItemStats/MonthlyOutgoingItemStats";
+import { AnnualIncomingItemStats } from "./IncomingItemStats/AnnualIncomingItemStats";
+import { MonthlyIncomingItemStats } from "./IncomingItemStats/MonthlyIncomingItemStats";
 
-export const OutgoingItemStatsSection: React.FC = () => {
+export const IncomingItemStatsSection: React.FC = () => {
   const [type, setType] = useState<string | null>("Tahunan");
+
   return (
     <>
       <div className="bg-white shadow-md rounded-xl p-3">
         <div className="grid grid-cols-12 px-2">
           <div className="col-span-8 mt-2">
             <Text size="sm" fw={600}>
-              Grafik barang keluar
+              Grafik barang masuk
             </Text>
           </div>
           <div className="col-span-4">
@@ -26,9 +27,9 @@ export const OutgoingItemStatsSection: React.FC = () => {
         <Divider my={8} />
         <div>
           {type == "Tahunan" ? (
-            <AnnualOutgoingItemStats />
+            <AnnualIncomingItemStats />
           ) : (
-            <MonthlyOutgoingItemStats />
+            <MonthlyIncomingItemStats />
           )}
         </div>
       </div>

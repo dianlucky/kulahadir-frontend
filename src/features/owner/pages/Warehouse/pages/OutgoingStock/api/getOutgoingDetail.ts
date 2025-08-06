@@ -4,6 +4,7 @@ import axios from "axios";
 
 const BaseURL = import.meta.env.VITE_API_URL;
 
+// Get detail outgoing data by outgoing item id
 export async function getDetailByOutgoingId(outgoingId: number) {
   const res = await axios.get(
     `${BaseURL}/outgoing-details/by-outgoingId?outgoingId=${outgoingId}`,
@@ -22,7 +23,9 @@ export const useGetDetailByOutgoingId = (outgoingId: number) => {
     queryFn: () => getDetailByOutgoingId(outgoingId),
   });
 };
+// end block
 
+// Get detail outgoing data by item id
 export async function getDetailByItemId(itemId: number) {
   const res = await axios.get(
     `${BaseURL}/outgoing-details/by-itemId?itemId=${itemId}`,
@@ -41,7 +44,9 @@ export const useGetOutgoingDetailByItemId = (itemId: number) => {
     queryFn: () => getDetailByItemId(itemId),
   });
 };
+// end block
 
+// Get stats of outgoing data monthly (getting 10 most used item)
 export async function getStatsOfOutgoingDataMonthly(month: string) {
   const res = await axios.get(
     `${BaseURL}/outgoing-details/monthly-stats?monthParams=${month}`,
@@ -60,7 +65,9 @@ export const useGetStatsOfOutgoingDataMonthly = (month: string) => {
     queryFn: () => getStatsOfOutgoingDataMonthly(month),
   });
 };
+// End block
 
+// Get stats of outgoing data annually (sort per month)
 export async function getStatsOfOutgoingDataAnnually(
   type: string,
   year: string
@@ -85,6 +92,9 @@ export const useGetStatsOfOutgoingDataAnnually = (
     queryFn: () => getStatsOfOutgoingDataAnnually(type, year),
   });
 };
+// End block
+
+// Get stats outgoing data daily by month (get daily)
 export async function getStatsOfOutgoingDataDailyByMonth(
   type: string,
   month: string
@@ -109,3 +119,4 @@ export const useGetStatsOfOutgoingDataDailyByMonth = (
     queryFn: () => getStatsOfOutgoingDataDailyByMonth(type, month),
   });
 };
+// End block
